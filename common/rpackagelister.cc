@@ -27,41 +27,42 @@
 
 #include "config.h"
 
+#include "rpackagelister.h"
+
 #include <cassert>
-#include <stdlib.h>
+#include <cstdlib>
+#include <cstring>
 #include <unistd.h>
 #include <map>
 #include <sstream>
+#include <string>
 #include <dirent.h>
 #include <sys/stat.h>
-#include <unistd.h>
-#include <time.h>
+#include <ctime>
 #include <algorithm>
+#include <cstdio>
+#include <regex.h>
+#include <iostream>
+#include <vector>
+#include <set>
 
-#include "rpackagelister.h"
-#include "rpackagecache.h"
-#include "rpackagefilter.h"
-#include "rconfiguration.h"
-#include "raptoptions.h"
-#include "rinstallprogress.h"
-#include "rcacheactor.h"
-
-#include <apt-pkg/error.h>
-#include <apt-pkg/progress.h>
-#include <apt-pkg/algorithms.h>
-#include <apt-pkg/pkgrecords.h>
-#include <apt-pkg/configuration.h>
-#include <apt-pkg/acquire.h>
 #include <apt-pkg/acquire-item.h>
+#include <apt-pkg/acquire.h>
+#include <apt-pkg/algorithms.h>
 #include <apt-pkg/clean.h>
-#include <apt-pkg/version.h>
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/error.h>
+#include <apt-pkg/hashes.h>
+#include <apt-pkg/macros.h>
+#include <apt-pkg/pkgrecords.h>
+#include <apt-pkg/pkgsystem.h>
+#include <apt-pkg/progress.h>
+#include <apt-pkg/sourcelist.h>
+#include <apt-pkg/strutl.h>
 #include <apt-pkg/update.h>
 #include <apt-pkg/upgrade.h>
+#include <apt-pkg/version.h>
 
-#include <apt-pkg/sourcelist.h>
-#include <apt-pkg/pkgsystem.h>
-#include <apt-pkg/strutl.h>
-#include <apt-pkg/hashes.h>
 #ifndef HAVE_RPM
 #include <apt-pkg/debfile.h>
 #endif
@@ -70,12 +71,19 @@
 #include <apt-pkg/luaiface.h>
 #endif
 
-#include <algorithm>
-#include <cstdio>
-
-#include "sections_trans.h"
+#ifdef HAVE_XAPIAN
+#include <xapian.h>
+#endif
 
 #include "i18n.h"
+#include "raptoptions.h"
+#include "rcacheactor.h"
+#include "rconfiguration.h"
+#include "rinstallprogress.h"
+#include "rpackagecache.h"
+#include "rpackagefilter.h"
+#include "rpackageview.h"
+#include "sections_trans.h"
 
 const std::string APT_XAPIAN_INDEX_DIR = "/var/lib/apt-xapian-index";
 

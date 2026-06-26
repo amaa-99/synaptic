@@ -26,60 +26,54 @@
 
 #include "config.h"
 
+#include "rgmainwindow.h"
+
 #include <cassert>
-#include <stdio.h>
-#include <ctype.h>
-#include <gtk/gtk.h>
-#include <gdk/gdk.h>
-#include <gdk/gdkkeysyms.h>
-#include <gdk/gdkkeysyms-compat.h>
 #include <cmath>
-#include <algorithm>
-#include <functional>
 #include <fstream>
+#include <functional>
+#include <gdk/gdk.h>
+#include <gdk/gdkkeysyms-compat.h>
+#include <gdk/gdkkeysyms.h>
+#include <gtk/gtk.h>
+#include <pwd.h>
 #include <sstream>
+#include <stdio.h>
 #include <time.h>
 
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <sys/wait.h>
 
-#include <apt-pkg/strutl.h>
-#include <apt-pkg/fileutl.h>
-#include <apt-pkg/error.h>
 #include <apt-pkg/configuration.h>
+#include <apt-pkg/error.h>
+#include <apt-pkg/fileutl.h>
+#include <apt-pkg/strutl.h>
 
-#include <pwd.h>
-
+#include "gtkpkglist.h"
+#include "i18n.h"
 #include "raptoptions.h"
 #include "rconfiguration.h"
-#include "rgmainwindow.h"
-#include "rgfindwindow.h"
-#include "rgfiltermanager.h"
-#include "rpackagefilter.h"
-#include "raptoptions.h"
-
-#include "rgrepositorywin.h"
-#include "rgpreferenceswindow.h"
-#include "rgsummarywindow.h"
-#include "rgchangeswindow.h"
-#include "rgcdscanner.h"
-#include "rgpkgcdrom.h"
-#include "rgsetoptwindow.h"
-#include "rgchangelogdialog.h"
-#include "rgfetchprogress.h"
-#include "rgpkgdetails.h"
 #include "rgcacheprogress.h"
-#include "rguserdialog.h"
-#include "rginstallprogress.h"
-#include "rgdummyinstallprogress.h"
+#include "rgchangelogdialog.h"
+#include "rgchangeswindow.h"
 #include "rgdebinstallprogress.h"
-#include "rgterminstallprogress.h"
-#include "rgutils.h"
-#include "sections_trans.h"
+#include "rgfetchprogress.h"
+#include "rgfiltermanager.h"
+#include "rgfindwindow.h"
+#include "rginstallprogress.h"
+#include "rgpkgcdrom.h"
+#include "rgpkgdetails.h"
 #include "rgpkgtreeview.h"
-
-#include "i18n.h"
+#include "rgpreferenceswindow.h"
+#include "rgrepositorywin.h"
+#include "rgsetoptwindow.h"
+#include "rgsummarywindow.h"
+#include "rgterminstallprogress.h"
+#include "rguserdialog.h"
+#include "rgutils.h"
+#include "rpackagefilter.h"
+#include "rpackagelister.h"
 
 // include it here because depcache.h hates us if we have it before
 #include <gdk/gdkx.h>
