@@ -28,22 +28,30 @@
 
 #include "config.h"
 
-using namespace std;
-
-#include "rpackagelister.h"
-
+#include <apt-pkg/pkgcache.h>
+#include <cstddef>
+#include <gdk/gdk.h>
+#include <gio/gio.h>
+#include <gio/gmenu.h>
+#include <glib.h>
+#include <glibconfig.h>
 #include <gtk/gtk.h>
+#include <gtk/gtkcssprovider.h>
+#include <string>
 #include <vector>
-#include <set>
 
-#include "rgtaskswin.h"
 #include "rgfetchprogress.h"
-#include "rinstallprogress.h"
 #include "rggtkbuilderwindow.h"
 #include "rgiconlegend.h"
-#include "gtkpkglist.h"
-#include "rgpkgdetails.h"
 #include "rglogview.h"
+#include "rgpkgdetails.h"
+#include "rgtaskswin.h"
+#include "rgwindow.h"
+#include "rpackage.h"
+#include "rpackagelister.h"
+#include "rpackageview.h"
+
+using namespace std;
 
 typedef enum {
    RG_TOOLBAR_HIDE = -1,
