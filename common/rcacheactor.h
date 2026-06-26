@@ -25,6 +25,8 @@
 #ifndef RCACHEACTOR_H
 #define RCACHEACTOR_H
 
+#include "config.h"
+
 #include "rpackagelister.h"
 #include <regex.h>
 

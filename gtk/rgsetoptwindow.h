@@ -20,6 +20,8 @@
  * USA
  */
 
+#include "config.h"
+
 #include "rggtkbuilderwindow.h"
 
 class RGSetOptWindow:public RGGtkBuilderWindow {

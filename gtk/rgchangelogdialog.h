@@ -18,6 +18,8 @@
  * USA
  */
 
+#include "config.h"
+
 #include <rgwindow.h>
 #include <rpackage.h>
 #include <rgfetchprogress.h>

@@ -20,6 +20,7 @@
  * USA
  */
 
+#include "config.h"
 
 #include "rggtkbuilderwindow.h"
 #include "rpackagefilter.h"

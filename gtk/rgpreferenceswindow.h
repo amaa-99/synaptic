@@ -20,6 +20,8 @@
  * USA
  */
 
+#include "config.h"
+
 #include "rggtkbuilderwindow.h"
 #include "rgmainwindow.h"
 
