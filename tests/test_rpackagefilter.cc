@@ -1,12 +1,17 @@
 #include "config.h"
 
-#include <apt-pkg/init.h>
+#include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
-#include <iostream>
+#include <apt-pkg/init.h>
+#include <apt-pkg/pkgsystem.h>
 #include <cstdlib>
+#include <iostream>
+#include <vector>
 
-#include "rpackagelister.h"
+#include "rconfiguration.h"
 #include "rpackage.h"
+#include "rpackagelister.h"
+#include "rpackageview.h"
 
 using namespace std;
 
