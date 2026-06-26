@@ -27,23 +27,27 @@
 
 #include "config.h"
 
-#include <vector>
+#include <ctime>
+#include <istream>
 #include <list>
-#include <map>
-#include <set>
+#include <ostream>
 #include <regex.h>
-#include <apt-pkg/depcache.h>
+#include <set>
+#include <string>
+#include <vector>
+
 #include <apt-pkg/acquire.h>
+#include <apt-pkg/depcache.h>
+#include <apt-pkg/fileutl.h>
 #include <apt-pkg/progress.h>
 
 #ifdef HAVE_XAPIAN
 #include <xapian.h>
 #endif
 
-#include "rpackagecache.h"
 #include "rpackage.h"
+#include "rpackagecache.h"
 #include "rpackagestatus.h"
-#include "rpackageview.h"
 #include "ruserdialog.h"
 
 using namespace std;
