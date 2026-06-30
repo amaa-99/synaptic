@@ -147,7 +147,7 @@ class RPackage {
 
    const char *summary();
    const char *description();
-   const char *installedFiles();
+   string installedFiles();
 
    string arch();
 

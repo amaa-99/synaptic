@@ -375,7 +375,7 @@ void RGPkgDetailsWindow::fillInValues(RGGtkBuilderWindow *me,
    gtk_widget_show(GTK_WIDGET(gtk_builder_get_object
                               (me->getGtkBuilder(),
                                "scrolledwindow_filelist")));
-   me->setTextView("textview_files", pkg->installedFiles());
+   me->setTextView("textview_files", pkg->installedFiles().c_str());
 #endif
 
    // versions
