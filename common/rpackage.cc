@@ -257,13 +257,7 @@ string RPackage::installedFiles()
 
    return filelist;
 }
-#else
-string RPackage::installedFiles()
-{
-   return "";
-}
 #endif // HAVE_RPM
-
 
 const char *RPackage::description()
 {

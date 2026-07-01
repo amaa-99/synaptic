@@ -369,9 +369,8 @@ void RGPkgDetailsWindow::fillInValues(RGGtkBuilderWindow *me,
    // provides
    me->setTreeList("treeview_provides", pkg->provides());
 
-
-   // file list
 #ifndef HAVE_RPM
+   // file list
    gtk_widget_show(GTK_WIDGET(gtk_builder_get_object
                               (me->getGtkBuilder(),
                                "scrolledwindow_filelist")));

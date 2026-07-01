@@ -147,7 +147,10 @@ class RPackage {
 
    const char *summary();
    const char *description();
+   
+#ifndef HAVE_RPM
    string installedFiles();
+#endif
 
    string arch();
 
