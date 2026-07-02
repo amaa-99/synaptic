@@ -32,7 +32,6 @@ synaptic_LDADD = \
 
 synaptic_SOURCES= \
 	gsynaptic.cc\
-	gsynaptic.h\
 	gtkpkglist.cc\
 	gtkpkglist.h\
 	rgcacheprogress.cc\
