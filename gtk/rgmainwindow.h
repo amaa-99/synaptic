@@ -51,8 +51,6 @@
 #include "rpackagelister.h"
 #include "rpackageview.h"
 
-using namespace std;
-
 typedef enum {
    RG_TOOLBAR_HIDE = -1,
    RG_TOOLBAR_ICONS = 0,
@@ -169,13 +167,13 @@ public:
    // package info
    void updatePackageInfo(RPackage *pkg);
    RPackage *selectedPackage();
-   string selectedSubView();
+   std::string selectedSubView();
 
    // helpers
    void pkgAction(RGPkgAction action);
    bool askStateChange(RPackageLister::pkgState, 
-                       const vector<RPackage *> &exclude = vector<RPackage*>());
-   bool checkForFailedInst(vector<RPackage *> instPkgs);
+                       const std::vector<RPackage *> &exclude = std::vector<RPackage*>());
+   bool checkForFailedInst(std::vector<RPackage *> instPkgs);
    void pkgInstallHelper(RPackage *pkg, bool fixBroken = true, 
 			 bool reInstall = false);
    void pkgRemoveHelper(RPackage *pkg, bool purge = false,
@@ -205,15 +203,15 @@ public:
    };
 
  public:
-   RGMainWindow(GtkApplication *app, RPackageLister *packLister, string name);
+   RGMainWindow(GtkApplication *app, RPackageLister *packLister, std::string name);
    virtual ~RGMainWindow() {};
 
    void refreshTable(RPackage *selectedPkg = NULL,bool setAdjustments=true);
 
-   void changeView(int view, string subView="");
+   void changeView(int view, std::string subView="");
 
    // install the list of packagenames and display a changes window
-   void selectToInstall(vector<string> packagenames);
+   void selectToInstall(std::vector<std::string> packagenames);
 
    void setInterfaceLocked(bool flag);
    void setTreeLocked(bool flag);
@@ -270,7 +268,7 @@ public:
    static void cbTreeviewPopupMenu(GtkWidget *treeview,
                                    GdkEventButton *event,
                                    RGMainWindow *me,
-                                   vector<RPackage *> selected_pkgs);
+                                   std::vector<RPackage *> selected_pkgs);
 
    static void cbChangelogDialog(GSimpleAction *action,
                                  GVariant *parameter,
@@ -302,7 +300,7 @@ public:
    static void cbSaveAsClicked(GSimpleAction *action,
                                GVariant *parameter,
                                gpointer data);
-   string selectionsFilename;
+   std::string selectionsFilename;
    bool saveFullState;
    static void cbGenerateDownloadScriptClicked(GSimpleAction *action,
                                                GVariant *parameter,
