@@ -28,11 +28,12 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
 #include "rsources.h"
 #include "rggtkbuilderwindow.h"
-
 #include "rguserdialog.h"
+
+#include <gtk/gtk.h>
+#include <string>
 
 typedef std::list<SourcesList::SourceRecord *>::iterator SourcesListIter;
 typedef std::list<SourcesList::VendorRecord *>::iterator VendorsListIter;

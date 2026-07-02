@@ -28,7 +28,11 @@
 #include "config.h"
 
 #include "rpackagelister.h"
+
+#include <map>
 #include <regex.h>
+#include <string>
+#include <vector>
 
 class RCacheActor:public RCacheObserver {
  public:

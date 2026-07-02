@@ -28,6 +28,8 @@
 #include "rggtkbuilderwindow.h"
 #include "rgmainwindow.h"
 
+#include <string>
+
 class RGPreferencesWindow:public RGGtkBuilderWindow {
    bool _blockAction;
 

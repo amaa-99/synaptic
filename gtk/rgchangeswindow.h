@@ -29,6 +29,8 @@
 
 #include "rggtkbuilderwindow.h"
 
+#include <vector>
+
 class RPackageLister;
 
 class RGChangesWindow:public RGGtkBuilderWindow {

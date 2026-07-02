@@ -32,6 +32,8 @@
 #include "rggtkbuilderwindow.h"
 #include <apt-pkg/cdrom.h>
 
+#include <string>
+
 class RGMainWindow;
 
 class RGCDScanner:public pkgCdromStatus, public RGWindow {
