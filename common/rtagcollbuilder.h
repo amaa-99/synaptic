@@ -34,6 +34,8 @@
 #include "rpackage.h"
 #include "rpackagelister.h"
 
+#include <string>
+
 // TagcollConsumer that builds a tagged collection for synaptic
 class RTagcollBuilder:public TagcollConsumer<std::string> {
  protected:

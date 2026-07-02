@@ -22,12 +22,13 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "rpackagelister.h"
 #include "rcacheactor.h"
-#include "rpackagelistactor.h"
 #include "rgutils.h"
+#include "rpackagelistactor.h"
+#include "rpackagelister.h"
+#include <gtk/gtk.h>
 
+#include <vector>
 
 #define GTK_TYPE_PKG_LIST			(gtk_pkg_list_get_type ())
 #define GTK_PKG_LIST(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PKG_LIST, GtkPkgList))
@@ -38,7 +39,6 @@
 
 typedef struct _GtkPkgList GtkPkgList;
 typedef struct _GtkPkgListClass GtkPkgListClass;
-
 
 struct _GtkPkgList {
    GObject parent;

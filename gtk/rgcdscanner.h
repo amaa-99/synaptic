@@ -31,6 +31,8 @@
 #include "rcdscanner.h"
 #include "rggtkbuilderwindow.h"
 
+#include <string>
+
 class RGMainWindow;
 
 class RGCDScanner:public RCDScanProgress, public RGWindow {

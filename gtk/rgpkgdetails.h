@@ -26,9 +26,12 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "rpackage.h"
 #include "rggtkbuilderwindow.h"
+#include "rpackage.h"
+
+#include <gtk/gtk.h>
+#include <string>
+#include <vector>
 
 class RGPkgDetailsWindow : public RGGtkBuilderWindow {
    

@@ -27,12 +27,14 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "rggtkbuilderwindow.h"
-#include "rpackagefilter.h"
-#include "rgutils.h"
-
 #include "i18n.h"
+#include "rggtkbuilderwindow.h"
+#include "rgutils.h"
+#include "rpackagefilter.h"
+
+#include <gtk/gtk.h>
+#include <string>
+#include <vector>
 
 class RPackageViewFilter;
 class RGFilterManagerWindow;

@@ -30,12 +30,12 @@
 #include "rinstallprogress.h"
 #include "rggtkbuilderwindow.h"
 #include "rguserdialog.h"
-#include<map>
+
+#include <map>
+#include <string>
 #include <vte/vte.h>
 
-
 class RGMainWindow;
-
 
 class RGDebInstallProgress:public RInstallProgress, public RGGtkBuilderWindow 
 {
@@ -146,6 +146,6 @@ class RGDebInstallProgress:public RInstallProgress, public RGGtkBuilderWindow
 
 };
 
-#endif
+#endif // WITH_DPKG_STATUSFD
 
 #endif
