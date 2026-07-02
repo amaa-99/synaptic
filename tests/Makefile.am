@@ -1,11 +1,14 @@
 
 AM_CPPFLAGS = -I@top_srcdir@ -I@top_srcdir@/common -I@top_srcdir@/gtk -I@top_builddir@ \
-		@GTK_DISABLE_DEPRECATED@ @GTK_CFLAGS@ @VTE_CFLAGS@ @LP_CFLAGS@ $(LIBTAGCOLL_CFLAGS) -O0 -g3
+	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
+	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
+	-DSYNAPTICSTATEDIR=\""$(localstatedir)"\" \
+	@GTK_DISABLE_DEPRECATED@ @GTK_CFLAGS@ @VTE_CFLAGS@ @LP_CFLAGS@ $(LIBTAGCOLL_CFLAGS) -O0 -g3
 
 noinst_PROGRAMS = test_rpackage test_rpackageview test_gtkpkglist test_rpackagefilter
 
 LDADD = \
-	${top_builddir}/common/libsynaptic.a\
+	${top_builddir}/common/libsynaptic.a \
 	-lapt-pkg -lX11 @RPM_LIBS@ @DEB_LIBS@ \
 	@GTK_LIBS@ @VTE_LIBS@ @LP_LIBS@ @XAPIAN_LIBS@ \
 	-lpthread

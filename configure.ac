@@ -22,8 +22,6 @@ GETTEXT_PACKAGE=synaptic
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[description])
 AC_PROG_INTLTOOL([0.23])
-synapticlocaledir='${prefix}/${DATADIRNAME}/locale'
-AC_SUBST(synapticlocaledir)
      
 dnl we build for gtk3 by default now
 pkg_modules="gtk+-3.0 >= 3.4.0, pango >= 1.0.0, glib-2.0"

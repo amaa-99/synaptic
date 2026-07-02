@@ -3,9 +3,10 @@
 noinst_LIBRARIES = libsynaptic.a
 
 AM_CPPFLAGS = -I@top_srcdir@ -I@top_srcdir@/common -I@top_srcdir@/gtk -I@top_builddir@ \
-	@RPM_HDRS@ @DEB_HDRS@ \
-	-DSYNAPTICLOCALEDIR=\""$(synapticlocaledir)"\" \
-	-DSYNAPTICSTATEDIR=\""$(localstatedir)"\"
+	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
+	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
+	-DSYNAPTICSTATEDIR=\""$(localstatedir)"\" \
+	@RPM_HDRS@ @DEB_HDRS@
 
 libsynaptic_a_SOURCES =\
 	pkg_acqfile.cc\
