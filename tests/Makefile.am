@@ -1,5 +1,5 @@
 
-AM_CPPFLAGS = -I${top_srcdir} -I${top_srcdir}/common -I${top_srcdir}/gtk \
+AM_CPPFLAGS = -I@top_srcdir@ -I@top_srcdir@/common -I@top_srcdir@/gtk -I@top_builddir@ \
 		@GTK_DISABLE_DEPRECATED@ @GTK_CFLAGS@ @VTE_CFLAGS@ @LP_CFLAGS@ $(LIBTAGCOLL_CFLAGS) -O0 -g3
 
 noinst_PROGRAMS = test_rpackage test_rpackageview test_gtkpkglist test_rpackagefilter

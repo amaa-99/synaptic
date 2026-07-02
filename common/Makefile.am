@@ -2,7 +2,8 @@
 
 noinst_LIBRARIES = libsynaptic.a
 
-AM_CPPFLAGS = -I/usr/include/apt-pkg @RPM_HDRS@ @DEB_HDRS@ \
+AM_CPPFLAGS = -I@top_srcdir@ -I@top_srcdir@/common -I@top_srcdir@/gtk -I@top_builddir@ \
+	@RPM_HDRS@ @DEB_HDRS@ \
 	-DSYNAPTICLOCALEDIR=\""$(synapticlocaledir)"\" \
 	-DSYNAPTICSTATEDIR=\""$(localstatedir)"\"
 

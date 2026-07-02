@@ -1,8 +1,7 @@
 SUBDIRS = gtkbuilder
 
 
-AM_CPPFLAGS = -I${top_srcdir}/common \
-	-I${top_srcdir}/pixmaps  \
+AM_CPPFLAGS = -I@top_srcdir@ -I@top_srcdir@/common -I@top_srcdir@/gtk -I@top_builddir@ \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DSYNAPTIC_GTKBUILDERDIR=\""$(datadir)/synaptic/gtkbuilder/"\" \
