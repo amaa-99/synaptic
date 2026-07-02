@@ -30,6 +30,8 @@
 #include "ruserdialog.h"
 #include "rgwindow.h"
 
+#include <string>
+
 class RGUserDialog : public RUserDialog
 {
 protected:

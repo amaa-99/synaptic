@@ -27,17 +27,18 @@
 
 #include "config.h"
 
-#include <string>
-#include <map>
-
-#ifdef HAVE_XAPIAN
-#include <xapian.h>
-#endif
-
+#include "i18n.h"
 #include "rpackage.h"
 #include "rpackagefilter.h"
 
-#include "i18n.h"
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
+
+#ifdef HAVE_XAPIAN
+   #include <xapian.h>
+#endif
 
 struct RFilter;
 

@@ -29,6 +29,8 @@
 
 #include <apt-pkg/packagemanager.h>
 
+#include <string>
+
 class RInstallProgress {
  protected:
    int _stdout;

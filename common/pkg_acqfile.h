@@ -10,8 +10,13 @@
 
 // new APT has a proper pkgAcqFile so all good
 #if APT_PKG_MAJOR >= 5
+
  #define pkgAcqFileSane pkgAcqFile
+
 #else
+
+#include <string>
+
 class pkgAcqFileSane : public pkgAcquire::Item
 // This is frustrating: pkgAcqFile is **almost** good enough, but has some
 // hardcoded stuff that makes it not quite work.

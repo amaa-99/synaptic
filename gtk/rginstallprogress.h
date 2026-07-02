@@ -29,6 +29,9 @@
 #include "rggtkbuilderwindow.h"
 #include "rgslideshow.h"
 
+#include <map>
+#include <string>
+
 class RGMainWindow;
 
 class RGInstallProgressMsgs:public RGGtkBuilderWindow {

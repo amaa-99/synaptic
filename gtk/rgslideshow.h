@@ -25,6 +25,9 @@
 
 #include "config.h"
 
+#include <string>
+#include <vector>
+
 class RGSlideShow {
 
  protected:

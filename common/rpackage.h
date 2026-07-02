@@ -31,12 +31,13 @@
 
 #include "config.h"
 
-#include <vector>
-
 #include <apt-pkg/pkgcache.h>
 #include <apt-pkg/acquire.h>
 #include "rconfiguration.h"
 #include "i18n.h"
+
+#include <string>
+#include <vector>
 
 class pkgDepCache;
 class RPackageLister;

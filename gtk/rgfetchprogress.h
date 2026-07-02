@@ -25,11 +25,12 @@
 
 #include "config.h"
 
-#include <apt-pkg/acquire.h>
-
-#include <vector>
-#include <set>
 #include "rggtkbuilderwindow.h"
+
+#include <apt-pkg/acquire.h>
+#include <set>
+#include <string>
+#include <vector>
 
 class RGFetchProgress : public pkgAcquireStatus, public RGGtkBuilderWindow {
 

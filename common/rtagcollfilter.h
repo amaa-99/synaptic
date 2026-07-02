@@ -30,7 +30,6 @@
 #include <TagcollConsumer.h>
 #include <TagcollFilter.h>
 
-#include <map>
 #include <string>
 #include "rpackage.h"
 #include "rpackagelister.h"
