@@ -35,6 +35,8 @@
 
 #include "i18n.h"
 
+using namespace std;
+
 class RGDiscName : public RGGtkBuilderWindow 
 {
  protected:

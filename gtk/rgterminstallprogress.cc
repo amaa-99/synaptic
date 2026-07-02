@@ -55,7 +55,6 @@
 
 using namespace std;
 
-
 RGTermInstallProgress::RGTermInstallProgress(RGMainWindow *main) 
    : RInstallProgress(), RGGtkBuilderWindow(main, "zvtinstallprogress")
 {
