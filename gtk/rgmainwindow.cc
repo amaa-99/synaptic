@@ -28,28 +28,6 @@
 
 #include "rgmainwindow.h"
 
-#include <cassert>
-#include <cmath>
-#include <fstream>
-#include <functional>
-#include <gdk/gdk.h>
-#include <gdk/gdkkeysyms-compat.h>
-#include <gdk/gdkkeysyms.h>
-#include <gtk/gtk.h>
-#include <pwd.h>
-#include <sstream>
-#include <stdio.h>
-#include <time.h>
-
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
-#include <apt-pkg/configuration.h>
-#include <apt-pkg/error.h>
-#include <apt-pkg/fileutl.h>
-#include <apt-pkg/strutl.h>
-
 #include "gtkpkglist.h"
 #include "i18n.h"
 #include "raptoptions.h"
@@ -74,6 +52,24 @@
 #include "rgutils.h"
 #include "rpackagefilter.h"
 #include "rpackagelister.h"
+
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/error.h>
+#include <apt-pkg/fileutl.h>
+#include <apt-pkg/strutl.h>
+#include <cassert>
+#include <cmath>
+#include <fstream>
+#include <functional>
+#include <gdk/gdkkeysyms-compat.h>
+#include <gtk/gtk.h>
+#include <pwd.h>
+#include <sstream>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <time.h>
 
 // include it here because depcache.h hates us if we have it before
 #include <gdk/gdkx.h>

@@ -22,9 +22,10 @@
 
 #include "config.h"
 
-#include <apt-pkg/configuration.h>
-
 #include "rgsetoptwindow.h"
+
+#include <apt-pkg/configuration.h>
+#include <gtk/gtk.h>
 
 void RGSetOptWindow::DoApply(GtkWindow *widget, void *data)
 {

@@ -68,7 +68,6 @@ static char *ActOptions[] = {
    NULL
 };
 
-
 static char *DepOptions[] = {
    _("Package name"),
    _("Description"),
@@ -85,8 +84,6 @@ static char *DepOptions[] = {
    _("Component"),                 // Component (e.g. main, universe)
    NULL
 };
-
-
 
 typedef void RGFilterEditorCloseAction(void *self, bool okcancel);
 

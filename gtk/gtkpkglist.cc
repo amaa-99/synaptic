@@ -19,15 +19,17 @@
 
 #include "config.h"
 
+#include "gtkpkglist.h"
+
+#include "rgpackagestatus.h"
+#include "rgutils.h"
+#include "rpackagelister.h"
+
 #include <algorithm>
-#include <gtk/gtk.h>
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/strutl.h>
 #include <cassert>
-#include "gtkpkglist.h"
-#include "rgutils.h"
-#include "rgpackagestatus.h"
-#include "rpackagelister.h"
+#include <gtk/gtk.h>
 
 using namespace std;
 

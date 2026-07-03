@@ -27,6 +27,7 @@
 
 #include "rggtkbuilderwindow.h"
 
+#include <gtk/gtk.h>
 #include <string>
 
 class RGLogView : public RGGtkBuilderWindow {

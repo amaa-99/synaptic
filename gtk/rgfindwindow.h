@@ -29,6 +29,8 @@
 #include "rggtkbuilderwindow.h"
 #include "rpackagefilter.h"
 
+#include <gtk/gtk.h>
+
 class RGFindWindow;
 
 typedef void RGFindWindowFindAction(void *self, RGFindWindow * win);

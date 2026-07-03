@@ -28,6 +28,7 @@
 #include "rggtkbuilderwindow.h"
 
 #include <apt-pkg/acquire.h>
+#include <gtk/gtk.h>
 #include <set>
 #include <string>
 #include <vector>

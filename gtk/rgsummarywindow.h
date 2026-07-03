@@ -29,9 +29,9 @@
 
 #include "rggtkbuilderwindow.h"
 
+#include <gtk/gtk.h>
 
 class RPackageLister;
-
 
 class RGSummaryWindow:public RGGtkBuilderWindow {
    GtkWidget *_topF;

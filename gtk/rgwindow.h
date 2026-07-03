@@ -35,7 +35,7 @@ class RGWindow {
    GtkWidget *_win;
    GtkWidget *_topBox;
 
-   static bool windowCloseCallback(GtkWidget *widget, GdkEvent * event);
+   static bool windowCloseCallback(GtkWidget *widget, GdkEvent *event);
    virtual bool close();
 
  public:

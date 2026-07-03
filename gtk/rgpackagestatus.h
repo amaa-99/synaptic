@@ -28,6 +28,8 @@
 #include "rpackage.h"
 #include "rpackagestatus.h"
 
+#include <gtk/gtk.h>
+
 class RGPackageStatus : public RPackageStatus {
  protected:
    GdkPixbuf *StatusPixbuf[N_STATUS_COUNT];
