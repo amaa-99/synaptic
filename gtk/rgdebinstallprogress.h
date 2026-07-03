@@ -27,10 +27,11 @@
 
 #ifdef WITH_DPKG_STATUSFD
 
-#include "rinstallprogress.h"
 #include "rggtkbuilderwindow.h"
 #include "rguserdialog.h"
+#include "rinstallprogress.h"
 
+#include <gtk/gtk.h>
 #include <map>
 #include <string>
 #include <vte/vte.h>

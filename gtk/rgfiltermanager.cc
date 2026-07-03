@@ -24,13 +24,15 @@
 
 #include "config.h"
 
-#include <cstdio>
-#include <cstring>
-#include <cassert>
-#include "rpackageview.h"
 #include "rgfiltermanager.h"
 
 #include "i18n.h"
+#include "rpackageview.h"
+
+#include <cassert>
+#include <cstdio>
+#include <cstring>
+#include <gtk/gtk.h>
 
 using namespace std;
 

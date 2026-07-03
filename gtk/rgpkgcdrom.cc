@@ -26,13 +26,14 @@
 
 #ifdef HAVE_APTPKG_CDROM
 
-#include "rgmainwindow.h"
 #include "rgpkgcdrom.h"
 
-#include <unistd.h>
-#include <stdio.h>
-
 #include "i18n.h"
+#include "rgmainwindow.h"
+
+#include <gtk/gtk.h>
+#include <stdio.h>
+#include <unistd.h>
 
 using namespace std;
 

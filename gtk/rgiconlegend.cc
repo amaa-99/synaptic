@@ -22,12 +22,14 @@
 
 #include "config.h"
 
-#include <cassert>
 #include "rgiconlegend.h"
-#include "rgutils.h"
-#include "rgpackagestatus.h"
 
 #include "i18n.h"
+#include "rgpackagestatus.h"
+#include "rgutils.h"
+
+#include <cassert>
+#include <gtk/gtk.h>
 
 static void closeWindow(GtkWidget *self, void *data)
 {

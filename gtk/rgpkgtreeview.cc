@@ -1,15 +1,15 @@
 #include "config.h"
 
-#include <algorithm>
-#include <vector>
-#include <utility>
-
-#include <apt-pkg/configuration.h>
-
 #include "rgpkgtreeview.h"
-#include "rgutils.h"
 
 #include "i18n.h"
+#include "rgutils.h"
+
+#include <algorithm>
+#include <apt-pkg/configuration.h>
+#include <gtk/gtk.h>
+#include <utility>
+#include <vector>
 
 // needed for the buildTreeView function
 struct mysort {

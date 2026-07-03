@@ -27,9 +27,10 @@
 
 #include "config.h"
 
-#include "ruserdialog.h"
 #include "rgwindow.h"
+#include "ruserdialog.h"
 
+#include <gtk/gtk.h>
 #include <string>
 
 class RGUserDialog : public RUserDialog

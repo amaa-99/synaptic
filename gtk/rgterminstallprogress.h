@@ -28,9 +28,10 @@
 #ifdef HAVE_TERMINAL
 
 #include "rgmainwindow.h"
-#include "rinstallprogress.h"
 #include "rgwindow.h"
+#include "rinstallprogress.h"
 
+#include <gtk/gtk.h>
 #include <vte/vte.h>
 
 class RGTermInstallProgress : public RInstallProgress, public RGGtkBuilderWindow {

@@ -26,9 +26,11 @@
 #include "config.h"
 
 #include "rinstallprogress.h"
+
 #include "rggtkbuilderwindow.h"
 #include "rgslideshow.h"
 
+#include <gtk/gtk.h>
 #include <map>
 #include <string>
 
