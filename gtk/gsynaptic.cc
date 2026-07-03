@@ -22,35 +22,34 @@
 
 #include "config.h"
 
-#include <iostream>
-
 #include "i18n.h"
-
-#include "rconfiguration.h"
 #include "raptoptions.h"
-#include "rpackagelister.h"
-#include <cmath>
-#include <apt-pkg/configuration.h>
-#include <apt-pkg/cmndline.h>
-#include <apt-pkg/error.h>
-#include <X11/Xlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <cstdlib>
-#include <cassert>
-#include <errno.h>
-#include <fstream>
-#include <cstring>
-
+#include "rconfiguration.h"
 #include "rgmainwindow.h"
-#include "rguserdialog.h"
-#include "locale.h"
-#include "stdio.h"
-#include "rgutils.h"
 #include "rgpackagestatus.h"
+#include "rguserdialog.h"
+#include "rgutils.h"
+#include "rpackagelister.h"
+
+#include <X11/Xlib.h>
+#include <apt-pkg/cmndline.h>
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/error.h>
+#include <cassert>
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <errno.h>
+#include <fcntl.h>
+#include <fstream>
+#include <gtk/gtk.h>
+#include <iostream>
+#include <locale.h>
+#include <signal.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 using namespace std;
 

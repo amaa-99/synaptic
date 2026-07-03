@@ -27,6 +27,8 @@
 
 #include "rggtkbuilderwindow.h"
 
+#include <gtk/gtk.h>
+
 class RGMainWindow;
 
 class RGTasksWin : public RGGtkBuilderWindow {

@@ -22,13 +22,14 @@
 
 #include "config.h"
 
+#include "rgfindwindow.h"
+
+#include "i18n.h"
+#include "rgutils.h"
+
 #include <cassert>
 #include <cstring>
-
-#include "rgfindwindow.h"
-#include "rgutils.h"
-#include "i18n.h"
-
+#include <gtk/gtk.h>
 
 gchar* RGFindWindow::getFindString()
 {

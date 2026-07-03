@@ -27,14 +27,16 @@
 
 #include "config.h"
 
+#include "rgwindow.h"
+
 #ifdef HAVE_APTPKG_CDROM
 
-#include "rggtkbuilderwindow.h"
 #include <apt-pkg/cdrom.h>
-
+#include <gtk/gtk.h>
 #include <string>
 
 class RGMainWindow;
+class RUserDialog;
 
 class RGCDScanner:public pkgCdromStatus, public RGWindow {
  protected:

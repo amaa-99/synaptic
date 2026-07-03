@@ -22,10 +22,11 @@
 
 #include "config.h"
 
-#include <math.h>
-
 #include "rgcacheprogress.h"
 #include "rgutils.h"
+
+#include <gtk/gtk.h>
+#include <math.h>
 
 RGCacheProgress::RGCacheProgress(GtkWidget *parent, GtkWidget *label)
 : _parent(parent), _label(label)

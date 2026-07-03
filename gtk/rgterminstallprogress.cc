@@ -26,31 +26,28 @@
 
 #ifdef HAVE_TERMINAL
 
-#include "i18n.h"
-
 #include "rgterminstallprogress.h"
+
+#include "i18n.h"
+#include "rconfiguration.h"
 #include "rgmainwindow.h"
 #include "rguserdialog.h"
-#include "rconfiguration.h"
 
 #include <X11/Xlib.h>
-#include <iostream>
-#include <cerrno>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <apt-pkg/error.h>
 #include <apt-pkg/configuration.h>
+#include <apt-pkg/error.h>
 #include <apt-pkg/install-progress.h>
 #include <apt-pkg/pkgsystem.h>
 #include <cassert>
-#include <cstring>
+#include <cerrno>
 #include <cstdlib>
-
+#include <cstring>
+#include <gtk/gtk.h>
+#include <iostream>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <vte/vte.h>
-
-#include <cstdlib>
-#include <cstring>
 
 using namespace std;
 

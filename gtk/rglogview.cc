@@ -22,17 +22,18 @@
 
 #include "config.h"
 
-#include <cassert>
-#include <cstring>
-#include <map>
-#include <utility>
-#include <apt-pkg/fileutl.h>
-
 #include "rglogview.h"
-#include "rgutils.h"
-#include "rconfiguration.h"
 
 #include "i18n.h"
+#include "rconfiguration.h"
+#include "rgutils.h"
+
+#include <apt-pkg/fileutl.h>
+#include <cassert>
+#include <cstring>
+#include <gtk/gtk.h>
+#include <map>
+#include <utility>
 
 using namespace std;
 

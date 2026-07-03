@@ -29,6 +29,7 @@
 
 #include "rggtkbuilderwindow.h"
 
+#include <gtk/gtk.h>
 #include <vector>
 
 class RPackageLister;
