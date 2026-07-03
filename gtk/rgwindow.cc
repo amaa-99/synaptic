@@ -22,10 +22,13 @@
 
 #include "config.h"
 
-#include <apt-pkg/fileutl.h>
-
 #include "rgwindow.h"
+
 #include "rgutils.h"
+
+#include <apt-pkg/fileutl.h>
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 
 using namespace std;
 

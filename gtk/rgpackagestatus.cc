@@ -22,14 +22,16 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include <string>
-#include <stdio.h>
-#include <cstdlib>
-#include <cstring>
+#include "rgpackagestatus.h"
 
 #include "rgutils.h"
-#include "rgpackagestatus.h"
+
+#include <apt-pkg/configuration.h>
+#include <cstdlib>
+#include <cstring>
+#include <gdk/gdk.h>
+#include <stdio.h>
+#include <string>
 
 // RPackageStatus stuff
 RGPackageStatus RGPackageStatus::pkgStatus;
@@ -83,7 +85,6 @@ void RGPackageStatus::init()
    initColors();
    initPixbufs();
 }
-
 
 GdkRGBA *RGPackageStatus::getBgColor(RPackage *pkg)
 {

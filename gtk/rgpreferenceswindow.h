@@ -28,6 +28,7 @@
 #include "rggtkbuilderwindow.h"
 #include "rgmainwindow.h"
 
+#include <gtk/gtk.h>
 #include <string>
 
 class RGPreferencesWindow:public RGGtkBuilderWindow {

@@ -31,6 +31,7 @@
 #include "rcdscanner.h"
 #include "rggtkbuilderwindow.h"
 
+#include <gtk/gtk.h>
 #include <string>
 
 class RGMainWindow;

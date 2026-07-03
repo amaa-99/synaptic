@@ -23,17 +23,20 @@
 
 #include "config.h"
 
-#include <cassert>
+#include "rgpkgdetails.h"
 
 #include "i18n.h"
-#include "rgwindow.h"
-#include "rgmainwindow.h"
-#include "rgpkgdetails.h"
-#include "rggtkbuilderwindow.h"
-#include "rpackage.h"
-#include "rgpackagestatus.h"
 #include "rgchangelogdialog.h"
+#include "rggtkbuilderwindow.h"
+#include "rgmainwindow.h"
+#include "rgpackagestatus.h"
+#include "rgwindow.h"
+#include "rpackage.h"
 #include "sections_trans.h"
+
+#include <cassert>
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 
 using namespace std;
 

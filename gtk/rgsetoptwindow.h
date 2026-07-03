@@ -27,6 +27,8 @@
 
 #include "rggtkbuilderwindow.h"
 
+#include <gtk/gtk.h>
+
 class RGSetOptWindow:public RGGtkBuilderWindow {
 
    static void DoApply(GtkWindow *widget, void *data);

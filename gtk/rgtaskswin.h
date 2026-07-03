@@ -27,6 +27,8 @@
 
 #include "rggtkbuilderwindow.h"
 
+#include <gtk/gtk.h>
+
 class RGMainWindow;
 
 class RGTasksWin : public RGGtkBuilderWindow {
@@ -44,8 +46,6 @@ class RGTasksWin : public RGGtkBuilderWindow {
 				      gpointer user_data);
    static void selection_changed_callback(GtkTreeSelection *selection,
 				    gpointer user_data);
-
-
 
  public:
    RGTasksWin(RGWindow *parent);

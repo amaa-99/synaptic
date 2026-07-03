@@ -22,14 +22,16 @@
 
 #include "config.h"
 
+#include "rggtkbuilderwindow.h"
+
+#include "i18n.h"
+
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/fileutl.h>
-
-#include <gdk/gdkx.h>
-
 #include <cassert>
-#include "i18n.h"
-#include "rggtkbuilderwindow.h"
+#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
+#include <gtk/gtk.h>
 
 using namespace std;
 

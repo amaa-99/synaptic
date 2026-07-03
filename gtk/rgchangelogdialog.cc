@@ -26,6 +26,7 @@
 #include "rguserdialog.h"
 
 #include <cassert>
+#include <gtk/gtk.h>
 
 using namespace std;
 

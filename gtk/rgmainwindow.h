@@ -28,18 +28,6 @@
 
 #include "config.h"
 
-#include <apt-pkg/pkgcache.h>
-#include <cstddef>
-#include <gdk/gdk.h>
-#include <gio/gio.h>
-#include <gio/gmenu.h>
-#include <glib.h>
-#include <glibconfig.h>
-#include <gtk/gtk.h>
-#include <gtk/gtkcssprovider.h>
-#include <string>
-#include <vector>
-
 #include "rgfetchprogress.h"
 #include "rggtkbuilderwindow.h"
 #include "rgiconlegend.h"
@@ -50,6 +38,18 @@
 #include "rpackage.h"
 #include "rpackagelister.h"
 #include "rpackageview.h"
+
+#include <apt-pkg/pkgcache.h>
+#include <cstddef>
+#include <gio/gio.h>
+#include <gio/gmenu.h>
+#include <glib.h>
+#include <glibconfig.h>
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
+#include <gtk/gtkcssprovider.h>
+#include <string>
+#include <vector>
 
 typedef enum {
    RG_TOOLBAR_HIDE = -1,

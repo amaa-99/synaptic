@@ -25,6 +25,7 @@
 #include "rgdummyinstallprogress.h"
 #include "rgutils.h"
 
+#include <gtk/gtk.h>
 #include <unistd.h>
 #include <stdio.h>
 

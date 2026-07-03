@@ -26,7 +26,6 @@
 #include "config.h"
 
 #include <apt-pkg/progress.h>
-
 #include <gtk/gtk.h>
 
 class RGCacheProgress:public OpProgress {

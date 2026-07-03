@@ -25,13 +25,14 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include <string>
-#include <iostream>
-#include <vector>
-
-#include "rgwindow.h"
 #include "rgutils.h"
+#include "rgwindow.h"
+
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
+#include <iostream>
+#include <string>
+#include <vector>
 
 class RGGtkBuilderWindow:public RGWindow {
  protected:

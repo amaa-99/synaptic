@@ -28,10 +28,11 @@
 
 #include "config.h"
 
-#include "rsources.h"
 #include "rggtkbuilderwindow.h"
 #include "rguserdialog.h"
+#include "rsources.h"
 
+#include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <string>
 

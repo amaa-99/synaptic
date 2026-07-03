@@ -27,15 +27,18 @@
 
 #ifdef WITH_DPKG_STATUSFD
 
-#include "rinstallprogress.h"
 #include "rggtkbuilderwindow.h"
 #include "rguserdialog.h"
+#include "rinstallprogress.h"
 
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 #include <map>
 #include <string>
 #include <vte/vte.h>
 
 class RGMainWindow;
+class RPackageLister;
 
 class RGDebInstallProgress:public RInstallProgress, public RGGtkBuilderWindow 
 {
@@ -70,7 +73,6 @@ class RGDebInstallProgress:public RInstallProgress, public RGGtkBuilderWindow
    static const int NR_REINSTALL_STAGES=6;
    static char *reinstall_stages[NR_REINSTALL_STAGES];
    static char *reinstall_stages_translations[NR_REINSTALL_STAGES];
-
 
    // widgets
    GtkWidget *_label_status;

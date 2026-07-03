@@ -22,19 +22,19 @@
 
 #include "config.h"
 
-#include <apt-pkg/fileutl.h>
+#include "rgutils.h"
 
-#include <gdk/gdkx.h>
-#include <gtk/gtk.h>
-#include <string>
-#include <stdio.h>
+#include <apt-pkg/fileutl.h>
+#include <assert.h>
 #include <cstdlib>
 #include <cstring>
-#include <pwd.h>
-#include <assert.h>
+#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
+#include <gtk/gtk.h>
 #include <iostream>
-
-#include "rgutils.h"
+#include <pwd.h>
+#include <stdio.h>
+#include <string>
 
 // helper
 GdkPixbuf *

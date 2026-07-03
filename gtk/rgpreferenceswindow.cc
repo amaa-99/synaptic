@@ -24,20 +24,21 @@
 
 #include "config.h"
 
-#include <apt-pkg/error.h>
-#include <apt-pkg/configuration.h>
-#include <apt-pkg/strutl.h>
-#include <gtk/gtk.h>
-#include <cassert>
-#include <cstring>
-#include <cstdlib>
-
-#include "rconfiguration.h"
 #include "rgpreferenceswindow.h"
-#include "rguserdialog.h"
-#include "rgpackagestatus.h"
 
 #include "i18n.h"
+#include "rconfiguration.h"
+#include "rgpackagestatus.h"
+#include "rguserdialog.h"
+
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/error.h>
+#include <apt-pkg/strutl.h>
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <gdk/gdk.h>
+#include <gtk/gtk.h>
 
 using namespace std;
 

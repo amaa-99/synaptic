@@ -24,21 +24,19 @@
 
 #include "config.h"
 
-#include <X11/keysym.h>
-
-#include <apt-pkg/configuration.h>
-#include <apt-pkg/strutl.h>
-
-#include "rpackagelister.h"
-
-#include <stdio.h>
-#include <string>
-#include <cassert>
-
 #include "rgsummarywindow.h"
-#include "rguserdialog.h"
 
 #include "i18n.h"
+#include "rguserdialog.h"
+#include "rpackagelister.h"
+
+#include <X11/keysym.h>
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/strutl.h>
+#include <cassert>
+#include <gtk/gtk.h>
+#include <stdio.h>
+#include <string>
 
 using namespace std;
 

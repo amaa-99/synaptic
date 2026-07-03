@@ -24,18 +24,19 @@
 
 #include "config.h"
 
+#include "rguserdialog.h"
+
+#include "i18n.h"
+#include "rgutils.h"
+
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/fileutl.h>
-
-#include <gtk/gtk.h>
-#include <gdk/gdkx.h>
-
 #include <assert.h>
+#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
+#include <gtk/gtk.h>
 #include <string>
-#include "i18n.h"
-#include "rguserdialog.h"
-#include "rgutils.h"
 
 using namespace std;
 
