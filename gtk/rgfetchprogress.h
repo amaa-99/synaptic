@@ -33,6 +33,8 @@
 #include <string>
 #include <vector>
 
+class RGWindow;
+
 class RGFetchProgress : public pkgAcquireStatus, public RGGtkBuilderWindow {
 
    struct Item {

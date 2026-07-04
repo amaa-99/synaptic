@@ -36,6 +36,8 @@
 #include <gtk/gtk.h>
 #include <string>
 
+class RGWindow;
+
 typedef std::list<SourcesList::SourceRecord *>::iterator SourcesListIter;
 typedef std::list<SourcesList::VendorRecord *>::iterator VendorsListIter;
 

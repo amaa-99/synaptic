@@ -30,6 +30,7 @@
 
 #include "i18n.h"
 #include "rgmainwindow.h"
+#include "rgwindow.h"
 
 #include <gtk/gtk.h>
 #include <stdio.h>

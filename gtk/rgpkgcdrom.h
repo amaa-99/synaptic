@@ -27,9 +27,9 @@
 
 #include "config.h"
 
-#include "rgwindow.h"
-
 #ifdef HAVE_APTPKG_CDROM
+
+#include "rgwindow.h"
 
 #include <apt-pkg/cdrom.h>
 #include <gtk/gtk.h>

@@ -25,10 +25,9 @@
 
 #include "config.h"
 
-#include "rinstallprogress.h"
-
 #include "rggtkbuilderwindow.h"
 #include "rgslideshow.h"
+#include "rinstallprogress.h"
 #include "rpackagelister.h"
 
 #include <gtk/gtk.h>
@@ -36,6 +35,7 @@
 #include <string>
 
 class RGMainWindow;
+class RGWindow;
 
 class RGInstallProgressMsgs:public RGGtkBuilderWindow {
 

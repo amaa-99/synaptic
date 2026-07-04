@@ -23,8 +23,8 @@
 
 #include "config.h"
 
-#include "rgwindow.h"
-#include "rpackage.h"
+class RGWindow;
+class RPackage;
 
 void ShowChangelogDialog(RGWindow *me, RPackage *pkg);
 

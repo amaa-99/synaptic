@@ -27,6 +27,7 @@
 #include "rgfiltermanager.h"
 
 #include "i18n.h"
+#include "rgwindow.h"
 #include "rpackageview.h"
 
 #include <cassert>

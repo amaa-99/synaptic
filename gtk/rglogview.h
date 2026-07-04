@@ -30,6 +30,8 @@
 #include <gtk/gtk.h>
 #include <string>
 
+class RGWindow;
+
 class RGLogView : public RGGtkBuilderWindow {
  protected:
    static void cbCloseClicked(GtkWidget *self, void *data);

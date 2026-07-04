@@ -26,6 +26,7 @@
 
 #include "i18n.h"
 #include "rgutils.h"
+#include "rgwindow.h"
 
 #include <apt-pkg/configuration.h>
 #include <cassert>

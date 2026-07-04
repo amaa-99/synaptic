@@ -22,19 +22,18 @@
 
 #include "config.h"
 
-#include "rgmainwindow.h"
-
 #include "rginstallprogress.h"
 
-#include <apt-pkg/configuration.h>
-#include <gtk/gtk.h>
+#include "i18n.h"
+#include "rgmainwindow.h"
+#include "rgwindow.h"
 
-#include <unistd.h>
-#include <stdio.h>
+#include <apt-pkg/configuration.h>
 #include <cstdlib>
 #include <cstring>
-
-#include "i18n.h"
+#include <gtk/gtk.h>
+#include <stdio.h>
+#include <unistd.h>
 
 using namespace std;
 

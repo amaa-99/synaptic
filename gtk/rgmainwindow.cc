@@ -50,6 +50,7 @@
 #include "rgterminstallprogress.h"
 #include "rguserdialog.h"
 #include "rgutils.h"
+#include "rgwindow.h"
 #include "rpackagefilter.h"
 #include "rpackagelister.h"
 

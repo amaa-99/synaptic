@@ -26,10 +26,13 @@
 #include "config.h"
 
 #include "rggtkbuilderwindow.h"
-#include "rgmainwindow.h"
 
 #include <gtk/gtk.h>
 #include <string>
+
+class RGMainWindow;
+class RGWindow;
+class RPackageLister;
 
 class RGPreferencesWindow:public RGGtkBuilderWindow {
    bool _blockAction;

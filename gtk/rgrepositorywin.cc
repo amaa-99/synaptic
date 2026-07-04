@@ -30,6 +30,7 @@
 #include "i18n.h"
 #include "rguserdialog.h"
 #include "rgutils.h"
+#include "rgwindow.h"
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/sourcelist.h>

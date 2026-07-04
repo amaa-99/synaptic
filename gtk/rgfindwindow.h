@@ -32,6 +32,7 @@
 #include <gtk/gtk.h>
 
 class RGFindWindow;
+class RGWindow;
 
 typedef void RGFindWindowFindAction(void *self, RGFindWindow * win);
 

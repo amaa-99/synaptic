@@ -27,6 +27,7 @@
 
 #include "rggtkbuilderwindow.h"
 
+class RGWindow;
 
 class RGIconLegendPanel:public RGGtkBuilderWindow {
  public:
