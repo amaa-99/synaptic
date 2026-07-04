@@ -29,6 +29,7 @@
 #include "config.h"
 
 #include "i18n.h"
+#include "rconfiguration.h"
 #include "rpackage.h"
 #include "rpackagelister.h"
 

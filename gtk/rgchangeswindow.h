@@ -28,6 +28,7 @@
 #include "config.h"
 
 #include "rggtkbuilderwindow.h"
+#include "rpackage.h"
 
 #include <gtk/gtk.h>
 #include <vector>

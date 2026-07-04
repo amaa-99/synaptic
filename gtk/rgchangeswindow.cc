@@ -28,10 +28,11 @@
 
 #include "i18n.h"
 #include "rgchangeswindow.h"
+#include "rggtkbuilderwindow.h"
+#include "rgwindow.h"
 #include "rpackagelister.h"
 
 #include <X11/keysym.h>
-#include <apt-pkg/configuration.h>
 #include <apt-pkg/strutl.h>
 #include <cassert>
 #include <gtk/gtk.h>

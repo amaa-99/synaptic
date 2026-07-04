@@ -35,7 +35,6 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#include <apt-pkg/configuration.h>
 #include <apt-pkg/fileutl.h>
 
 #include "rpackage.h"

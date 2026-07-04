@@ -34,6 +34,7 @@
 #include "rpackage.h"
 #include "sections_trans.h"
 
+#include <apt-pkg/configuration.h>
 #include <cassert>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>

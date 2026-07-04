@@ -29,6 +29,7 @@
 
 #include "rggtkbuilderwindow.h"
 #include "rgslideshow.h"
+#include "rpackagelister.h"
 
 #include <gtk/gtk.h>
 #include <map>

@@ -1,10 +1,11 @@
 #include "config.h"
 
+#include "rpackage.h"
+#include "rpackagelister.h"
+
+#include <apt-pkg/configuration.h>
 #include <apt-pkg/init.h>
 #include <iostream>
-
-#include "rpackagelister.h"
-#include "rpackage.h"
 
 using namespace std;
 

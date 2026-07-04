@@ -27,6 +27,7 @@
 #include "i18n.h"
 #include "rgutils.h"
 
+#include <apt-pkg/configuration.h>
 #include <cassert>
 #include <cstring>
 #include <gtk/gtk.h>
@@ -51,7 +52,6 @@ int RGFindWindow::getSearchType()
 
    return searchType;
 }
-
 
 void RGFindWindow::doFind(GtkWindow *widget, void *data)
 {
@@ -94,7 +94,6 @@ void RGFindWindow::cbEntryChanged(GtkWindow *widget, void *data)
    else
       gtk_widget_set_sensitive(me->_findB, FALSE);
 }
-
 
 RGFindWindow::RGFindWindow(RGWindow *win)
 : RGGtkBuilderWindow(win, "find"), _prevSearches(0)

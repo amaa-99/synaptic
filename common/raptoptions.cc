@@ -27,7 +27,6 @@
 #include <dirent.h>
 
 #include <apt-pkg/error.h>
-#include <apt-pkg/configuration.h>
 #include <apt-pkg/tagfile.h>
 #include <apt-pkg/policy.h>
 #include <apt-pkg/strutl.h>

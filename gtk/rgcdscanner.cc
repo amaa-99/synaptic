@@ -24,10 +24,12 @@
 
 #ifndef HAVE_APTPKG_CDROM
 
-#include "i18n.h"
 #include "rgcdscanner.h"
+
+#include "i18n.h"
 #include "rgmainwindow.h"
 
+#include <apt-pkg/configuration.h>
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -46,7 +48,6 @@ class RGDiscName:public RGGtkBuilderWindow {
 
    bool run(string &name);
 };
-
 
 void RGCDScanner::update(string text, int current)
 {

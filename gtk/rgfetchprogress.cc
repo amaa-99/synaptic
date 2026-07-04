@@ -27,7 +27,6 @@
 #include <math.h>
 #include <apt-pkg/acquire-item.h>
 #include <apt-pkg/acquire-worker.h>
-#include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
 
