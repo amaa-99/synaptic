@@ -51,9 +51,7 @@ public:
 	    RUserDialog::DialogType dialog=RUserDialog::DialogInfo,
 	    RUserDialog::ButtonsType buttons=RUserDialog::ButtonsOk,
 	    bool defres=true);
-
 };
-
 
 /*
  * A alternative interface for the ruserdialog, here is how it works:

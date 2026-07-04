@@ -28,11 +28,12 @@
 #include "config.h"
 
 #include "rggtkbuilderwindow.h"
-#include "rpackage.h"
 
 #include <gtk/gtk.h>
 #include <vector>
 
+class RGWindow;
+class RPackage;
 class RPackageLister;
 
 class RGChangesWindow:public RGGtkBuilderWindow {

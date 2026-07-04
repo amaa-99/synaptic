@@ -34,6 +34,8 @@
 #include <string>
 #include <vector>
 
+class RGWindow;
+
 class RGPkgDetailsWindow : public RGGtkBuilderWindow {
    
  protected:

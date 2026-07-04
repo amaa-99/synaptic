@@ -34,7 +34,6 @@
 #include "rglogview.h"
 #include "rgpkgdetails.h"
 #include "rgtaskswin.h"
-#include "rgwindow.h"
 #include "rpackage.h"
 #include "rpackagelister.h"
 #include "rpackageview.h"
@@ -59,16 +58,16 @@ typedef enum {
    RG_TOOLBAR_BOTH_HORIZ = 3
 } RGToolbarStyle;
 
-class RGSourcesWindow;
-class RGPreferencesWindow;
+class RGAboutPanel;
+class RGCacheProgress;
 class RGFilterManagerWindow;
 class RGFilterWindow;
 class RGFindWindow;
+class RGPreferencesWindow;
 class RGSetOptWindow;
-class RGAboutPanel;
-
+class RGSourcesWindow;
 class RGUserDialog;
-class RGCacheProgress;
+class RGWindow;
 
 typedef enum {
    PKG_KEEP,
@@ -89,7 +88,6 @@ class RGMainWindow : public RGGtkBuilderWindow, public RPackageObserver {
       UPGRADE_NORMAL = 0,
       UPGRADE_DIST = 1
    } UpgradeType;
-
 
    bool _unsavedChanges;
    bool _blockActions;        // block signals from the action and hold buttons
@@ -139,9 +137,11 @@ class RGMainWindow : public RGGtkBuilderWindow, public RPackageObserver {
    bool isActionEnabled(const char *action_name);
    void setActionEnabled(const char *action_name, bool enabled);
    void setActionState(const char *action_name, GVariant *value);
+
    void setActionStateBool(const char *action_name, bool value) {
       setActionState(action_name, g_variant_new_boolean(value));
    }
+
    void setActionStateInt(const char *action_name, int value) {
       setActionState(action_name, g_variant_new_int32(value));
    }

@@ -28,8 +28,10 @@
 
 #include "i18n.h"
 #include "rconfiguration.h"
+#include "rgmainwindow.h"
 #include "rgpackagestatus.h"
 #include "rguserdialog.h"
+#include "rgwindow.h"
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>

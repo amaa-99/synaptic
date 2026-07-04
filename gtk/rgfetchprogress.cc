@@ -24,22 +24,22 @@
 
 #include "config.h"
 
-#include <math.h>
+#include "rgfetchprogress.h"
+
+#include "i18n.h"
+#include "rguserdialog.h"
+#include "rgutils.h"
+#include "rgwindow.h"
+
 #include <apt-pkg/acquire-item.h>
 #include <apt-pkg/acquire-worker.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/strutl.h>
-
-#include "rgfetchprogress.h"
-#include "rguserdialog.h"
-#include "rgutils.h"
-
-#include <stdio.h>
-#include <pango/pango.h>
-#include <gtk/gtk.h>
 #include <cassert>
-
-#include "i18n.h"
+#include <gtk/gtk.h>
+#include <math.h>
+#include <pango/pango.h>
+#include <stdio.h>
 
 using namespace std;
 

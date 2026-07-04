@@ -25,6 +25,7 @@
 #include "rggtkbuilderwindow.h"
 
 #include "i18n.h"
+#include "rgwindow.h"
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/fileutl.h>

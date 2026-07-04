@@ -28,7 +28,6 @@
 #ifdef HAVE_TERMINAL
 
 #include "rgmainwindow.h"
-#include "rgwindow.h"
 #include "rinstallprogress.h"
 
 #include <gtk/gtk.h>

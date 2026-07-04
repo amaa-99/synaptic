@@ -30,6 +30,7 @@
 #include <gtk/gtk.h>
 
 class RGMainWindow;
+class RGWindow;
 
 class RGTasksWin : public RGGtkBuilderWindow {
  protected:

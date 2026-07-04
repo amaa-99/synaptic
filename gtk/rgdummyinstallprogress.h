@@ -26,7 +26,6 @@
 #include "config.h"
 
 #include "rinstallprogress.h"
-#include "rgwindow.h"
 
 
 class RGDummyInstallProgress:public RInstallProgress {

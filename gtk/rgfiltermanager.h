@@ -37,8 +37,9 @@
 #include <string>
 #include <vector>
 
-class RPackageViewFilter;
 class RGFilterManagerWindow;
+class RGWindow;
+class RPackageViewFilter;
 
 // must be in the same order as of the check buttons
 static const RStatusPackageFilter::Types StatusMasks[] = {

@@ -28,6 +28,7 @@
 
 #include "i18n.h"
 #include "rguserdialog.h"
+#include "rgwindow.h"
 #include "rpackagelister.h"
 
 #include <X11/keysym.h>

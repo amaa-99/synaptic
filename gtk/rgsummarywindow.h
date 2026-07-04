@@ -31,6 +31,7 @@
 
 #include <gtk/gtk.h>
 
+class RGWindow;
 class RPackageLister;
 
 class RGSummaryWindow:public RGGtkBuilderWindow {

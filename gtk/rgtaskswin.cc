@@ -27,6 +27,7 @@
 #include "i18n.h"
 #include "rgmainwindow.h"
 #include "rguserdialog.h"
+#include "rgwindow.h"
 
 #include <apt-pkg/configuration.h>
 #include <cassert>

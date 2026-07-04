@@ -24,6 +24,8 @@
 
 #include "rgsetoptwindow.h"
 
+#include "rgwindow.h"
+
 #include <apt-pkg/configuration.h>
 #include <gtk/gtk.h>
 
