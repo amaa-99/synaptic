@@ -27,7 +27,6 @@
 
 #include <map>
 #include <string>
-#include <apt-pkg/configuration.h>
 
 class RAPTOptions {
  public:

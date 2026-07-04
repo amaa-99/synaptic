@@ -28,11 +28,13 @@
 
 #include "config.h"
 
-#include <apt-pkg/tagfile.h>
-#include <apt-pkg/strutl.h>
+#include "rpackagestatus.h"
 
 #include "i18n.h"
-#include "rpackagestatus.h"
+
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/strutl.h>
+#include <apt-pkg/tagfile.h>
 
 using namespace std;
 
@@ -67,7 +69,6 @@ void RPackageStatus::init()
       _("Not installed (new in repository)")
    };
    memcpy(PackageStatusLongString, status_long, sizeof(status_long));
-
 
    // check for unsupported stuff
    if(_config->FindB("Synaptic::mark-unsupported", true)) {

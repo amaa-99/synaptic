@@ -22,13 +22,16 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include <cassert>
-#include <list>
 #include "rgtaskswin.h"
+
+#include "i18n.h"
 #include "rgmainwindow.h"
 #include "rguserdialog.h"
-#include "i18n.h"
+
+#include <apt-pkg/configuration.h>
+#include <cassert>
+#include <gtk/gtk.h>
+#include <list>
 
 using namespace std;
 

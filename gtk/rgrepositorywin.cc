@@ -31,7 +31,6 @@
 #include "rguserdialog.h"
 #include "rgutils.h"
 
-#include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/sourcelist.h>
 #include <cassert>

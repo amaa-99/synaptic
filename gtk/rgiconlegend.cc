@@ -28,6 +28,7 @@
 #include "rgpackagestatus.h"
 #include "rgutils.h"
 
+#include <apt-pkg/configuration.h>
 #include <cassert>
 #include <gtk/gtk.h>
 
@@ -37,7 +38,6 @@ static void closeWindow(GtkWidget *self, void *data)
 
    me->hide();
 }
-
 
 RGIconLegendPanel::RGIconLegendPanel(RGWindow *parent)
 : RGGtkBuilderWindow(parent, "iconlegend")
@@ -62,7 +62,6 @@ RGIconLegendPanel::RGIconLegendPanel(RGWindow *parent)
 
       gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
    }
-
 
    // package support status 
    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);

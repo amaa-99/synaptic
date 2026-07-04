@@ -33,7 +33,6 @@
 
 #include <apt-pkg/pkgcache.h>
 #include <apt-pkg/acquire.h>
-#include "rconfiguration.h"
 #include "i18n.h"
 
 #include <string>

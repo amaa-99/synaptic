@@ -24,8 +24,11 @@
 #include "rgchangelogdialog.h"
 #include "rgfetchprogress.h"
 #include "rguserdialog.h"
+#include "rgwindow.h"
+#include "rpackage.h"
 
 #include <cassert>
+#include <fstream>
 #include <gtk/gtk.h>
 
 using namespace std;

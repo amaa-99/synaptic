@@ -29,6 +29,7 @@
 
 #include "rpackagelister.h"
 
+#include <apt-pkg/aptconfiguration.h>
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
