@@ -33,6 +33,8 @@
 #include <apt-pkg/pkgcachegen.h>
 #include <apt-pkg/policy.h>
 #include <apt-pkg/fileutl.h>
+#include <string>
+#include <vector>
 
 using namespace std;
 

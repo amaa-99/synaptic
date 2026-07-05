@@ -24,21 +24,23 @@
 
 #include "config.h"
 
-#include <apt-pkg/version.h>
-#include <apt-pkg/pkgrecords.h>
-#include <apt-pkg/configuration.h>
+#include "rpackageview.h"
 
 #include "i18n.h"
-#include "rpackage.h"
-#include "rpackageview.h"
 #include "rconfiguration.h"
-
-#include <map>
-#include <vector>
-#include <sstream>
-#include <algorithm>
-
+#include "rpackage.h"
 #include "sections_trans.h"
+
+#include <algorithm>
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/pkgrecords.h>
+#include <apt-pkg/version.h>
+#include <cstring>
+#include <map>
+#include <set>
+#include <sstream>
+#include <string>
+#include <vector>
 
 using namespace std;
 

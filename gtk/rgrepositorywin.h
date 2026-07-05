@@ -34,6 +34,7 @@
 
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
+#include <list>
 #include <string>
 
 class RGWindow;

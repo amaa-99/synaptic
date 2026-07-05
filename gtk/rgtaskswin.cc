@@ -32,7 +32,8 @@
 #include <apt-pkg/configuration.h>
 #include <cassert>
 #include <gtk/gtk.h>
-#include <list>
+#include <string>
+#include <vector>
 
 using namespace std;
 

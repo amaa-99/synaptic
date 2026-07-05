@@ -27,6 +27,15 @@
 
 #include "config.h"
 
+#include "rpackage.h"
+#include "rpackagecache.h"
+#include "rpackagestatus.h"
+#include "ruserdialog.h"
+
+#include <apt-pkg/acquire.h>
+#include <apt-pkg/depcache.h>
+#include <apt-pkg/fileutl.h>
+#include <apt-pkg/progress.h>
 #include <ctime>
 #include <istream>
 #include <list>
@@ -36,35 +45,23 @@
 #include <string>
 #include <vector>
 
-#include <apt-pkg/acquire.h>
-#include <apt-pkg/depcache.h>
-#include <apt-pkg/fileutl.h>
-#include <apt-pkg/progress.h>
-
 #ifdef HAVE_XAPIAN
 #include <xapian.h>
 #endif
 
-#include "rpackage.h"
-#include "rpackagecache.h"
-#include "rpackagestatus.h"
-#include "ruserdialog.h"
-
 class OpProgress;
+class RCacheActor;
+class RInstallProgress;
 class RPackageCache;
 class RPackageFilter;
-class RCacheActor;
+class RPackageView;
 class RPackageViewFilter;
 class RPackageViewSearch;
-class pkgRecords;
 class pkgAcquireStatus;
 class pkgPackageManager;
-
+class pkgRecords;
 
 struct RFilter;
-class RPackageView;
-
-class RInstallProgress;
 
 class RPackageObserver {
  public:
@@ -97,7 +94,6 @@ class sortFunc {
    }
 };
 
-
 class RPackageLister {
 
    protected:
@@ -110,7 +106,6 @@ class RPackageLister {
 #ifdef HAVE_XAPIAN
    Xapian::Database *_xapianDatabase;
 #endif
-
 
    // Other members.
    std::vector<RPackage *> _packages;

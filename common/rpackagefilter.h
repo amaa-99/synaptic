@@ -27,25 +27,21 @@
 
 #include "config.h"
 
-#include <set>
-#include <vector>
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <apt-pkg/tagfile.h>
-
-#include <regex.h>
-
 #include "rpackagelister.h"
 
+#include <apt-pkg/tagfile.h>
+#include <fstream>
+#include <iostream>
+#include <regex.h>
+#include <set>
+#include <string>
+#include <vector>
+
+class Configuration;
 class RPackage;
 class RPackageLister;
 
-class Configuration;
-
-
 class RPackageFilter {
-
 
    public:
 

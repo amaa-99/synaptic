@@ -11,8 +11,8 @@
 
 #include "config.h"
 
-#include <vector>
 #include <string>
+#include <vector>
 
 class pkgTagSection;
 class FileFd;

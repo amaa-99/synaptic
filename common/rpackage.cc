@@ -28,21 +28,13 @@
 
 #include "config.h"
 
+#include "rpackage.h"
+
 #include "i18n.h"
 #include "rconfiguration.h"
-#include "rpackage.h"
 #include "rpackagelister.h"
 
 #include <algorithm>
-#include <assert.h>
-#include <cstdio>
-#include <fstream>
-#include <map>
-#include <sstream>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-
 #include <apt-pkg/acquire-item.h>
 #include <apt-pkg/algorithms.h>
 #include <apt-pkg/cacheiterators.h>
@@ -59,6 +51,17 @@
 #include <apt-pkg/tagfile.h>
 #include <apt-pkg/version.h>
 #include <apt-pkg/versionmatch.h>
+#include <assert.h>
+#include <cstdio>
+#include <cstring>
+#include <fstream>
+#include <map>
+#include <sstream>
+#include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <vector>
 
 #ifdef WITH_LUA
 #include <apt-pkg/luaiface.h>

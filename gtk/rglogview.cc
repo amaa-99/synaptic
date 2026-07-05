@@ -34,6 +34,7 @@
 #include <cstring>
 #include <gtk/gtk.h>
 #include <map>
+#include <string>
 #include <utility>
 
 using namespace std;

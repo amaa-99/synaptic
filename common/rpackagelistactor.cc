@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include "rpackagelistactor.h"
+
 #include "rpackagelister.h"
 
 #include <apt-pkg/error.h>
@@ -8,6 +9,7 @@
 #include <apt-pkg/strutl.h>
 #include <algorithm>
 #include <fnmatch.h>
+#include <vector>
 
 using namespace std;
 

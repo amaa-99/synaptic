@@ -6,6 +6,7 @@
 #include "config.h"
 
 #include <libintl.h>
+#include <string>
 
 #include "i18n.h"
 #include "sections_trans.h"
