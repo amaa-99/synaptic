@@ -24,6 +24,7 @@
 
 #include "config.h"
 
+#include <apt-pkg/packagemanager.h>
 #include <string>
 #include <unistd.h>
 #include <fcntl.h>
@@ -31,7 +32,6 @@
 #include <sys/wait.h>
 #include <iostream>
 #include <cstdio>
-#include <apt-pkg/error.h>
 #include <apt-pkg/install-progress.h>
 #ifdef HAVE_RPM
 #include <apt-pkg/configuration.h>

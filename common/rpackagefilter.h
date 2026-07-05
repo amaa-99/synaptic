@@ -29,7 +29,7 @@
 
 #include "rpackagelister.h"
 
-#include <apt-pkg/tagfile.h>
+#include <apt-pkg/pkgcache.h>
 #include <fstream>
 #include <iostream>
 #include <regex.h>

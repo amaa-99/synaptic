@@ -24,6 +24,7 @@
 #define _RGTERMINSTALLPROGRESS_H_
 
 #include "config.h"
+#include <apt-pkg/packagemanager.h>
 
 #ifdef HAVE_TERMINAL
 

@@ -4,9 +4,6 @@
 
 #include "rpackagelister.h"
 
-#include <apt-pkg/error.h>
-#include <apt-pkg/tagfile.h>
-#include <apt-pkg/strutl.h>
 #include <algorithm>
 #include <fnmatch.h>
 #include <vector>

@@ -6,7 +6,7 @@
 
 #include "config.h"
 
-#include <apt-pkg/acquire-item.h>
+#include <apt-pkg/macros.h>
 
 // new APT has a proper pkgAcqFile so all good
 #if APT_PKG_MAJOR >= 5

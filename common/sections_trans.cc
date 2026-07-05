@@ -5,11 +5,13 @@
 
 #include "config.h"
 
-#include <libintl.h>
-#include <string>
+#include "sections_trans.h"
 
 #include "i18n.h"
-#include "sections_trans.h"
+
+#include <apt-pkg/strutl.h>
+#include <libintl.h>
+#include <string>
 
 using namespace std;
 

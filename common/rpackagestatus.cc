@@ -31,11 +31,14 @@
 #include "rpackagestatus.h"
 
 #include "i18n.h"
+#include "rpackage.h"
 
 #include <apt-pkg/configuration.h>
+#include <apt-pkg/fileutl.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile.h>
 #include <cstring>
+#include <sstream>
 #include <string>
 
 using namespace std;

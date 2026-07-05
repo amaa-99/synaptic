@@ -5,6 +5,7 @@
 
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/init.h>
+#include <apt-pkg/pkgsystem.h>
 #include <iostream>
 #include <string>
 #include <vector>

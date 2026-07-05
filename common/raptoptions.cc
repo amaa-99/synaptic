@@ -28,9 +28,9 @@
 
 #include <apt-pkg/error.h>
 #include <apt-pkg/fileutl.h>
-#include <apt-pkg/policy.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile.h>
+#include <apt-pkg/versionmatch.h>
 #include <cstring>
 #include <dirent.h>
 #include <fstream>
