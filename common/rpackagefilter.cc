@@ -24,20 +24,22 @@
 
 #include "config.h"
 
-#include <iostream>
-#include <algorithm>
-#include <cstdio>
-#include <fnmatch.h>
-#include <string.h>
-#include <apt-pkg/configuration.h>
-#include <apt-pkg/strutl.h>
-#include <apt-pkg/error.h>
-
 #include "rpackagefilter.h"
-#include "rpackagelister.h"
-#include "rpackage.h"
 
 #include "i18n.h"
+#include "rpackage.h"
+#include "rpackagelister.h"
+
+#include <algorithm>
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/error.h>
+#include <apt-pkg/strutl.h>
+#include <cstdio>
+#include <fnmatch.h>
+#include <iostream>
+#include <string.h>
+#include <string>
+#include <vector>
 
 using namespace std;
 

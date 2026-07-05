@@ -60,6 +60,7 @@
 #include <apt-pkg/strutl.h>
 #include <cassert>
 #include <cmath>
+#include <cstring>
 #include <fstream>
 #include <functional>
 #include <gdk/gdk.h>
@@ -68,10 +69,12 @@
 #include <pwd.h>
 #include <sstream>
 #include <stdio.h>
+#include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
+#include <vector>
 
 // include it here because depcache.h hates us if we have it before
 #include <gdk/gdkx.h>

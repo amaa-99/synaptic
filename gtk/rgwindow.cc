@@ -29,6 +29,7 @@
 #include <apt-pkg/fileutl.h>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
+#include <string>
 
 using namespace std;
 

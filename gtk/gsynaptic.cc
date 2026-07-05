@@ -47,9 +47,11 @@
 #include <locale.h>
 #include <signal.h>
 #include <stdio.h>
+#include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <vector>
 
 using namespace std;
 

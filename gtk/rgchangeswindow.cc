@@ -24,10 +24,10 @@
 
 #include "config.h"
 
-#include "rgchangelogdialog.h"
+#include "rgchangeswindow.h"
 
 #include "i18n.h"
-#include "rgchangeswindow.h"
+#include "rgchangelogdialog.h"
 #include "rggtkbuilderwindow.h"
 #include "rgwindow.h"
 #include "rpackagelister.h"
@@ -38,6 +38,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 

@@ -33,6 +33,8 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
+#include <string>
+#include <vector>
 
 using namespace std;
 

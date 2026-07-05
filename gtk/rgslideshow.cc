@@ -1,15 +1,13 @@
 #include "config.h"
 
-#include <sys/types.h>
-#include <dirent.h>
-
-#include <gtk/gtk.h>
+#include "rgslideshow.h"
 
 #include <algorithm>
+#include <dirent.h>
+#include <gtk/gtk.h>
 #include <string>
+#include <sys/types.h>
 #include <vector>
-
-#include "rgslideshow.h"
 
 using namespace std;
 

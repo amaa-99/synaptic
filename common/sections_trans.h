@@ -7,10 +7,10 @@
 
 #include "config.h"
 
-#include <string>
-#include <sstream>
-#include <iostream>
 #include <apt-pkg/strutl.h>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 std::string trans_section(std::string sec);
 

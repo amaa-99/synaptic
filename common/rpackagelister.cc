@@ -29,27 +29,21 @@
 
 #include "rpackagelister.h"
 
-#include <apt-pkg/aptconfiguration.h>
-#include <cassert>
-#include <cstdlib>
-#include <cstring>
-#include <unistd.h>
-#include <map>
-#include <sstream>
-#include <string>
-#include <dirent.h>
-#include <sys/stat.h>
-#include <ctime>
-#include <algorithm>
-#include <cstdio>
-#include <regex.h>
-#include <iostream>
-#include <vector>
-#include <set>
+#include "i18n.h"
+#include "raptoptions.h"
+#include "rcacheactor.h"
+#include "rconfiguration.h"
+#include "rinstallprogress.h"
+#include "rpackagecache.h"
+#include "rpackagefilter.h"
+#include "rpackageview.h"
+#include "sections_trans.h"
 
+#include <algorithm>
 #include <apt-pkg/acquire-item.h>
 #include <apt-pkg/acquire.h>
 #include <apt-pkg/algorithms.h>
+#include <apt-pkg/aptconfiguration.h>
 #include <apt-pkg/clean.h>
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
@@ -63,6 +57,21 @@
 #include <apt-pkg/update.h>
 #include <apt-pkg/upgrade.h>
 #include <apt-pkg/version.h>
+#include <cassert>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <dirent.h>
+#include <iostream>
+#include <map>
+#include <regex.h>
+#include <set>
+#include <sstream>
+#include <string>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <vector>
 
 #ifndef HAVE_RPM
 #include <apt-pkg/debfile.h>
@@ -75,16 +84,6 @@
 #ifdef HAVE_XAPIAN
 #include <xapian.h>
 #endif
-
-#include "i18n.h"
-#include "raptoptions.h"
-#include "rcacheactor.h"
-#include "rconfiguration.h"
-#include "rinstallprogress.h"
-#include "rpackagecache.h"
-#include "rpackagefilter.h"
-#include "rpackageview.h"
-#include "sections_trans.h"
 
 const std::string APT_XAPIAN_INDEX_DIR = "/var/lib/apt-xapian-index";
 

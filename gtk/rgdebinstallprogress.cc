@@ -35,13 +35,15 @@
 #include <apt-pkg/install-progress.h>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <errno.h>
 #include <fcntl.h>
-#include <gdk/gdkkeysyms-compat.h>
 #include <gdk/gdk.h>
+#include <gdk/gdkkeysyms-compat.h>
 #include <gtk/gtk.h>
 #include <math.h>
 #include <pty.h>
+#include <string>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>

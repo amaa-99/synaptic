@@ -35,6 +35,8 @@
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile.h>
+#include <cstring>
+#include <string>
 
 using namespace std;
 

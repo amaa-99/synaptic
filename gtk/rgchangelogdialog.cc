@@ -30,6 +30,7 @@
 #include <cassert>
 #include <fstream>
 #include <gtk/gtk.h>
+#include <string>
 
 using namespace std;
 

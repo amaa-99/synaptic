@@ -9,6 +9,8 @@
 #include <apt-pkg/configuration.h>
 #include <algorithm>
 #include <fnmatch.h>
+#include <string>
+#include <vector>
 
 using namespace std;
 

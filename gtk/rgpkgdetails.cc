@@ -36,8 +36,11 @@
 
 #include <apt-pkg/configuration.h>
 #include <cassert>
+#include <cstring>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
+#include <string>
+#include <vector>
 
 using namespace std;
 
