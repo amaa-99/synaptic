@@ -34,6 +34,7 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/fileutl.h>
 #include <apt-pkg/strutl.h>
+#include <cctype>
 #include <cstring>
 #include <dirent.h>
 #include <fstream>

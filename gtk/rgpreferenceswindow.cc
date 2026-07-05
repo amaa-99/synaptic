@@ -41,6 +41,8 @@
 #include <cstring>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
+#include <iostream>
+#include <stdlib.h>
 #include <string>
 #include <vector>
 

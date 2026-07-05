@@ -30,7 +30,6 @@
 #include "rpackage.h"
 #include "rpackagelister.h"
 
-#include <algorithm>
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/fileutl.h>
@@ -41,6 +40,7 @@
 #include <cstdlib>
 #include <fnmatch.h>
 #include <iostream>
+#include <stdlib.h>
 #include <string.h>
 #include <string>
 #include <vector>

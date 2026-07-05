@@ -37,9 +37,9 @@
 #include <apt-pkg/macros.h>
 #include <apt-pkg/strutl.h>
 #include <cassert>
+#include <cmath>
 #include <cstdio>
 #include <gtk/gtk.h>
-#include <math.h>
 #include <pango/pango.h>
 #include <string>
 

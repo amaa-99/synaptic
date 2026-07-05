@@ -1,19 +1,17 @@
 #include "config.h"
 
-#include <apt-pkg/pkgsystem.h>
-#include <gtk/gtk.h>
-
-#include <apt-pkg/init.h>
-#include <apt-pkg/configuration.h>
-#include <iostream>
-
-#include "rpackagelister.h"
-#include "rpackageview.h"
-#include "rpackage.h"
-
 #include "gtk/gtkpkglist.h"
 #include "gtk/rgmainwindow.h"
 #include "gtk/rgpkgtreeview.h"
+#include "rpackage.h"
+#include "rpackagelister.h"
+#include "rpackageview.h"
+
+#include <apt-pkg/configuration.h>
+#include <apt-pkg/init.h>
+#include <apt-pkg/pkgsystem.h>
+#include <gtk/gtk.h>
+#include <iostream>
 
 using namespace std;
 

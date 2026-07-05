@@ -27,7 +27,6 @@
 
 #include "rpackagelister.h"
 
-#include <iostream>
 #include <vector>
 
 class RPackageListActor : public RPackageObserver {

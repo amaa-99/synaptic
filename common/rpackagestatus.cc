@@ -39,6 +39,7 @@
 #include <apt-pkg/tagfile.h>
 #include <cstdio>
 #include <cstring>
+#include <ctime>
 #include <sstream>
 #include <stdio.h>
 #include <string>

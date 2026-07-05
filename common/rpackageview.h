@@ -32,6 +32,7 @@
 #include "rpackagefilter.h"
 
 #include <apt-pkg/progress.h>
+#include <cctype>
 #include <map>
 #include <set>
 #include <string>

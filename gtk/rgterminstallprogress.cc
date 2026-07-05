@@ -22,8 +22,6 @@
 
 #include "config.h"
 
-#include <pty.h>
-
 #ifdef HAVE_TERMINAL
 
 #include "rgterminstallprogress.h"
@@ -44,8 +42,8 @@
 #include <cstring>
 #include <gtk/gtk.h>
 #include <iostream>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include <pty.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <vte/vte.h>
 

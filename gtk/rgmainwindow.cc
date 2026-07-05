@@ -70,11 +70,12 @@
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms-compat.h>
 #include <gtk/gtk.h>
+#include <iostream>
 #include <pwd.h>
 #include <sstream>
+#include <stdlib.h>
 #include <string>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <time.h>
 #include <vector>

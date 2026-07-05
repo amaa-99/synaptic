@@ -21,7 +21,7 @@
  */
 
 #include "config.h"
-#include <stdio.h>
+#include <stdlib.h>
 
 #ifdef WITH_DPKG_STATUSFD
 
@@ -35,21 +35,23 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/install-progress.h>
 #include <apt-pkg/packagemanager.h>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <errno.h>
 #include <fcntl.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkkeysyms-compat.h>
 #include <gtk/gtk.h>
-#include <math.h>
+#include <iostream>
 #include <pty.h>
+#include <stdio.h>
 #include <string>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
-#include <sys/wait.h>
 #include <unistd.h>
 #include <vte/vte.h>
 
@@ -820,5 +822,4 @@ void RGDebInstallProgress::prepare(RPackageLister *lister)
 
 }
 
-#endif
-
+#endif // WITH_DPKG_STATUSFD

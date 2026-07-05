@@ -6,6 +6,7 @@
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/init.h>
 #include <apt-pkg/pkgsystem.h>
+#include <ctime>
 #include <iostream>
 #include <string>
 #include <vector>

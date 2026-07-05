@@ -6,7 +6,6 @@
 #include <dirent.h>
 #include <gtk/gtk.h>
 #include <string>
-#include <sys/types.h>
 #include <vector>
 
 using namespace std;

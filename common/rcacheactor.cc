@@ -7,7 +7,6 @@
 #include <apt-pkg/tagfile.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/configuration.h>
-#include <algorithm>
 #include <fnmatch.h>
 #include <string>
 #include <vector>

@@ -30,7 +30,6 @@
 
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
-#include <iostream>
 #include <string>
 #include <vector>
 

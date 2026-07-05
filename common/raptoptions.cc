@@ -31,6 +31,7 @@
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile.h>
 #include <apt-pkg/versionmatch.h>
+#include <cctype>
 #include <cstdio>
 #include <cstring>
 #include <dirent.h>

@@ -25,12 +25,12 @@
 #include "rgutils.h"
 #include "rpackagelister.h"
 
-#include <algorithm>
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/strutl.h>
 #include <cassert>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
+#include <iostream>
 #include <string>
 #include <vector>
 

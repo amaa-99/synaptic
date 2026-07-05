@@ -24,7 +24,6 @@
 #define _RGDEBINSTALLPROGRESS_H_
 
 #include "config.h"
-#include <apt-pkg/packagemanager.h>
 
 #ifdef WITH_DPKG_STATUSFD
 
@@ -32,6 +31,8 @@
 #include "rguserdialog.h"
 #include "rinstallprogress.h"
 
+#include <apt-pkg/packagemanager.h>
+#include <ctime>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 #include <map>

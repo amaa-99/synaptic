@@ -33,6 +33,7 @@
 #include <cassert>
 #include <cstdio>
 #include <cstring>
+#include <ctime>
 #include <gtk/gtk.h>
 #include <map>
 #include <string>

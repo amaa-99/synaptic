@@ -32,15 +32,16 @@
 #include "rpackagelister.h"
 
 #include <X11/Xlib.h>
+#include <algorithm>
 #include <apt-pkg/cmndline.h>
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/fileutl.h>
 #include <cassert>
-#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <errno.h>
 #include <fcntl.h>
 #include <fstream>

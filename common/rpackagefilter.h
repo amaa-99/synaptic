@@ -31,7 +31,6 @@
 
 #include <apt-pkg/pkgcache.h>
 #include <fstream>
-#include <iostream>
 #include <regex.h>
 #include <set>
 #include <string>
