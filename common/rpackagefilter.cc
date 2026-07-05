@@ -38,6 +38,7 @@
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile.h>
 #include <cstdio>
+#include <cstdlib>
 #include <fnmatch.h>
 #include <iostream>
 #include <string.h>

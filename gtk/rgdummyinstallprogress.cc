@@ -27,7 +27,6 @@
 
 #include <gtk/gtk.h>
 #include <unistd.h>
-#include <stdio.h>
 
 void RGDummyInstallProgress::startUpdate()
 {

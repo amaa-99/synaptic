@@ -21,7 +21,7 @@
  */
 
 #include "config.h"
-#include <apt-pkg/packagemanager.h>
+#include <stdio.h>
 
 #ifdef WITH_DPKG_STATUSFD
 
@@ -34,6 +34,7 @@
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
 #include <apt-pkg/install-progress.h>
+#include <apt-pkg/packagemanager.h>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>

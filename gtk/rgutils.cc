@@ -26,6 +26,7 @@
 
 #include <apt-pkg/fileutl.h>
 #include <assert.h>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <gdk/gdk.h>
@@ -33,7 +34,6 @@
 #include <gtk/gtk.h>
 #include <iostream>
 #include <pwd.h>
-#include <stdio.h>
 #include <string>
 #include <vector>
 

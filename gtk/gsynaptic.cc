@@ -38,6 +38,7 @@
 #include <apt-pkg/fileutl.h>
 #include <cassert>
 #include <cmath>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <errno.h>
@@ -47,7 +48,6 @@
 #include <iostream>
 #include <locale.h>
 #include <signal.h>
-#include <stdio.h>
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>

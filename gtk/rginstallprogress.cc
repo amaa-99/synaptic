@@ -29,11 +29,11 @@
 #include "rgwindow.h"
 
 #include <apt-pkg/configuration.h>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <gtk/gtk.h>
 #include <map>
-#include <stdio.h>
 #include <string>
 #include <unistd.h>
 

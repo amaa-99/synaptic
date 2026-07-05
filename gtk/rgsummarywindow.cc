@@ -35,8 +35,8 @@
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/strutl.h>
 #include <cassert>
+#include <cstdio>
 #include <gtk/gtk.h>
-#include <stdio.h>
 #include <string>
 #include <vector>
 

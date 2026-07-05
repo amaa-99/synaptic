@@ -31,7 +31,9 @@
 
 #include <apt-pkg/configuration.h>
 #include <cassert>
+#include <cstdio>
 #include <gtk/gtk.h>
+#include <stdio.h>
 #include <string>
 #include <vector>
 

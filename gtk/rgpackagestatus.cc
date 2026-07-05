@@ -26,12 +26,13 @@
 
 #include "rgutils.h"
 #include "rpackage.h"
+
 #include <apt-pkg/configuration.h>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <gdk/gdk.h>
 #include <rpackagestatus.h>
-#include <stdio.h>
 #include <string>
 
 // RPackageStatus stuff

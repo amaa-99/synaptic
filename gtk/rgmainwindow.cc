@@ -62,6 +62,8 @@
 #include <apt-pkg/strutl.h>
 #include <cassert>
 #include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <functional>
@@ -70,7 +72,6 @@
 #include <gtk/gtk.h>
 #include <pwd.h>
 #include <sstream>
-#include <stdio.h>
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>

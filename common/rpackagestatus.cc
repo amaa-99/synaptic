@@ -37,8 +37,10 @@
 #include <apt-pkg/fileutl.h>
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile.h>
+#include <cstdio>
 #include <cstring>
 #include <sstream>
+#include <stdio.h>
 #include <string>
 
 using namespace std;
