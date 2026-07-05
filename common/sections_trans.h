@@ -7,7 +7,6 @@
 
 #include "config.h"
 
-#include <apt-pkg/strutl.h>
 #include <iostream>
 #include <sstream>
 #include <string>

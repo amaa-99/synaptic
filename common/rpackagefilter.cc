@@ -33,7 +33,10 @@
 #include <algorithm>
 #include <apt-pkg/configuration.h>
 #include <apt-pkg/error.h>
+#include <apt-pkg/fileutl.h>
+#include <apt-pkg/pkgcache.h>
 #include <apt-pkg/strutl.h>
+#include <apt-pkg/tagfile.h>
 #include <cstdio>
 #include <fnmatch.h>
 #include <iostream>

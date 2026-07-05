@@ -26,13 +26,13 @@
 #include "rconfiguration.h"
 #include "i18n.h"
 
+#include <apt-pkg/pkgsystem.h>
 #include <assert.h>
 #include <algorithm>
 #include <apt-pkg/error.h>
 #include <apt-pkg/sourcelist.h>
 #include <apt-pkg/pkgcachegen.h>
 #include <apt-pkg/policy.h>
-#include <apt-pkg/fileutl.h>
 #include <string>
 #include <vector>
 

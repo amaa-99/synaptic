@@ -23,6 +23,7 @@
  */
 
 #include "config.h"
+#include <apt-pkg/cdrom.h>
 #include <string>
 
 #ifdef HAVE_APTPKG_CDROM

@@ -1,5 +1,6 @@
 #include "config.h"
 
+#include <apt-pkg/pkgsystem.h>
 #include <gtk/gtk.h>
 
 #include <apt-pkg/init.h>

@@ -31,13 +31,11 @@
 
 #include "config.h"
 
-#include "rpackage.h"
-
-#include <apt-pkg/fileutl.h>
-#include <sstream>
 #include <string>
 #include <time.h>
 #include <vector>
+
+class RPackage;
 
 class RPackageStatus {
  public:

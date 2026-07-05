@@ -28,7 +28,6 @@
 #include <apt-pkg/cachefile.h>
 #include <apt-pkg/depcache.h>
 #include <apt-pkg/pkgsystem.h>
-#include <apt-pkg/policy.h>
 #include <apt-pkg/sourcelist.h>
 #include <map>
 #include <string>

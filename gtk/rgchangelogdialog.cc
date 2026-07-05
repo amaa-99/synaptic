@@ -27,6 +27,7 @@
 #include "rgwindow.h"
 #include "rpackage.h"
 
+#include <apt-pkg/acquire.h>
 #include <cassert>
 #include <fstream>
 #include <gtk/gtk.h>

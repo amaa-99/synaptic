@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include <apt-pkg/packagemanager.h>
 
 #ifdef WITH_DPKG_STATUSFD
 

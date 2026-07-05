@@ -33,7 +33,8 @@
 
 #include <apt-pkg/acquire-item.h>
 #include <apt-pkg/acquire-worker.h>
-#include <apt-pkg/error.h>
+#include <apt-pkg/acquire.h>
+#include <apt-pkg/macros.h>
 #include <apt-pkg/strutl.h>
 #include <cassert>
 #include <gtk/gtk.h>

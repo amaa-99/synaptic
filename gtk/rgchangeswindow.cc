@@ -33,7 +33,6 @@
 #include "rpackagelister.h"
 
 #include <X11/keysym.h>
-#include <apt-pkg/strutl.h>
 #include <cassert>
 #include <gtk/gtk.h>
 #include <stdio.h>
