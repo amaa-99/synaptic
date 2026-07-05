@@ -31,7 +31,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <iostream>
-#include <cstdio>
 #include <apt-pkg/install-progress.h>
 #ifdef HAVE_RPM
 #include <apt-pkg/configuration.h>

@@ -30,8 +30,8 @@
 #include "rgmainwindow.h"
 
 #include <apt-pkg/configuration.h>
+#include <cstdio>
 #include <gtk/gtk.h>
-#include <stdio.h>
 #include <unistd.h>
 
 class RGDiscName:public RGGtkBuilderWindow {

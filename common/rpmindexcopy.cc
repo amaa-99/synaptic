@@ -11,6 +11,8 @@
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile.h>
 
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <map>

@@ -33,6 +33,8 @@
 #include <apt-pkg/fileutl.h>
 #include <apt-pkg/init.h>
 #include <apt-pkg/pkgsystem.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <pwd.h>
 #include <string>

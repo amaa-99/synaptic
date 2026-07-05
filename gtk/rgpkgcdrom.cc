@@ -35,7 +35,6 @@
 #include "rgwindow.h"
 
 #include <gtk/gtk.h>
-#include <stdio.h>
 #include <unistd.h>
 
 using namespace std;
