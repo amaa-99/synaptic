@@ -932,12 +932,10 @@ void RPackageLister::getSummary(int &held, int &kept, int &essential,
    sizeChange = deps->UsrSize();
 }
 
-
-
-struct bla:public binary_function<RPackage *, RPackage *, bool> {
-   bool operator() (RPackage *a, RPackage *b) {
-      return strcmp(a->name(), b->name()) < 0;
-   }
+// Custom sort functor to be used with std::sort.
+std::function<bool(RPackage *a, RPackage *b)> RPackageLister::bla = [](RPackage *a, RPackage *b)
+{
+   return strcmp(a->name(), b->name()) < 0;
 };
 
 void RPackageLister::saveUndoState(pkgState &state)
@@ -1188,17 +1186,17 @@ bool RPackageLister::getStateChanges(RPackageLister::pkgState &state,
 
    if (sorted == true && changed == true) {
       if (toKeep.empty() == false)
-         sort(toKeep.begin(), toKeep.end(), bla());
+         sort(toKeep.begin(), toKeep.end(), bla);
       if (toInstall.empty() == false)
-         sort(toInstall.begin(), toInstall.end(), bla());
+         sort(toInstall.begin(), toInstall.end(), bla);
       if (toReInstall.empty() == false)
-         sort(toReInstall.begin(), toReInstall.end(), bla());
+         sort(toReInstall.begin(), toReInstall.end(), bla);
       if (toUpgrade.empty() == false)
-         sort(toUpgrade.begin(), toUpgrade.end(), bla());
+         sort(toUpgrade.begin(), toUpgrade.end(), bla);
       if (toRemove.empty() == false)
-         sort(toRemove.begin(), toRemove.end(), bla());
+         sort(toRemove.begin(), toRemove.end(), bla);
       if (toDowngrade.empty() == false)
-         sort(toDowngrade.begin(), toDowngrade.end(), bla());
+         sort(toDowngrade.begin(), toDowngrade.end(), bla);
 
    }
 
@@ -1270,14 +1268,14 @@ void RPackageLister::getDetailedSummary(vector<RPackage *> &held,
       }
    }
 
-   sort(kept.begin(), kept.end(), bla());
-   sort(toInstall.begin(), toInstall.end(), bla());
-   sort(toReInstall.begin(), toReInstall.end(), bla());
-   sort(toUpgrade.begin(), toUpgrade.end(), bla());
-   sort(essential.begin(), essential.end(), bla());
-   sort(toRemove.begin(), toRemove.end(), bla());
-   sort(toPurge.begin(), toPurge.end(), bla());
-   sort(held.begin(), held.end(), bla());
+   sort(kept.begin(), kept.end(), bla);
+   sort(toInstall.begin(), toInstall.end(), bla);
+   sort(toReInstall.begin(), toReInstall.end(), bla);
+   sort(toUpgrade.begin(), toUpgrade.end(), bla);
+   sort(essential.begin(), essential.end(), bla);
+   sort(toRemove.begin(), toRemove.end(), bla);
+   sort(toPurge.begin(), toPurge.end(), bla);
+   sort(held.begin(), held.end(), bla);
 #ifdef WITH_APT_AUTH
    pkgAcquire Fetcher(NULL);
    pkgPackageManager *PM = _system->CreatePM(_cache->deps());

@@ -27,6 +27,7 @@
 
 #include "config.h"
 
+#include <functional>
 #include <vector>
 #include <list>
 #include <map>
@@ -272,7 +273,8 @@ class RPackageLister {
                            double &sizeChange);
 
    void getDownloadSummary(int &dlCount, double &dlSize);
-
+   
+   static std::function<bool (RPackage *a, RPackage *b)> bla;
    void saveUndoState(pkgState &state);
    void saveUndoState();
    void undo();
