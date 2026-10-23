@@ -16,7 +16,6 @@ gui_sources = files(
   'rgdebinstallprogress.cc',
   'rgterminstallprogress.cc',
   'rginstallprogress.cc',
-  'rgslideshow.cc',
   'rgtaskswin.cc',
   'rgcdscanner.cc',
   'rgmainwindow.cc',
