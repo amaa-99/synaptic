@@ -1,0 +1,22 @@
+#pragma once
+
+#define GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"
+#define PACKAGE "@PACKAGE@"
+#define PACKAGE_DATA_DIR "@PACKAGE_DATA_DIR@"
+#define PACKAGE_LOCALE_DIR "@PACKAGE_LOCALE_DIR@"
+#define SYNAPTICSTATEDIR "@SYNAPTICSTATEDIR@"
+#define VERSION "@VERSION@"
+
+#cmakedefine01 ENABLE_NLS
+#cmakedefine HAVE_RPM
+#cmakedefine WITH_LUA
+#cmakedefine WITH_APT_AUTH
+#cmakedefine HAVE_APTPKG_CDROM
+#cmakedefine HAVE_XAPIAN
+#cmakedefine HAVE_VTE
+#cmakedefine HAVE_TERMINAL
+#cmakedefine WITH_DPKG_STATUSFD
+#cmakedefine WITH_LAUNCHPAD_INTEGRATION
+#cmakedefine SYNAPTIC_PKG_HOLD
+#cmakedefine WITH_APT_MULTIARCH_SUPPORT
+#cmakedefine VENDOR_DERIVES_FROM_UBUNTU
