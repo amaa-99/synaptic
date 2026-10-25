@@ -49,18 +49,6 @@ class RGWindow;
 
 using namespace std;
 
-#if HAVE_RPM
-enum {
-   ITEM_TYPE_RPM,
-   ITEM_TYPE_RPMSRC,
-   ITEM_TYPE_RPMDIR,
-   ITEM_TYPE_RPMSRCDIR,
-   ITEM_TYPE_REPOMD,
-   ITEM_TYPE_REPOMDSRC,
-   ITEM_TYPE_DEB,
-   ITEM_TYPE_DEBSRC
-};
-#else
 enum {
    ITEM_TYPE_DEB,
    ITEM_TYPE_DEBSRC,
@@ -71,7 +59,6 @@ enum {
    ITEM_TYPE_REPOMD,
    ITEM_TYPE_REPOMDSRC
 };
-#endif
 
 enum {
    STATUS_COLUMN,
@@ -261,42 +248,9 @@ RGRepositoryEditor::RGRepositoryEditor(RGWindow *parent)
    _optTypeMenu = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_INT);
 
    GtkTreeIter item;
-#if HAVE_RPM
-   gtk_list_store_append(_optTypeMenu, &item);
-   gtk_list_store_set(
-      _optTypeMenu, &item, COL_NAME, "rpm", COL_TYPE, ITEM_TYPE_RPM, -1);
 
    gtk_list_store_append(_optTypeMenu, &item);
-   gtk_list_store_set(
-      _optTypeMenu, &item, COL_NAME, "rpm-src", COL_TYPE, ITEM_TYPE_RPMSRC, -1);
 
-   gtk_list_store_append(_optTypeMenu, &item);
-   gtk_list_store_set(
-      _optTypeMenu, &item, COL_NAME, "rpm-dir", COL_TYPE, ITEM_TYPE_RPMDIR, -1);
-
-   gtk_list_store_append(_optTypeMenu, &item);
-   gtk_list_store_set(_optTypeMenu,
-                      &item,
-                      COL_NAME,
-                      "rpm-src-dir",
-                      COL_TYPE,
-                      ITEM_TYPE_RPMSRCDIR,
-                      -1);
-
-   gtk_list_store_append(_optTypeMenu, &item);
-   gtk_list_store_set(
-      _optTypeMenu, &item, COL_NAME, "repomd", COL_TYPE, ITEM_TYPE_REPOMD, -1);
-
-   gtk_list_store_append(_optTypeMenu, &item);
-   gtk_list_store_set(_optTypeMenu,
-                      &item,
-                      COL_NAME,
-                      "repomd-src",
-                      COL_TYPE,
-                      ITEM_TYPE_REPOMDSRC,
-                      -1);
-#else
-   gtk_list_store_append(_optTypeMenu, &item);
    gtk_list_store_set(_optTypeMenu,
                       &item,
                       COL_NAME,
@@ -313,7 +267,6 @@ RGRepositoryEditor::RGRepositoryEditor(RGWindow *parent)
                       COL_TYPE,
                       ITEM_TYPE_DEBSRC,
                       -1);
-#endif
 
    gtk_combo_box_set_model(GTK_COMBO_BOX(_optType), GTK_TREE_MODEL(_optTypeMenu));
 
