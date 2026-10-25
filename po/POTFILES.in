@@ -13,7 +13,6 @@ common/rpackagestatus.h
 common/rpackagecache.cc
 common/rpackagefilter.cc
 common/rpackagelister.cc
-common/rpmindexcopy.cc
 common/rpackageview.h
 common/rpackageview.cc
 common/rsources.cc
