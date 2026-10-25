@@ -380,6 +380,7 @@ bool RGRepositoryEditor::Run()
    }
 
    gtk_main();
+
    return _applied;
 }
 
