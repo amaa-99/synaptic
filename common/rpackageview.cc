@@ -496,23 +496,7 @@ void RPackageViewFilter::makePresetFilters()
       _("Search Filter");
       registerFilter(filter);
    }
-#ifdef HAVE_RPM
-   {
-      filter = new RFilter();
-      filter->pattern.addPattern(
-         RPatternPackageFilter::Name, "^task-.*", false);
-      filter->setName("Tasks");
-      _("Tasks");
-      registerFilter(filter);
-   }
-   {
-      filter = new RFilter();
-      filter->reducedview.enable();
-      filter->setName("Reduced View");
-      _("Reduced View");
-      registerFilter(filter);
-   }
-#endif
+
    {
       filter = new RFilter();
       filter->preset = true;
@@ -521,6 +505,7 @@ void RPackageViewFilter::makePresetFilters()
       _("Broken");
       registerFilter(filter);
    }
+
    {
       filter = new RFilter();
       filter->preset = true;
@@ -531,7 +516,7 @@ void RPackageViewFilter::makePresetFilters()
       _("Marked Changes");
       registerFilter(filter);
    }
-#ifndef HAVE_RPM
+
    {
       filter = new RFilter();
       filter->preset = true;
@@ -543,7 +528,7 @@ void RPackageViewFilter::makePresetFilters()
       _("Package with Debconf");
       registerFilter(filter);
    }
-#endif
+
    filter = new RFilter();
    filter->preset = true;
    filter->status.setStatus(RStatusPackageFilter::UpstreamUpgradable);
