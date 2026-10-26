@@ -89,40 +89,6 @@ check_include_file_cxx("apt-pkg/cdrom.h" HAVE_APT_PKG_CDROM)
 
 unset(CMAKE_REQUIRED_INCLUDES)
 
-####################
-# Check for the rpm headers
-
-set(RPM_INCLUDE_DIR "/usr/include/rpm")
-set(CMAKE_REQUIRED_INCLUDES "${RPM_INCLUDE_DIR}")
-check_include_file_cxx("rpm/rpmlib.h" HAVE_RPM_HEADER)
-unset(CMAKE_REQUIRED_INCLUDES)
-
-set(HAVE_RPM FALSE)
-set(RPM_LIBRARIES "")
-
-if(HAVE_RPM_HEADER)
-  find_library(RPM_LIBRARY NAMES rpm)
-  find_library(RPMIO_LIBRARY NAMES rpmio)
-  find_library(RPMDB_LIBRARY NAMES rpmdb)
-  find_library(POPT_LIBRARY NAMES popt)
-  if(RPM_LIBRARY AND RPMIO_LIBRARY AND RPMDB_LIBRARY AND POPT_LIBRARY)
-    # Prefer the RPM v4 library set.
-    set(RPM_LIBRARIES "${RPM_LIBRARY}" "${RPMIO_LIBRARY}" "${RPMDB_LIBRARY}" "${POPT_LIBRARY}")
-    set(HAVE_RPM TRUE)
-  elseif(RPM_LIBRARY AND POPT_LIBRARY)
-    # Fall back to the RPM v3 library set.
-    set(RPM_LIBRARIES "${RPM_LIBRARY}" "${POPT_LIBRARY}")
-    set(HAVE_RPM TRUE)
-  endif()
-endif()
-
-if(HAVE_RPM)
-  #target_include_directories(your_target PRIVATE "${RPM_INCLUDE_DIR}")
-  #target_link_libraries(your_target PRIVATE ${RPM_LIBRARIES})
-endif()
-
-#
-
 if(NOT HAVE_APT_PKG_CONFIG)
     message(FATAL_ERROR "Installed apt-pkg headers are required for compiling synaptic!")
 endif()
@@ -171,7 +137,6 @@ set(PACKAGE_LOCALE_DIR "${CMAKE_INSTALL_LOCALEDIR}")
 set(SYNAPTICSTATEDIR "${CMAKE_INSTALL_LOCALSTATEDIR}")
 
 set(ENABLE_NLS 1)
-set(HAVE_RPM "${HAVE_RPM}")
 set(WITH_LUA "${SCRIPTS}")
 set(WITH_APT_AUTH "${HAVE_APT_PKG_METAINDEX}")
 set(HAVE_APTPKG_CDROM "${HAVE_APT_PKG_CDROM}")
