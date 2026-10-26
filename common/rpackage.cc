@@ -1514,27 +1514,3 @@ string RPackage::origin()
 
    return res;
 }
-
-static pkgCache::PkgFileIterator _searchPkgFileIter(pkgCache::PkgIterator *Pkg,
-                                                    string label,
-                                                    string release)
-{
-   pkgCache::VerIterator Ver;
-   pkgCache::VerFileIterator VF;
-   pkgCache::PkgFileIterator PF;
-
-   for (Ver = Pkg->VersionList(); !Ver.end(); Ver++) {
-      for (VF = Ver.FileList(); !VF.end(); VF++) {
-         for (PF = VF.File(); !PF.end(); PF++) {
-            if (!PF.end() && PF.Label() && string(PF.Label()) == label &&
-                PF.Origin() && string(PF.Origin()) == label && PF.Archive() &&
-                PF.Archive() == release) {
-               // cerr << "found: " << PF.FileName() << endl;
-               return PF;
-            }
-         }
-      }
-   }
-   PF = pkgCache::PkgFileIterator(*Pkg->Cache());
-   return PF;
-}
