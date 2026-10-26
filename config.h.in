@@ -8,7 +8,6 @@
 #define VERSION "@VERSION@"
 
 #cmakedefine01 ENABLE_NLS
-#cmakedefine HAVE_RPM
 #cmakedefine WITH_LUA
 #cmakedefine WITH_APT_AUTH
 #cmakedefine HAVE_APTPKG_CDROM
