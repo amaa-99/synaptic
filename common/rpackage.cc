@@ -517,7 +517,6 @@ vector<DepInformation> RPackage::enumRDeps()
 {
    vector<DepInformation> deps;
    DepInformation dep;
-   pkgCache::VerIterator Cur;
 
    for (pkgCache::DepIterator D = _package->RevDependsList(); D.end() != true;
         D++) {
@@ -632,7 +631,6 @@ vector<RPackage *> RPackage::getInstalledDeps()
 /* Mostly taken from apt-get.cc:ShowBroken() */
 string RPackage::showWhyInstBroken()
 {
-   pkgCache::DepIterator depI;
    pkgCache::VerIterator Ver;
    ostringstream out;
 
