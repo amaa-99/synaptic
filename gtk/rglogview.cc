@@ -131,6 +131,8 @@ void RGLogView::readLogs()
    g_dir_close(dir);
 
    _treeModel = gtk_tree_model_sort_new_with_model(GTK_TREE_MODEL(store));
+   g_object_unref(store);
+
    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(_treeModel), COLUMN_LOG_FILENAME, GTK_SORT_DESCENDING);
    gtk_tree_view_set_model(GTK_TREE_VIEW(_treeView), _treeModel);
 }
