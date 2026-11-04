@@ -34,10 +34,10 @@ class RGWindow
  private:
 
    static GtkWidget *newWindow(RGWindow *parent, const std::string &name);
+   GtkWidget *_win;
 
  protected:
 
-   GtkWidget *_win;
    const gulong _onDeleteEventHandlerId;
 
    static gboolean onDeleteEventCallback(GtkWidget *widget, GdkEvent *event, RGWindow *self);
