@@ -289,7 +289,6 @@ void RGPkgDetailsWindow::fillInValues(RGGtkBuilderWindow *me,
    GtkTextBuffer *buf;
    GtkTextIter it, start, end;
    GtkWidget *emblem;
-   const gchar *s;
 
    textview =
       GTK_WIDGET(gtk_builder_get_object(me->getGtkBuilder(), "text_descr"));
@@ -372,9 +371,8 @@ void RGPkgDetailsWindow::fillInValues(RGGtkBuilderWindow *me,
 
    // show the rest of the description
    gtk_text_buffer_insert(buf, &it, "\n", 1);
-   s = utf8(pkg->description());
-   gtk_text_buffer_insert(buf, &it, s, -1);
-
+   string description = utf8(pkg->description());
+   gtk_text_buffer_insert(buf, &it, description.c_str(), -1);
 
    // build dependency lists
    vector<DepInformation> deps;
