@@ -146,7 +146,7 @@ class RPackage
    const char *section();
    const char *priority();
 
-   const char *summary();
+   std::string summary() const;
    std::string description() const;
 
    std::string installedFiles();
