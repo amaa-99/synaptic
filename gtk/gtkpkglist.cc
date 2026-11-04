@@ -379,8 +379,8 @@ static void gtk_pkg_list_get_value(GtkTreeModel *tree_model,
       }
 
       case DESCR_COLUMN: {
-         const gchar *str = utf8(pkg->summary());
-         g_value_set_string(value, str);
+         std::string str = utf8(pkg->summary());
+         g_value_set_string(value, str.c_str());
          break;
       }
 
