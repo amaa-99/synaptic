@@ -1557,29 +1557,28 @@ void RGMainWindow::close()
 
 void RGMainWindow::setInterfaceLocked(bool flag)
 {
-   if (flag) {
+   if (flag)
+   {
       _interfaceLocked++;
-      if (_interfaceLocked > 1)
-         return;
+      if (_interfaceLocked > 1) return;
 
       gtk_widget_set_sensitive(window(), FALSE);
-      if (gtk_widget_get_visible(window()))
-         gdk_window_set_cursor(gtk_widget_get_window(window()), _busyCursor);
-   } else {
+      if (gtk_widget_get_visible(window())) setBusyCursor(true);
+   }
+   else
+   {
       assert(_interfaceLocked > 0);
-
       _interfaceLocked--;
-      if (_interfaceLocked > 0)
-         return;
+      if (_interfaceLocked > 0) return;
 
       gtk_widget_set_sensitive(window(), TRUE);
-      if (gtk_widget_get_visible(window()))
-         gdk_window_set_cursor(gtk_widget_get_window(window()), NULL);
+      if (gtk_widget_get_visible(window())) setBusyCursor(false);
    }
 
    // fast enough with the new fixed-height mode
-   while (gtk_events_pending())
+   while (gtk_events_pending()) {
       gtk_main_iteration();
+   }
 }
 
 void RGMainWindow::setTreeLocked(bool flag)
