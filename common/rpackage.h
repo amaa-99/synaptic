@@ -144,7 +144,7 @@ class RPackage
    }
 
    std::string section() const;
-   const char *priority();
+   std::string priority() const;
 
    std::string summary() const;
    std::string description() const;
