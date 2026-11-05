@@ -11,8 +11,6 @@ common_sources = files(
   'raptoptions.cc',
   'rsources.cc',
   'rpackagelistactor.cc',
-  'rtagcollbuilder.cc',
-  'rtagcollfilter.cc',
   'ruserdialog.cc',
   'sections_trans.cc',
 )
