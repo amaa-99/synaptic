@@ -355,8 +355,8 @@ static void gtk_pkg_list_get_value(GtkTreeModel *tree_model,
       }
 
       case SECTION_COLUMN: {
-         const gchar *str = pkg->section();
-         if (str != NULL) g_value_set_string(value, str);
+         std::string str = pkg->section();
+         g_value_set_string(value, str.c_str());
          break;
       }
 

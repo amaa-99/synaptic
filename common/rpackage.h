@@ -143,7 +143,7 @@ class RPackage
       #endif
    }
 
-   const char *section();
+   std::string section() const;
    const char *priority();
 
    std::string summary() const;
