@@ -90,3 +90,9 @@ target_link_libraries(test_rsources PRIVATE GTest::gtest_main)
 gtest_discover_tests(test_rsources)
 
 ####################
+
+add_executable(gtest_rpackage gtest_rpackage.cc ${CONFIG_H} ${COMMON_SOURCES})
+target_link_libraries(gtest_rpackage PRIVATE GTest::gtest_main)
+gtest_discover_tests(gtest_rpackage)
+
+####################
