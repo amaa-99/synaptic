@@ -26,7 +26,6 @@
 
 #include <gtk/gtk.h>
 #include <string>
-#include <vector>
 
 enum {
    PIXMAP_COLUMN,
@@ -56,7 +55,7 @@ const char *utf8(const char *str);
 std::string utf8(const std::string& str);
 
 std::string SizeToStr(double Bytes);
-bool RunAsSudoUserCommand(std::vector<const gchar *> cmd);
+bool OpenUriInDefaultApplication(const std::string &uri);
 
 std::string MarkupEscapeString(std::string str);
 std::string MarkupUnescapeString(std::string str);
