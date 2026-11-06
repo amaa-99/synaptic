@@ -183,7 +183,7 @@ class RPackage
    std::string origin();
 
    std::string maintainer() const;
-   const char *homepage();
+   std::string homepage() const;
 
    const char *installedVersion();
    long installedSize();
