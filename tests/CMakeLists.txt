@@ -93,4 +93,11 @@ if(GTest_FOUND)
 
   ####################
 
+  add_executable(gtest_rpackage gtest_rpackage.cc ${CONFIG_H} ${COMMON_SOURCES})
+  target_link_libraries(gtest_rpackage PRIVATE GTest::gtest_main)
+  add_test(NAME gtest_rpackage COMMAND test_rsources)
+  set_tests_properties(gtest_rpackage PROPERTIES ENVIRONMENT "LC_ALL=C")
+
+  ####################
+
 endif()
