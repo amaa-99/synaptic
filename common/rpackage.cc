@@ -1049,7 +1049,7 @@ void RPackage::setRemoveWithDeps(bool purge)
    }
 }
 
-string RPackage::debParser(const string &descr)
+string RPackage::parseDescription(const string &descr)
 {
    std::string_view view(descr);
 
@@ -1089,66 +1089,6 @@ string RPackage::debParser(const string &descr)
    }
 
    return parsed;
-}
-
-string RPackage::stripWsParser(const string &descr)
-{
-   string parsed;
-   parsed.reserve(descr.size());
-
-   uint state = 0;
-   for (char c : descr) {
-      switch (state)
-      {
-         case 0:
-         {
-            if (c == '\n') {
-               state = 1;
-            } else {
-               parsed.push_back(c);
-            }
-            break;
-         }
-
-         case 1:
-         {
-            if (c == ' ') {
-               state = 2;
-            } else {
-               parsed.push_back(c);
-               state = 0;
-            }
-            break;
-         }
-
-         case 2:
-         {
-            if ((c != '\n') && (c != '.')) {
-               parsed.push_back(' ');
-               parsed.push_back(c);
-            }
-            state = 0;
-            break;
-         }
-      }
-   }
-
-   return parsed;
-}
-
-string RPackage::parseDescription(const string &descr)
-{
-   static int parser = _config->FindI("Synaptic::descriptionParser", DEB_PARSER);
-
-   switch (parser) {
-      case DEB_PARSER: { return debParser(descr); }
-      case STRIP_WS_PARSER: { return stripWsParser(descr); }
-      case NO_PARSER:
-      default:
-      {
-         return descr;
-      }
-   }
 }
 
 string RPackage::component()
