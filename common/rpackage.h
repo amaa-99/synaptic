@@ -43,8 +43,6 @@ class pkgAcquire;
 class pkgDepCache;
 class pkgRecords;
 
-enum { NO_PARSER, DEB_PARSER, STRIP_WS_PARSER };
-
 // taken from apt (pkgcache.cc) to make our life easier
 // (and added "RDepends" as last element)
 static const char *DepTypeStr[] = {
@@ -262,11 +260,8 @@ class RPackage
 
    std::string getChangelogURI();
 
-   static std::string debParser(const std::string &descr);
-   static std::string stripWsParser(const std::string &descr);
    static std::string parseDescription(const std::string &descr);
 
    // Expose these to the gtest unit tests:
-   friend class RPackageTest_debParser_Test;
-   friend class RPackageTest_stripWsParser_Test;
+   friend class RPackageTest_parseDescription_Test;
 };
