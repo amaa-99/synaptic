@@ -18,8 +18,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt build-dep -y ./
-        #Devscripts for bringing in debuild
-        sudo apt install meson ninja-build appstream desktop-file-utils libpolkit-gobject-1-dev devscripts -y
+        sudo apt install meson ninja-build appstream desktop-file-utils libpolkit-gobject-1-dev devscripts cmake cmake-extras ccache -y
 
     - name: configure
       run: |
