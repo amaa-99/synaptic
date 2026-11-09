@@ -7,33 +7,140 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-jobs:
-  build:
+env:
+  APT_PACKAGES: |
+    ccache
+    cmake
+    cmake-extras
+    desktop-file-utils
+    gettext
+    libapt-pkg-dev
+    libgtest-dev
+    libgtk-3-dev
+    libpolkit-gobject-1-dev
+    libsm-dev
+    libvte-2.91-dev
+    libxapian-dev
+    lsb-release
+    meson
+    ninja-build
+    xmlto
+    autopoint
+    build-essential
+    debhelper
+    devscripts
+    dh-autoreconf
+    dh-strip-nondeterminism
+    dwz
+    intltool-debian
+    libarchive-zip-perl
+    libconfig-inifiles-perl
+    libdebhelper-perl
+    libfile-dirlist-perl
+    libfile-listing-perl
+    libfile-stripnondeterminism-perl
+    libfile-touch-perl
+    libhtml-tree-perl
+    libhttp-cookies-perl
+    libhttp-negotiate-perl
+    libimport-into-perl
+    liblwp-protocol-https-perl
+    libmoo-perl
+    libnet-http-perl
+    libwww-perl
+    libwww-robotrules-perl
+    libyaml-libyaml-perl
+    patchutils
+    po-debconf
+    wdiff
 
+jobs:
+
+  build:
+  
+    permissions:
+      # Required for cache deletion.
+      actions: write
+  
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v7
-    - name: update and install packages
-      run: |
-        sudo apt update
-        sudo apt build-dep -y ./
-        sudo apt install meson ninja-build appstream desktop-file-utils libpolkit-gobject-1-dev devscripts cmake cmake-extras ccache -y
 
+    - uses: actions/checkout@v7
+
+    - name: Set the APT cache key
+      id: apt-cache-key
+      # Use the week number as a key, and refresh the cache weekly.
+      run: echo "key=$(date +%G-%V)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore the APT cache
+      id: apt-cache
+      uses: actions/cache@v6
+      with:
+        path: /home/runner/apt-cache
+        key: apt-${{ runner.os }}-${{ steps.apt-cache-key.outputs.key }}
+        restore-keys: apt-${{ runner.os }}-
+
+    - name: Copy the restored APT cache into the apt directories
+      if: steps.apt-cache.outputs.cache-hit == 'true'
+      run: |
+        sudo rsync -a --no-owner --no-group /home/runner/apt-cache/archives/ /var/cache/apt/archives/
+        sudo rsync -a --no-owner --no-group /home/runner/apt-cache/lists/ /var/lib/apt/lists/
+
+    - name: Configure APT
+      run: |
+        echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' | sudo tee -a /etc/apt/apt.conf.d/99github
+        echo 'Acquire::Languages "none";' | sudo tee /etc/apt/apt.conf.d/99github
+        echo 'Acquire::Retries "3";' | sudo tee -a /etc/apt/apt.conf.d/99github
+        echo 'APT::Install-Recommends "false";' | sudo tee -a /etc/apt/apt.conf.d/99github
+
+    - name: Install build dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends -o Dpkg::Options::=--force-unsafe-io $APT_PACKAGES
+        sudo apt build-dep -y ./
+
+    - name: Copy the APT files to a cacheable folder (necessary for avoiding permissions issues)
+      run: |
+        mkdir -p /home/runner/apt-cache/archives /home/runner/apt-cache/lists
+        sudo rsync -a --exclude partial --exclude lock /var/cache/apt/archives/ /home/runner/apt-cache/archives/
+        sudo rsync -a --exclude partial --exclude lock /var/lib/apt/lists/ /home/runner/apt-cache/lists/
+        sudo chown -R runner:runner /home/runner/apt-cache
+
+    - name: Delete previous caches
+      if: always()
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+      run: gh cache list --key apt-${{ runner.os }}- --limit 100 --json id -q '.[].id' | xargs -r -n1 gh cache delete || true
+      
+    - name: Save apt cache
+      if: always()
+      uses: actions/cache/save@v6
+      with:
+        path: /home/runner/apt-cache
+        key: apt-${{ runner.os }}-${{ steps.apt-cache-key.outputs.key }}
+      
     - name: configure
       run: |
         mkdir builddir
         meson setup builddir
+
     - name: build
       run: |
         meson compile -C builddir
+
     - name: test
       run: |
         meson test -C builddir --print-errorlogs
+
     - name: debuild
       run: debuild -B -us -uc
+
     - name: install deb
       run: sudo apt install ../synaptic_*.deb
+
     - name: remove deb
       run: sudo apt remove synaptic
+
 # TODO ? add make check or distcheck?
