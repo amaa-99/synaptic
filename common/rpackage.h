@@ -186,9 +186,6 @@ class RPackage
    const char *installedVersion();
    long installedSize();
 
-   // get tag from pkg record
-   std::string findTagFromPkgRecord(const char *tag);
-
    // sourcepkg
    std::string srcPackage() const;
 
