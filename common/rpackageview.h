@@ -260,12 +260,12 @@ class RPackageViewFilter final : public RPackageView
 
    RFilter *findFilter(const std::string &name) const;
 
-   unsigned int nrOfFilters()
+   size_t nrOfFilters() const
    {
       return _filterL.size();
    }
 
-   RFilter *findFilter(unsigned int index)
+   RFilter *findFilter(size_t index) const
    {
       if (index >= _filterL.size())
          return NULL;
