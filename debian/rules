@@ -3,7 +3,7 @@
 # make the package build on ubuntu and debian
 DIST = $(shell lsb_release -i -s)
 
-DHFLAGS=--parallel
+DHFLAGS= --parallel
 MESON_FLAGS= --prefix=/usr \
 	     --localstatedir=/var/lib/synaptic \
 	     -Dpkg_hold=true \
@@ -17,3 +17,6 @@ override_dh_auto_configure:
 
 override_dh_auto_install:
 	dh_auto_install $(DHFLAGS)
+
+override_dh_auto_build:
+	dh_auto_build -- --quiet
