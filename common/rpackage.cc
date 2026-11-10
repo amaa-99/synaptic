@@ -244,27 +244,6 @@ string RPackage::description() const
    }
 }
 
-string RPackage::findTagFromPkgRecord(const char *tag)
-{
-   pkgCache::VerIterator ver =
-      (*_depcache)[*_package].CandidateVerIter(*_depcache);
-
-   if (!ver.end()) {
-      const char *start, *stop;
-      pkgTagSection sec;
-      unsigned long len;
-
-      pkgRecords::Parser &rec = _records->Lookup(ver.FileList());
-      rec.GetRec(start, stop);
-      len = stop - start;
-      // add +1 to ensure we have the double lineline in the buffer
-      if (start && sec.Scan(start, len + 1))
-         return sec.FindS(tag);
-   }
-
-   return string();
-}
-
 long RPackage::installedSize()
 {
    pkgCache::VerIterator ver = _package->CurrentVer();
