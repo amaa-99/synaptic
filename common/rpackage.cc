@@ -244,24 +244,6 @@ string RPackage::description() const
    }
 }
 
-string RPackage::getRawRecord(bool useCandidateVersion)
-{
-   pkgCache::VerIterator ver;
-   if (!useCandidateVersion)
-      ver = (*_depcache)[*_package].InstVerIter(*_depcache);
-   if (useCandidateVersion || ver.end())
-      ver = (*_depcache)[*_package].CandidateVerIter(*_depcache);
-   if (ver.end() == false) {
-      const char *start, *stop;
-      unsigned long len;
-      pkgRecords::Parser &rec = _records->Lookup(ver.FileList());
-      rec.GetRec(start, stop);
-      len = stop - start;
-      return string(start, len);
-   }
-   return string();
-}
-
 string RPackage::findTagFromPkgRecord(const char *tag)
 {
    pkgCache::VerIterator ver =
