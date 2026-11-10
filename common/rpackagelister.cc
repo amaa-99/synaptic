@@ -1641,7 +1641,7 @@ void RPackageLister::refreshView()
 
 bool RPackageLister::writeSelections(ostream &out, bool fullState)
 {
-   for (RPackage *package : _packages) {
+   for (const RPackage *package : _packages) {
       int flags = package->getFlags();
       // Full state saves all installed packages.
       if ((flags & RPackage::FInstall) || (fullState && (flags & RPackage::FInstalled))) {
