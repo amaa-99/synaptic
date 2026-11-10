@@ -258,7 +258,7 @@ class RPackageViewFilter final : public RPackageView
 
    void makePresetFilters();
 
-   RFilter *findFilter(std::string name);
+   RFilter *findFilter(const std::string &name) const;
 
    unsigned int nrOfFilters()
    {
