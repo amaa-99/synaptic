@@ -1235,7 +1235,6 @@ bool RPackageLister::commitChanges(pkgAcquireStatus *status,
 {
    FileFd lock;
    int numPackages = 0;
-   int numPackagesTotal;
    bool Ret = true;
 
    _updating = true;
@@ -1272,15 +1271,11 @@ bool RPackageLister::commitChanges(pkgAcquireStatus *status,
 
       string serverError;
 
-      numPackagesTotal = 0;
-
       // Print out errors
       bool Failed = false;
       for (pkgAcquire::ItemIterator I = fetcher.ItemsBegin();
            I != fetcher.ItemsEnd();
            I++) {
-
-         numPackagesTotal += 1;
 
          if ((*I)->Status == pkgAcquire::Item::StatDone && (*I)->Complete) {
             numPackages += 1;
@@ -1349,7 +1344,7 @@ bool RPackageLister::commitChanges(pkgAcquireStatus *status,
 
          _system->UnLockInner();
          std::optional<pkgPackageManager::OrderResult> Res;
-         Res = iprog->start(rPM.get(), numPackages, numPackagesTotal);
+         Res = iprog->start(rPM.get(), numPackages);
          if (!Res.has_value()) {
             iprog->startUpdate();
             while (!(Res = iprog->poll()).has_value()) {
