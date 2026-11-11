@@ -207,7 +207,6 @@ void RGInstallProgress::updateInterface()
                _donePackages += 1;
                val = ((float)_donePackages) / _numPackages;
                gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(_pbarTotal), val);
-               _donePackagesTotal += 1;
             }
          } else {
             sscanf(line + 3, "%f", &val);
