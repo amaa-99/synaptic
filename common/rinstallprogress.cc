@@ -60,16 +60,13 @@ const char *RInstallProgress::getResultStr(pkgPackageManager::OrderResult res) c
    return "Unknown install result.";
 }
 
-std::optional<pkgPackageManager::OrderResult> RInstallProgress::start(
-   pkgPackageManager *pm,
-   int numPackages,
-   int numPackagesTotal)
+std::optional<pkgPackageManager::OrderResult> RInstallProgress::start(pkgPackageManager *pm, int numPackages)
 {
-   pkgPackageManager::OrderResult res;
+   pkgPackageManager::OrderResult res = pm->DoInstallPreFork();
 
-   res = pm->DoInstallPreFork();
-   if (res == pkgPackageManager::Failed)
+   if (res == pkgPackageManager::Failed) {
       return res;
+   }
 
    _child_id = fork();
 
