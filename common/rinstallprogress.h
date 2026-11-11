@@ -49,7 +49,7 @@ class RInstallProgress
    bool _updateFinished;
 
    // get a str feed to the user with the result of the install run
-   virtual const char *getResultStr(pkgPackageManager::OrderResult);
+   virtual const char *getResultStr(pkgPackageManager::OrderResult) const;
 
  public:
 
