@@ -330,12 +330,9 @@ RGDebInstallProgress::~RGDebInstallProgress()
    g_object_unref(_cssProvider);
 }
 
-RGDebInstallProgress::RGDebInstallProgress(RGMainWindow *main,
-                                           RPackageLister *lister)
-
+RGDebInstallProgress::RGDebInstallProgress(RGMainWindow *main, RPackageLister *lister)
    : RInstallProgress(), RGGtkBuilderWindow(main, "rgdebinstall_progress"),
-     _totalActions(0), _progress(0), _userDialog(0)
-
+     _userDialog(0), _progress(0), _totalActions(0)
 {
    // timeout in sec until the expander is expanded
    // (bigger nowdays because of the gconf stuff)
