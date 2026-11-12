@@ -3,6 +3,7 @@ Section: admin
 Priority: optional
 Maintainer: Michael Vogt <mvo@debian.org>
 Build-Depends: debhelper-compat (= 12),
+               devscripts,
                desktop-file-utils,
                gettext,
                libapt-pkg-dev,
