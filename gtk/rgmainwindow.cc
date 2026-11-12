@@ -842,12 +842,10 @@ static void setActionShortcut(RGMainWindow *me,
                                                (GClosureNotify)g_free));
 }
 
-RGMainWindow::RGMainWindow(GtkApplication *app,
-                           RPackageLister *packLister,
-                           string name)
+RGMainWindow::RGMainWindow(GtkApplication *app, RPackageLister *packLister, string name)
    : RGGtkBuilderWindow(NULL, name), _lister(packLister), _pkgList(0),
      _treeView(0), _tasksWin(0), _iconLegendPanel(0), _pkgDetails(0),
-     _logView(0), _installProgress(0), _fetchProgress(0), _fastSearchEventID(-1)
+     _logView(0), _fetchProgress(0), _installProgress(0), _fastSearchEventID(-1)
 {
    assert(window());
    gtk_application_add_window(GTK_APPLICATION(app), GTK_WINDOW(window()));
