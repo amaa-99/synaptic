@@ -23,6 +23,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           path: source
+          fetch-depth: 0
 
       - name: Set the version
         id: version
@@ -124,9 +125,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          echo "PACKAGE=[${PACKAGE}] VERSION=[${VERSION}]"
-          pwd
-          gh release view "v${VERSION}" >/dev/null 2>&1 || gh release create "v${VERSION}" --generate-notes
+          cd source
+          NOTES_FILE="$RUNNER_TEMP/release-notes.txt"
+          #git log -n 20 --color --pretty=format:"%Cblue%ai, %an%n%Cgreen%B" > "$NOTES_FILE"
+          #git log --oneline > "$NOTES_FILE"
+          git log -n 20 --pretty=format:"%h: %ai, %an%n%B" > "$NOTES_FILE"
+          cat "$NOTES_FILE"
+          cd ..
+          gh release view "v${VERSION}" >/dev/null 2>&1 || gh release create "v${VERSION}" --notes-file "$NOTES_FILE"
           gh release upload "v${VERSION}" *.deb --clobber
 
       - name: Update Packages index
