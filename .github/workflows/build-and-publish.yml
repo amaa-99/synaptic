@@ -69,7 +69,7 @@ jobs:
           # Update the changelog version to match tag
           dch -v "${VERSION}-1" "Release ${VERSION}"
           # Build
-          dpkg-buildpackage -G -us -uc -j4 -z9 -I.* -ICMakeLists.txt -ICMakePresets.json
+          dpkg-buildpackage -G -us -uc --jobs=auto -z9 -I.* -ICMakeLists.txt -ICMakePresets.json
 
       - name: Import GPG key
         env:
@@ -127,10 +127,13 @@ jobs:
         run: |
           cd source
           NOTES_FILE="$RUNNER_TEMP/release-notes.txt"
-          #git log -n 20 --color --pretty=format:"%Cblue%ai, %an%n%Cgreen%B" > "$NOTES_FILE"
-          #git log --oneline > "$NOTES_FILE"
-          git log -n 20 --pretty=format:"%h: %ai, %an%n%B" > "$NOTES_FILE"
-          cat "$NOTES_FILE"
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || true)
+          if [ -n "$PREV_TAG" ]; then
+            RANGE="$PREV_TAG..HEAD"
+            git log "$RANGE" --pretty=format:"%h: %B" > "$NOTES_FILE"
+          else
+            git log -n 20 --pretty=format:"%h: %B" > "$NOTES_FILE"
+          fi
           cd ..
           gh release view "v${VERSION}" >/dev/null 2>&1 || gh release create "v${VERSION}" --notes-file "$NOTES_FILE"
           gh release upload "v${VERSION}" *.deb --clobber
