@@ -80,11 +80,12 @@ typedef struct
 
 class RPackage
 {
-
  public:
+
    RPackageLister *_lister;
 
  protected:
+
    std::string fullname;
    pkgRecords *_records;
    pkgDepCache *_depcache;
@@ -97,6 +98,7 @@ class RPackage
    int _boolFlags;
 
  public:
+
    enum Flags {
       FKeep = 1 << 0,
       FInstall = 1 << 1,
@@ -126,7 +128,7 @@ class RPackage
 
    enum UpdateImportance { IUnknown, INormal, ICritical, ISecurity };
 
-   pkgCache::PkgIterator *package()
+   pkgCache::PkgIterator *package() const
    {
       return _package;
    }
@@ -147,68 +149,68 @@ class RPackage
    std::string summary() const;
    std::string description() const;
 
-   std::string installedFiles();
-   std::string arch();
+   std::string installedFiles() const;
+   std::string arch() const;
 
    // package is also available for the native architecture
    // (note that packages installed are never considered a duplicate
-   bool isMultiArchDuplicate();
+   bool isMultiArchDuplicate() const;
 
    // get changelog file from the debian server
-   std::string getChangelogFile(pkgAcquire *fetcher);
+   std::string getChangelogFile(pkgAcquire *fetcher) const;
    // get screenshot file from the debian server
-   std::string getScreenshotFile(pkgAcquire *fetcher, bool thumb = true);
+   std::string getScreenshotFile(pkgAcquire *fetcher, bool thumb = true) const;
 
-   std::vector<std::string> provides();
+   std::vector<std::string> provides() const;
 
    // get all available versions (version, release)
-   std::vector<std::pair<std::string, std::string>> getAvailableVersions();
+   std::vector<std::pair<std::string, std::string>> getAvailableVersions() const;
 
    // get origins url of the package (e.g. http://security.ubuntu.com)
-   std::vector<std::string> getCandidateOriginSiteUrls();
+   std::vector<std::string> getCandidateOriginSiteUrls() const;
    // get origin "archive" release header (e.g. karmic, karmic-updates)
-   std::vector<std::string> getCandidateOriginSuites();
+   std::vector<std::string> getCandidateOriginSuites() const;
    // get origin "origin" release header (e.g. Ubuntu,
-   std::string getCandidateOriginStr();
+   std::string getCandidateOriginStr() const;
 
    // get installed component (like main, contrib, non-free)
-   std::string component();
+   std::string component() const;
 
    // get label of download site
-   std::string label();
+   std::string label() const;
 
    // get origin (Origin tag from the release file)
-   std::string origin();
+   std::string origin() const;
 
    std::string maintainer() const;
    std::string homepage() const;
 
-   const char *installedVersion();
-   long installedSize();
+   const char *installedVersion() const;
+   long installedSize() const;
 
    // sourcepkg
    std::string srcPackage() const;
 
    // relative to version that would be installed
-   const char *availableVersion();
-   pkgCache::VerIterator availableVersionIter();
-   long availableInstalledSize();
-   long availablePackageSize();
+   const char *availableVersion() const;
+   pkgCache::VerIterator availableVersionIter() const;
+   long availableInstalledSize() const;
+   long availablePackageSize() const;
 
    // does the pkg depends on this one?
-   bool dependsOn(const char *pkgname);
+   bool dependsOn(const char *pkgname) const;
 
    // getDeps of installed pkg
-   std::vector<DepInformation> enumDeps(bool useCanidateVersion = false);
+   std::vector<DepInformation> enumDeps(bool useCanidateVersion = false) const;
 
    // reverse dependencies
-   std::vector<DepInformation> enumRDeps();
+   std::vector<DepInformation> enumRDeps() const;
 
    int getFlags() const;
 
-   bool wouldBreak();
+   bool wouldBreak() const;
 
-   bool isTrusted();
+   bool isTrusted() const;
 
    void setKeep();
    void setInstall();
