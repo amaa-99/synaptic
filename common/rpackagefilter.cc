@@ -137,11 +137,11 @@ bool RSectionPackageFilter::read(Configuration &conf, string key)
    return true;
 }
 
-bool RPatternPackageFilter::filterName(Pattern pat, RPackage *pkg)
+bool RPatternPackageFilter::filterName(const Pattern &pat, const RPackage &pkg)
 {
    bool found = true;
 
-   const char *name = pkg->name();
+   const char *name = pkg.name();
    // if we want "real" nouseregexp support, we need to split the string
    // here like we do with regexp
    //              if(!useregexp) {
@@ -157,13 +157,13 @@ bool RPatternPackageFilter::filterName(Pattern pat, RPackage *pkg)
    return found;
 }
 
-bool RPatternPackageFilter::filterVersion(Pattern pat, RPackage *pkg)
+bool RPatternPackageFilter::filterVersion(const Pattern &pat, const RPackage &pkg)
 {
    bool found = true;
 
-   const char *version = pkg->availableVersion();
+   const char *version = pkg.availableVersion();
    if (version == NULL) {
-      version = pkg->installedVersion();
+      version = pkg.installedVersion();
    }
 
    if (version != NULL) {
@@ -179,10 +179,10 @@ bool RPatternPackageFilter::filterVersion(Pattern pat, RPackage *pkg)
    return found;
 }
 
-bool RPatternPackageFilter::filterDescription(Pattern pat, const RPackage *pkg)
+bool RPatternPackageFilter::filterDescription(const Pattern &pat, const RPackage &pkg)
 {
-   std::string summary = pkg->summary();
-   std::string description = pkg->description();
+   std::string summary = pkg.summary();
+   std::string description = pkg.description();
 
    for (const regex_t *regexp : pat.regexps)
    {
@@ -198,9 +198,9 @@ bool RPatternPackageFilter::filterDescription(Pattern pat, const RPackage *pkg)
    return true;
 }
 
-bool RPatternPackageFilter::filterMaintainer(Pattern pat, const RPackage *pkg)
+bool RPatternPackageFilter::filterMaintainer(const Pattern &pat, const RPackage &pkg)
 {
-   std::string maintainer = pkg->maintainer();
+   std::string maintainer = pkg.maintainer();
 
    for (const regex_t *regexp : pat.regexps)
    {
@@ -213,11 +213,9 @@ bool RPatternPackageFilter::filterMaintainer(Pattern pat, const RPackage *pkg)
    return true;
 }
 
-bool RPatternPackageFilter::filterDepends(Pattern pat,
-                                          RPackage *pkg,
-                                          pkgCache::Dep::DepType filterType)
+bool RPatternPackageFilter::filterDepends(const Pattern &pat, const RPackage &pkg, pkgCache::Dep::DepType filterType)
 {
-   vector<DepInformation> deps = pkg->enumDeps();
+   vector<DepInformation> deps = pkg.enumDeps();
 
    if (pat.regexps.size() == 0) {
       return true;
@@ -233,10 +231,10 @@ bool RPatternPackageFilter::filterDepends(Pattern pat,
    return false;
 }
 
-bool RPatternPackageFilter::filterProvides(Pattern pat, RPackage *pkg)
+bool RPatternPackageFilter::filterProvides(const Pattern &pat, const RPackage &pkg)
 {
    bool found = false;
-   vector<string> provides = pkg->provides();
+   vector<string> provides = pkg.provides();
 
    if (pat.regexps.size() == 0) {
       return true;
@@ -251,9 +249,9 @@ bool RPatternPackageFilter::filterProvides(Pattern pat, RPackage *pkg)
    return found;
 }
 
-bool RPatternPackageFilter::filterRDepends(Pattern pat, RPackage *pkg)
+bool RPatternPackageFilter::filterRDepends(const Pattern &pat, const RPackage &pkg)
 {
-   vector<DepInformation> deps = pkg->enumRDeps();
+   vector<DepInformation> deps = pkg.enumRDeps();
 
    if (pat.regexps.size() == 0) {
       return true;
@@ -267,10 +265,10 @@ bool RPatternPackageFilter::filterRDepends(Pattern pat, RPackage *pkg)
    return false;
 }
 
-bool RPatternPackageFilter::filterOrigin(Pattern pat, RPackage *pkg)
+bool RPatternPackageFilter::filterOrigin(const Pattern &pat, const RPackage &pkg)
 {
    bool found = false;
-   vector<string> origins = pkg->getCandidateOriginSiteUrls();
+   vector<string> origins = pkg.getCandidateOriginSiteUrls();
 
    if (pat.regexps.size() == 0) {
       return true;
@@ -286,11 +284,11 @@ bool RPatternPackageFilter::filterOrigin(Pattern pat, RPackage *pkg)
    return found;
 }
 
-bool RPatternPackageFilter::filterComponent(Pattern pat, RPackage *pkg)
+bool RPatternPackageFilter::filterComponent(const Pattern &pat, const RPackage &pkg)
 {
    bool found = false;
    string origin;
-   origin = pkg->component();
+   origin = pkg.component();
 
    if (pat.regexps.size() == 0) {
       return true;
@@ -305,6 +303,8 @@ bool RPatternPackageFilter::filterComponent(Pattern pat, RPackage *pkg)
 
 bool RPatternPackageFilter::filter(RPackage *pkg)
 {
+   if (pkg == nullptr) g_error("Null pkg in RPatternPackageFilter::filter()!\n");   // Exit with error.
+
    if (_patterns.empty()) return true;
 
    bool found;
@@ -312,58 +312,19 @@ bool RPatternPackageFilter::filter(RPackage *pkg)
    for (const Pattern &pattern : _patterns)
    {
       switch (pattern.where) {
-         case Name: {
-            found = filterName(pattern, pkg);
-            break;
-         }
-         case Description: {
-            found = filterDescription(pattern, pkg);
-            break;
-         }
-         case Maintainer: {
-            found = filterMaintainer(pattern, pkg);
-            break;
-         }
-         case Version: {
-            found = filterVersion(pattern, pkg);
-            break;
-         }
-         case Depends: {
-            found = filterDepends(pattern, pkg, pkgCache::Dep::Depends);
-            break;
-         }
-         case Conflicts: {
-            found = filterDepends(pattern, pkg, pkgCache::Dep::Conflicts);
-            break;
-         }
-         case Replaces: {
-            found = filterDepends(pattern, pkg, pkgCache::Dep::Replaces);
-            break;
-         }
-         case Recommends: {
-            found = filterDepends(pattern, pkg, pkgCache::Dep::Recommends);
-            break;
-         }
-         case Suggests: {
-            found = filterDepends(pattern, pkg, pkgCache::Dep::Suggests);
-            break;
-         }
-         case Provides: {
-            found = filterProvides(pattern, pkg);
-            break;
-         }
-         case RDepends: {
-            found = filterRDepends(pattern, pkg);
-            break;
-         }
-         case Origin: {
-            found = filterOrigin(pattern, pkg);
-            break;
-         }
-         case Component: {
-            found = filterComponent(pattern, pkg);
-            break;
-         }
+         case Name:        { found = filterName(pattern, *pkg); break; }
+         case Description: { found = filterDescription(pattern, *pkg); break; }
+         case Maintainer:  { found = filterMaintainer(pattern, *pkg); break; }
+         case Version:     { found = filterVersion(pattern, *pkg); break; }
+         case Depends:     { found = filterDepends(pattern, *pkg, pkgCache::Dep::Depends); break; }
+         case Conflicts:   { found = filterDepends(pattern, *pkg, pkgCache::Dep::Conflicts); break; }
+         case Replaces:    { found = filterDepends(pattern, *pkg, pkgCache::Dep::Replaces); break; }
+         case Recommends:  { found = filterDepends(pattern, *pkg, pkgCache::Dep::Recommends); break; }
+         case Suggests:    { found = filterDepends(pattern, *pkg, pkgCache::Dep::Suggests); break; }
+         case Provides:    { found = filterProvides(pattern, *pkg); break; }
+         case RDepends:    { found = filterRDepends(pattern, *pkg); break; }
+         case Origin:      { found = filterOrigin(pattern, *pkg); break; }
+         case Component:   { found = filterComponent(pattern, *pkg); break; }
          default: {
             g_error("Unknown where %u in RPatternPackageFilter::filter!\n", pattern.where);   // Exit with error.
          }
