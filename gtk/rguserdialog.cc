@@ -119,54 +119,59 @@ bool RGUserDialog::showErrors()
    return true;
 }
 
-bool RGUserDialog::message(const char *msg,
-                           RUserDialog::DialogType dialog,
-                           RUserDialog::ButtonsType buttons,
-                           bool defaultResponse)
+bool RGUserDialog::message(const char *msg, RUserDialog::DialogType dialog, RUserDialog::ButtonsType buttons, bool defaultResponse)
 {
-   GtkWidget *dia;
-   GtkResponseType res;
    GtkMessageType gtkmessage;
    GtkButtonsType gtkbuttons;
 
    switch (dialog) {
-      case RUserDialog::DialogInfo:
+      case RUserDialog::DialogInfo: {
          gtkmessage = GTK_MESSAGE_INFO;
          gtkbuttons = GTK_BUTTONS_CLOSE;
          break;
-      case RUserDialog::DialogWarning:
+      }
+      case RUserDialog::DialogWarning: {
          gtkmessage = GTK_MESSAGE_WARNING;
          gtkbuttons = GTK_BUTTONS_CLOSE;
          break;
-      case RUserDialog::DialogError:
+      }
+      case RUserDialog::DialogError: {
          gtkmessage = GTK_MESSAGE_ERROR;
          gtkbuttons = GTK_BUTTONS_CLOSE;
          break;
-      case RUserDialog::DialogQuestion:
+      }
+      case RUserDialog::DialogQuestion: {
          gtkmessage = GTK_MESSAGE_QUESTION;
          gtkbuttons = GTK_BUTTONS_YES_NO;
          break;
+      }
+      default: {
+         g_error("Unexpected DialogType %u in RGUserDialog::message!\n", dialog);   // Exit with error.
+      }
    }
 
    switch (buttons) {
-      case RUserDialog::ButtonsDefault:
+      case RUserDialog::ButtonsDefault: {
          break;
-      case RUserDialog::ButtonsOk:
+      }
+      case RUserDialog::ButtonsOk: {
          gtkbuttons = GTK_BUTTONS_CLOSE;
          break;
-      case RUserDialog::ButtonsOkCancel:
+      }
+      case RUserDialog::ButtonsOkCancel: {
          gtkbuttons = GTK_BUTTONS_OK_CANCEL;
          break;
-      case RUserDialog::ButtonsYesNo:
+      }
+      case RUserDialog::ButtonsYesNo: {
          gtkbuttons = GTK_BUTTONS_YES_NO;
          break;
+      }
+      default: {
+         g_error("Unexpected ButtonsType %u in RGUserDialog::message!\n", dialog);   // Exit with error.
+      }
    }
 
-   dia = gtk_message_dialog_new(GTK_WINDOW(_parentWindow),
-                                GTK_DIALOG_DESTROY_WITH_PARENT,
-                                gtkmessage,
-                                gtkbuttons,
-                                NULL);
+   GtkWidget *dia = gtk_message_dialog_new(GTK_WINDOW(_parentWindow), GTK_DIALOG_DESTROY_WITH_PARENT, gtkmessage, gtkbuttons, NULL);
    gtk_window_set_icon_name(GTK_WINDOW(dia), "synaptic");
 
    gtk_message_dialog_set_markup(GTK_MESSAGE_DIALOG(dia), utf8(msg));
@@ -174,15 +179,11 @@ bool RGUserDialog::message(const char *msg,
 
    switch (buttons) {
       case RUserDialog::ButtonsOkCancel: {
-         gtk_dialog_set_default_response(GTK_DIALOG(dia),
-                                         defaultResponse ? GTK_RESPONSE_OK
-                                                         : GTK_RESPONSE_CANCEL);
+         gtk_dialog_set_default_response(GTK_DIALOG(dia), defaultResponse ? GTK_RESPONSE_OK : GTK_RESPONSE_CANCEL);
          break;
       }
       case RUserDialog::ButtonsYesNo: {
-         gtk_dialog_set_default_response(GTK_DIALOG(dia),
-                                         defaultResponse ? GTK_RESPONSE_YES
-                                                         : GTK_RESPONSE_NO);
+         gtk_dialog_set_default_response(GTK_DIALOG(dia), defaultResponse ? GTK_RESPONSE_YES : GTK_RESPONSE_NO);
          break;
       }
       default: {
@@ -190,13 +191,13 @@ bool RGUserDialog::message(const char *msg,
       }
    }
 
-   g_signal_connect(
-      G_OBJECT(dia), "response", G_CALLBACK(actionResponse), (gpointer)&res);
+   GtkResponseType res;
+   g_signal_connect(G_OBJECT(dia), "response", G_CALLBACK(actionResponse), (gpointer) &res);
 
    gtk_dialog_run(GTK_DIALOG(dia));
    gtk_widget_destroy(dia);
-   return (res == GTK_RESPONSE_OK) || (res == GTK_RESPONSE_YES) ||
-          (res == GTK_RESPONSE_CLOSE);
+
+   return (res == GTK_RESPONSE_OK) || (res == GTK_RESPONSE_YES) || (res == GTK_RESPONSE_CLOSE);
 }
 
 // RGGtkBuilderUserDialog
