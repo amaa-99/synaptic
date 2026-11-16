@@ -170,15 +170,38 @@ subdir('man')
 subdir('help')
 subdir('tests')
 
-resources = gnome.compile_resources(
-  'resources',
+# Compile the GTK resource XML into a binary .gresource bundle (rather than generating C source).
+resource_bundle = gnome.compile_resources(
+  'synaptic',
   'gtk/gtkbuilder/synaptic.gresource.xml',
-  source_dir: 'gtk'
+  source_dir: 'gtk',
+  gresource_bundle: true
+)
+
+ld = find_program('ld', required: true)
+
+# Convert the bundle file to an object (.o) file.
+# Note: ld creates the _binary_..._start, _end, and _size symbols.
+resource_raw_obj = custom_target(
+  'app-resources-raw-object',
+  input: resource_bundle,
+  output: 'synaptic.gresource.raw.o',
+  command: [ld, '-r', '-b', 'binary', '-o', '@OUTPUT@', '@INPUT@'],
+)
+
+objcopy = find_program('objcopy', required: true)
+
+# Rename the resource data section to .rodata and mark it read-only.
+resource_obj = custom_target(
+  'app-resources-object',
+  input: resource_raw_obj,
+  output: 'synaptic.gresource.o',
+  command: [objcopy, '--rename-section', '.data=.rodata,alloc,load,readonly,data,contents', '@INPUT@', '@OUTPUT@'],
 )
 
 executable(
   'synaptic',
-  common_sources + gui_sources + resources,
+  common_sources + gui_sources + resource_obj,
   install: true,
   install_dir: bindir,
   cpp_args: gtk_cpp_args,

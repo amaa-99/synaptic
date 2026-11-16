@@ -392,6 +392,10 @@ void check_and_aquire_lock()
    }
 }
 
+// The GTK resources are embedded in the application as a binary blog.
+extern "C" const byte _binary_synaptic_gresource_start;
+extern "C" const byte _binary_synaptic_gresource_end;
+
 int main(int argc, char **argv)
 {
 #ifdef ENABLE_NLS
@@ -400,20 +404,33 @@ int main(int argc, char **argv)
    textdomain(GETTEXT_PACKAGE);
 #endif
 
-   GtkApplication *app = gtk_application_new("io.github.mvo5.synaptic",
-                                             G_APPLICATION_DEFAULT_FLAGS);
+   size_t gresource_size = reinterpret_cast<uintptr_t>(&_binary_synaptic_gresource_end) - reinterpret_cast<uintptr_t>(&_binary_synaptic_gresource_start);
+   GBytes *gresource_bytes = g_bytes_new_static(&_binary_synaptic_gresource_start, gresource_size);
+
+   GResource *gresource = g_resource_new_from_data(gresource_bytes, nullptr);
+
+   if (gresource == nullptr)
+   {
+      g_error("Could not create the resources!\n"); // Exit with error.
+   }
+
+   g_bytes_unref(gresource_bytes);
+   g_resources_register(gresource);
+
+   GtkApplication *app = gtk_application_new("io.github.mvo5.synaptic", G_APPLICATION_DEFAULT_FLAGS);
 
    g_application_add_main_option_entries(G_APPLICATION(app), option_entries);
 
    g_signal_connect(app, "startup", G_CALLBACK(applicationStartup), nullptr);
-   g_signal_connect(app,
-                    "handle-local-options",
-                    G_CALLBACK(applicationHandleLocalOptions),
-                    nullptr);
+   g_signal_connect(app, "handle-local-options", G_CALLBACK(applicationHandleLocalOptions), nullptr);
    g_signal_connect(app, "activate", G_CALLBACK(applicationActivate), nullptr);
 
    int status = g_application_run(G_APPLICATION(app), argc, argv);
+
    g_object_unref(app);
+
+   g_resources_unregister(gresource);
+   g_resource_unref(gresource);
 
    return status;
 }
