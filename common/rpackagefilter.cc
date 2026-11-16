@@ -40,6 +40,7 @@
 #include <cstring>
 #include <fnmatch.h>
 #include <fstream>
+#include <glib.h>
 #include <iostream>
 #include <regex.h>
 #include <stdlib.h>
@@ -76,18 +77,15 @@ int RSectionPackageFilter::count()
    return _groups.size();
 }
 
-
 bool RSectionPackageFilter::inclusive()
 {
    return _inclusive;
 }
 
-
 string RSectionPackageFilter::section(int index)
 {
    return _groups[index];
 }
-
 
 void RSectionPackageFilter::clear()
 {
@@ -122,7 +120,6 @@ bool RSectionPackageFilter::write(ofstream &out, string pad)
    return true;
 }
 
-
 bool RSectionPackageFilter::read(Configuration &conf, string key)
 {
    const Configuration::Item *top;
@@ -139,7 +136,6 @@ bool RSectionPackageFilter::read(Configuration &conf, string key)
 
    return true;
 }
-
 
 bool RPatternPackageFilter::filterName(Pattern pat, RPackage *pkg)
 {
@@ -160,7 +156,6 @@ bool RPatternPackageFilter::filterName(Pattern pat, RPackage *pkg)
    }
    return found;
 }
-
 
 bool RPatternPackageFilter::filterVersion(Pattern pat, RPackage *pkg)
 {
@@ -310,77 +305,90 @@ bool RPatternPackageFilter::filterComponent(Pattern pat, RPackage *pkg)
 
 bool RPatternPackageFilter::filter(RPackage *pkg)
 {
+   if (_patterns.empty()) return true;
+
    bool found;
-   //   bool and_mode = _config->FindB("Synaptic::Filters::andMode", true);
-   bool globalfound = and_mode;
 
-   if (_patterns.size() == 0)
-      return true;
-
-   for (vector<Pattern>::const_iterator iter = _patterns.begin();
-        iter != _patterns.end();
-        iter++) {
-
-      Pattern pat = (*iter);
-      switch (iter->where) {
-         case Name:
-            found = filterName(pat, pkg);
+   for (const Pattern &pattern : _patterns)
+   {
+      switch (pattern.where) {
+         case Name: {
+            found = filterName(pattern, pkg);
             break;
-         case Description:
-            found = filterDescription(pat, pkg);
+         }
+         case Description: {
+            found = filterDescription(pattern, pkg);
             break;
-         case Maintainer:
-            found = filterMaintainer(pat, pkg);
+         }
+         case Maintainer: {
+            found = filterMaintainer(pattern, pkg);
             break;
-         case Version:
-            found = filterVersion(pat, pkg);
+         }
+         case Version: {
+            found = filterVersion(pattern, pkg);
             break;
-         case Depends:
-            found = filterDepends(pat, pkg, pkgCache::Dep::Depends);
+         }
+         case Depends: {
+            found = filterDepends(pattern, pkg, pkgCache::Dep::Depends);
             break;
-         case Conflicts:
-            found = filterDepends(pat, pkg, pkgCache::Dep::Conflicts);
+         }
+         case Conflicts: {
+            found = filterDepends(pattern, pkg, pkgCache::Dep::Conflicts);
             break;
-         case Replaces:
-            found = filterDepends(pat, pkg, pkgCache::Dep::Replaces);
+         }
+         case Replaces: {
+            found = filterDepends(pattern, pkg, pkgCache::Dep::Replaces);
             break;
-         case Recommends:
-            found = filterDepends(pat, pkg, pkgCache::Dep::Recommends);
+         }
+         case Recommends: {
+            found = filterDepends(pattern, pkg, pkgCache::Dep::Recommends);
             break;
-         case Suggests:
-            found = filterDepends(pat, pkg, pkgCache::Dep::Suggests);
+         }
+         case Suggests: {
+            found = filterDepends(pattern, pkg, pkgCache::Dep::Suggests);
             break;
-         case Provides:
-            found = filterProvides(pat, pkg);
+         }
+         case Provides: {
+            found = filterProvides(pattern, pkg);
             break;
-         case RDepends:
-            found = filterRDepends(pat, pkg);
+         }
+         case RDepends: {
+            found = filterRDepends(pattern, pkg);
             break;
-         case Origin:
-            found = filterOrigin(pat, pkg);
+         }
+         case Origin: {
+            found = filterOrigin(pattern, pkg);
             break;
-         case Component:
-            found = filterComponent(pat, pkg);
+         }
+         case Component: {
+            found = filterComponent(pattern, pkg);
             break;
-         default:
-            cerr << "unknown pattern package filter (shouldn't happen) "
-                 << endl;
+         }
+         default: {
+            g_error("Unknown where %u in RPatternPackageFilter::filter\n", pattern.where);   // Exit with error.
+         }
       }
 
       // each filter is applied in AND fasion
       // that means a include depends "mono" and include name "sharp"
       // results in all packages that depends on "mono" AND have sharp in name
-      if (iter->exclusive) {
+
+      if (pattern.exclusive) {
          found = !found;
       }
 
-      if (and_mode)
-         globalfound &= found;
-      else
-         globalfound |= found;
+      if (and_mode) {
+         if (!found) return false;  // In the AND mode, return on the first mismatch.
+      } else {
+         if (found) return true;    // In the OR mode, return on the first match.
+      }
    }
 
-   return globalfound;
+   if (and_mode) {
+      return true;   // All filters matched.
+   } else {
+      return false;  // No filter matched.
+   }
 }
 
 void RPatternPackageFilter::addPattern(DepType type,
