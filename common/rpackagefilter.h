@@ -42,7 +42,7 @@ class RPackageFilter
 
    virtual const char *type() = 0;
 
-   virtual bool filter(RPackage *pkg) = 0;
+   virtual bool filter(const RPackage &pkg) const = 0;
    virtual void reset() = 0;
 
    virtual bool read(Configuration &conf, std::string key) = 0;
@@ -98,7 +98,7 @@ class RSectionPackageFilter final : public RPackageFilter
    int count();
    std::string section(int index);
    void clear();
-   bool filter(RPackage *pkg) override;
+   bool filter(const RPackage &pkg) const override;
    bool read(Configuration &conf, std::string key) override;
    bool write(std::ofstream &out, std::string pad) override;
 };
@@ -200,7 +200,7 @@ class RPatternPackageFilter final : public RPackageFilter
       and_mode = b;
    }
 
-   bool filter(RPackage *pkg) override;
+   bool filter(const RPackage &pkg) const override;
    bool read(Configuration &conf, std::string key) override;
    bool write(std::ofstream &out, std::string pad) override;
 };
@@ -258,7 +258,7 @@ class RStatusPackageFilter final : public RPackageFilter
       return _status;
    }
 
-   bool filter(RPackage *pkg) override;
+   bool filter(const RPackage &pkg) const override;
    bool read(Configuration &conf, std::string key) override;
    bool write(std::ofstream &out, std::string pad) override;
 };
@@ -280,7 +280,7 @@ class RPriorityPackageFilter final : public RPackageFilter
       return RPFPriority;
    }
 
-   bool filter(RPackage *pkg) override;
+   bool filter(const RPackage &pkg) const override;
    bool read(Configuration &conf, std::string key) override;
    bool write(std::ofstream &out, std::string pad) override;
 };
@@ -316,7 +316,7 @@ class RReducedViewPackageFilter final : public RPackageFilter
       return RPFReducedView;
    }
 
-   bool filter(RPackage *pkg) override;
+   bool filter(const RPackage &pkg) const override;
    bool read(Configuration &conf, std::string key) override;
    bool write(std::ofstream &out, std::string pad) override;
 };
@@ -348,7 +348,7 @@ class RFilePackageFilter final : public RPackageFilter
 
    bool addFile(std::string file);
 
-   bool filter(RPackage *pkg) override;
+   bool filter(const RPackage &pkg) const override;
    bool read(Configuration &conf, std::string key) override;
    bool write(std::ofstream &out, std::string pad) override;
 };
@@ -365,7 +365,7 @@ struct RFilter final
 
    bool read(Configuration &conf, std::string key);
    bool write(std::ofstream &out);
-   bool apply(RPackage *package);
+   bool apply(const RPackage &package);
    void reset();
 
    RSectionPackageFilter section;
