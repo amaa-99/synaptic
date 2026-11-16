@@ -158,32 +158,45 @@ configure_file("${CONFIG_H_IN}" "${CONFIG_H}")
 include_directories("${PROJECT_BINARY_DIR}")
 
 ####################
-# Pre-compile the gtkbuilder resources into a C source file
+# Pre-compile the gtkbuilder resources into an object (.o) file
 
 find_program(GLIB_COMPILE_RESOURCES glib-compile-resources REQUIRED)
 
 set(GRESOURCE_XML "${CMAKE_CURRENT_SOURCE_DIR}/gtk/gtkbuilder/synaptic.gresource.xml")
-set(GRESOURCE_C "${CMAKE_CURRENT_BINARY_DIR}/synaptic.gresource.c")
-
 file(GLOB GTK_RESOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/gtk/gtkbuilder/*.ui")
 
+set(GRESOURCE_BIN "synaptic.gresource")
+set(GRESOURCE_OBJ "synaptic.gresource.o")
+
 add_custom_command(
-    OUTPUT ${GRESOURCE_C}
+    COMMENT "Compiling the gtk resources to ${GRESOURCE_BIN}"
+    OUTPUT "${GRESOURCE_BIN}"
     DEPENDS ${GLIB_COMPILE_RESOURCES} ${GRESOURCE_XML} ${GTK_RESOURCES}
-    COMMAND ${GLIB_COMPILE_RESOURCES} --generate-source --target=${GRESOURCE_C} --sourcedir=${CMAKE_CURRENT_SOURCE_DIR}/gtk ${GRESOURCE_XML}
-    COMMENT "Compiling the gtk resources to ${GRESOURCE_C}"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    COMMAND ${GLIB_COMPILE_RESOURCES} --target=${PROJECT_BINARY_DIR}/${GRESOURCE_BIN} --sourcedir=${CMAKE_CURRENT_SOURCE_DIR}/gtk ${GRESOURCE_XML}
+    VERBATIM
+)
+
+add_custom_command(
+    COMMENT "Converting the binary .gresource to the object file ${PROJECT_BINARY_DIR}/${GRESOURCE_OBJ}"
+    OUTPUT ${PROJECT_BINARY_DIR}/${GRESOURCE_OBJ}
+    DEPENDS ${PROJECT_BINARY_DIR}/${GRESOURCE_BIN}
+    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+    COMMAND ld -r -b binary -o ${GRESOURCE_OBJ} ${GRESOURCE_BIN}
+    COMMAND objcopy --rename-section .data=.rodata,alloc,load,readonly,data,contents ${GRESOURCE_OBJ} ${GRESOURCE_OBJ}
     VERBATIM
 )
 
 ####################
 
-add_executable(synaptic)
+add_executable(synaptic "${GRESOURCE_OBJ}")
 
 install(TARGETS synaptic)
 
 file(GLOB_RECURSE COMMON_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/common/*.cc" "${CMAKE_CURRENT_SOURCE_DIR}/common/*.h")
 file(GLOB_RECURSE GUI_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/gtk/*.cc" "${CMAKE_CURRENT_SOURCE_DIR}/gtk/*.h")
 
+#target_sources(synaptic PRIVATE ${CONFIG_H} ${COMMON_SOURCES} ${GUI_SOURCES} ${GRESOURCE_C} ${RESOURCE_SOURCES})
 target_sources(synaptic PRIVATE ${CONFIG_H} ${COMMON_SOURCES} ${GUI_SOURCES} ${GRESOURCE_C} ${RESOURCE_SOURCES})
 
 target_include_directories(synaptic PRIVATE
