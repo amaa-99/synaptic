@@ -139,15 +139,17 @@ class RPatternPackageFilter final : public RPackageFilter
 
    bool and_mode; // patterns are applied in "AND" mode if true, "OR" if false
 
-   inline bool filterName(Pattern pat, RPackage *pkg);
-   inline bool filterVersion(Pattern pat, RPackage *pkg);
-   static bool filterDescription(Pattern pat, const RPackage *pkg);
-   static bool filterMaintainer(Pattern pat, const RPackage *pkg);
-   inline bool filterDepends(Pattern pat, RPackage *pkg, pkgCache::Dep::DepType filterType);
-   inline bool filterProvides(Pattern pat, RPackage *pkg);
-   inline bool filterRDepends(Pattern pat, RPackage *pkg);
-   inline bool filterOrigin(Pattern pat, RPackage *pkg);
-   inline bool filterComponent(Pattern pat, RPackage *pkg);
+ private:
+
+   inline static bool filterName(const Pattern &pat, const RPackage &pkg);
+   inline static bool filterVersion(const Pattern &pat, const RPackage &pkg);
+   inline static bool filterDescription(const Pattern &pat, const RPackage &pkg);
+   inline static bool filterMaintainer(const Pattern &pat, const RPackage &pkg);
+   inline static bool filterDepends(const Pattern &pat, const RPackage &pkg, pkgCache::Dep::DepType filterType);
+   inline static bool filterProvides(const Pattern &pat, const RPackage &pkg);
+   inline static bool filterRDepends(const Pattern &pat, const RPackage &pkg);
+   inline static bool filterOrigin(const Pattern &pat, const RPackage &pkg);
+   inline static bool filterComponent(const Pattern &pat, const RPackage &pkg);
 
  public:
 
