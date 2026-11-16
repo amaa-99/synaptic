@@ -93,12 +93,12 @@ void RSectionPackageFilter::clear()
    _groups.clear();
 }
 
-bool RSectionPackageFilter::filter(RPackage *pkg)
+bool RSectionPackageFilter::filter(const RPackage &pkg) const
 {
-   string sec = pkg->section();
+   string sec = pkg.section();
 
-   for (vector<string>::const_iterator iter = _groups.begin(); iter != _groups.end(); iter++) {
-      if (sec == (*iter)) {
+   for (const string &group : _groups) {
+      if (sec == group) {
          return _inclusive ? true : false;
       }
    }
@@ -301,10 +301,8 @@ bool RPatternPackageFilter::filterComponent(const Pattern &pat, const RPackage &
    return found;
 }
 
-bool RPatternPackageFilter::filter(RPackage *pkg)
+bool RPatternPackageFilter::filter(const RPackage &pkg) const
 {
-   if (pkg == nullptr) g_error("Null pkg in RPatternPackageFilter::filter()!\n");   // Exit with error.
-
    if (_patterns.empty()) return true;
 
    bool found;
@@ -312,19 +310,19 @@ bool RPatternPackageFilter::filter(RPackage *pkg)
    for (const Pattern &pattern : _patterns)
    {
       switch (pattern.where) {
-         case Name:        { found = filterName(pattern, *pkg); break; }
-         case Description: { found = filterDescription(pattern, *pkg); break; }
-         case Maintainer:  { found = filterMaintainer(pattern, *pkg); break; }
-         case Version:     { found = filterVersion(pattern, *pkg); break; }
-         case Depends:     { found = filterDepends(pattern, *pkg, pkgCache::Dep::Depends); break; }
-         case Conflicts:   { found = filterDepends(pattern, *pkg, pkgCache::Dep::Conflicts); break; }
-         case Replaces:    { found = filterDepends(pattern, *pkg, pkgCache::Dep::Replaces); break; }
-         case Recommends:  { found = filterDepends(pattern, *pkg, pkgCache::Dep::Recommends); break; }
-         case Suggests:    { found = filterDepends(pattern, *pkg, pkgCache::Dep::Suggests); break; }
-         case Provides:    { found = filterProvides(pattern, *pkg); break; }
-         case RDepends:    { found = filterRDepends(pattern, *pkg); break; }
-         case Origin:      { found = filterOrigin(pattern, *pkg); break; }
-         case Component:   { found = filterComponent(pattern, *pkg); break; }
+         case Name:        { found = filterName(pattern, pkg); break; }
+         case Description: { found = filterDescription(pattern, pkg); break; }
+         case Maintainer:  { found = filterMaintainer(pattern, pkg); break; }
+         case Version:     { found = filterVersion(pattern, pkg); break; }
+         case Depends:     { found = filterDepends(pattern, pkg, pkgCache::Dep::Depends); break; }
+         case Conflicts:   { found = filterDepends(pattern, pkg, pkgCache::Dep::Conflicts); break; }
+         case Replaces:    { found = filterDepends(pattern, pkg, pkgCache::Dep::Replaces); break; }
+         case Recommends:  { found = filterDepends(pattern, pkg, pkgCache::Dep::Recommends); break; }
+         case Suggests:    { found = filterDepends(pattern, pkg, pkgCache::Dep::Suggests); break; }
+         case Provides:    { found = filterProvides(pattern, pkg); break; }
+         case RDepends:    { found = filterRDepends(pattern, pkg); break; }
+         case Origin:      { found = filterOrigin(pattern, pkg); break; }
+         case Component:   { found = filterComponent(pattern, pkg); break; }
          default: {
             g_error("Unknown where %u in RPatternPackageFilter::filter!\n", pattern.where);   // Exit with error.
          }
@@ -472,9 +470,9 @@ RPatternPackageFilter::~RPatternPackageFilter()
    this->clear();
 }
 
-bool RStatusPackageFilter::filter(RPackage *pkg)
+bool RStatusPackageFilter::filter(const RPackage &pkg) const
 {
-   int flags = pkg->getFlags();
+   int flags = pkg.getFlags();
 
    if (_status & MarkKeep) {
       if (flags & RPackage::FKeep)
@@ -484,111 +482,89 @@ bool RStatusPackageFilter::filter(RPackage *pkg)
    if (_status & MarkInstall) {
       // this is a bit of a hack (to include reinstall here)
       // it would be better to seperate this
-      if ((flags & RPackage::FInstall) || (flags & RPackage::FReInstall))
-         return true;
+      if ((flags & RPackage::FInstall) || (flags & RPackage::FReInstall)) return true;
    }
 
-   if (_status & MarkRemove) {
-      if (flags & RPackage::FRemove)
-         return true;
+   if ((_status & MarkRemove) && (flags & RPackage::FRemove)) {
+      return true;
    }
 
-   if (_status & Installed) {
-      if (flags & RPackage::FInstalled)
-         return true;
+   if ((_status & Installed) && (flags & RPackage::FInstalled)) {
+      return true;
    }
 
-   if (_status & NotInstalled) {
-      if (!(flags & RPackage::FInstalled))
-         return true;
+   if ((_status & NotInstalled) && !(flags & RPackage::FInstalled)) {
+      return true;
    }
 
-   if (_status & Broken) {
-      if (flags & RPackage::FNowBroken || pkg->wouldBreak())
-         return true;
+   if ((_status & Broken) && (flags & RPackage::FNowBroken || pkg.wouldBreak())) {
+      return true;
    }
 
-   if (_status & Upgradable) {
-      if (flags & RPackage::FOutdated)
-         return true;
+   if ((_status & Upgradable) && (flags & RPackage::FOutdated)) {
+      return true;
    }
 
-   if (_status & UpstreamUpgradable) {
-      if (flags & RPackage::FOutdated) {
-         char *s;
-         char instVer[301];
-         char availVer[301];
-         strncpy(instVer, pkg->installedVersion(), 300);
-         strncpy(availVer, pkg->availableVersion(), 300);
+   if ((_status & UpstreamUpgradable) && (flags & RPackage::FOutdated)) {
+      char instVer[301];
+      char availVer[301];
+      strncpy(instVer, pkg.installedVersion(), 300);
+      strncpy(availVer, pkg.availableVersion(), 300);
 
-         // strip from last "-" on
-         s = strrchr(instVer, '-');
-         if (s != NULL)
-            *s = '\0';
-         s = strrchr(availVer, '-');
-         if (s != NULL)
-            *s = '\0';
+      // strip from last "-" on
+      char *s = strrchr(instVer, '-');
+      if (s != NULL) *s = '\0';
+      s = strrchr(availVer, '-');
+      if (s != NULL) *s = '\0';
 
-         if (strcmp(instVer, availVer) != 0)
-            return true;
-      }
-   }
-
-   if (_status & NewPackage) {
-      if (flags & RPackage::FNew)
-         return true;
-   }
-
-   if (_status & OrphanedPackage) {
-      if (flags & RPackage::FOrphaned)
-         return true;
-   }
-
-   if (_status & PinnedPackage) {
-      if (flags & RPackage::FPinned)
-         return true;
-   }
-
-   if (_status & ResidualConfig) {
-      if (flags & RPackage::FResidualConfig) {
+      if (strcmp(instVer, availVer) != 0) {
          return true;
       }
    }
 
-   if (_status & NotInstallable) {
-      if (flags & RPackage::FNotInstallable)
-         return true;
+   if ((_status & NewPackage) && (flags & RPackage::FNew)) {
+      return true;
    }
 
-   if (_status & AutoInstalled) {
-      if (flags & RPackage::FIsAuto)
-         return true;
+   if ((_status & OrphanedPackage) && (flags & RPackage::FOrphaned)) {
+      return true;
    }
 
-   if (_status & Garbage) {
-      if (flags & RPackage::FIsGarbage)
-         return true;
+   if ((_status & PinnedPackage) && (flags & RPackage::FPinned)) {
+      return true;
    }
 
-   if (_status & NowPolicyBroken) {
-      if (!(flags & RPackage::FInstalled)) {
-         pkgCache::DepIterator D;
-         // FIXME: or-dependencies are not considered properly
-         for (D = pkg->package()->RevDependsList(); D.end() == false; D++) {
-            pkgCache::PkgIterator parent = D.ParentPkg();
-            if (parent->CurrentVer != 0) {
-               RPackage *p = pkg->_lister->getPackage(parent);
-               if (p != NULL)
-                  if (p->getFlags() & RPackage::FNowPolicyBroken)
-                     return true;
-            }
+   if ((_status & ResidualConfig) && (flags & RPackage::FResidualConfig)) {
+      return true;
+   }
+
+   if ((_status & NotInstallable) && (flags & RPackage::FNotInstallable)) {
+      return true;
+   }
+
+   if ((_status & AutoInstalled) && (flags & RPackage::FIsAuto)) {
+      return true;
+   }
+
+   if ((_status & Garbage) && (flags & RPackage::FIsGarbage)) {
+      return true;
+   }
+
+   if ((_status & NowPolicyBroken) && !(flags & RPackage::FInstalled)) {
+      // FIXME: or-dependencies are not considered properly
+      for (pkgCache::DepIterator D = pkg.package()->RevDependsList(); D.end() == false; D++) {
+         pkgCache::PkgIterator parent = D.ParentPkg();
+         if (parent->CurrentVer != 0) {
+            RPackage *p = pkg._lister->getPackage(parent);
+            if (p != NULL)
+               if (p->getFlags() & RPackage::FNowPolicyBroken)
+                  return true;
          }
       }
    }
 
-   if (_status & ManualInstalled) {
-      if (!(flags & RPackage::FIsAuto) && (flags & RPackage::FInstalled))
-         return true;
+   if ((_status & ManualInstalled) && !(flags & RPackage::FIsAuto) && (flags & RPackage::FInstalled)) {
+      return true;
    }
 
    return false;
@@ -612,7 +588,7 @@ bool RStatusPackageFilter::read(Configuration &conf, string key)
 }
 
 
-bool RPriorityPackageFilter::filter(RPackage *pkg)
+bool RPriorityPackageFilter::filter(const RPackage &pkg) const
 {
    return true;
 }
@@ -642,27 +618,27 @@ RReducedViewPackageFilter::~RReducedViewPackageFilter()
 
 // Filter out all packages for which there are ShowDependencies that
 // are not installed.
-bool RReducedViewPackageFilter::filter(RPackage *pkg)
+bool RReducedViewPackageFilter::filter(const RPackage &pkg) const
 {
-   const char *name = pkg->name();
-   if (_hide.empty() == false && _hide.find(name) != _hide.end())
+   const char *name = pkg.name();
+
+   if (!_hide.empty() && (_hide.find(name) != _hide.end())) {
+      // The package is in the to be hidden list:
       return false;
-   if (_hide_wildcard.empty() == false) {
-      for (vector<string>::const_iterator I = _hide_wildcard.begin();
-           I != _hide_wildcard.end();
-           I++) {
-         if (fnmatch(I->c_str(), name, 0) == 0)
-            return false;
+   }
+
+   if (!_hide_wildcard.empty()) {
+      for (const string &I : _hide_wildcard) {
+         if (fnmatch(I.c_str(), name, 0) == 0) return false;
       }
    }
-   if (_hide_regex.empty() == false) {
-      for (vector<regex_t *>::const_iterator I = _hide_regex.begin();
-           I != _hide_regex.end();
-           I++) {
-         if (regexec(*I, name, 0, 0, 0) == 0)
-            return false;
+
+   if (!_hide_regex.empty()) {
+      for (vector<regex_t *>::const_iterator I = _hide_regex.begin(); I != _hide_regex.end(); I++) {
+         if (regexec(*I, name, 0, 0, 0) == 0) return false;
       }
    }
+
    return true;
 }
 
@@ -741,11 +717,10 @@ bool RFilePackageFilter::addFile(string file)
    return true;
 }
 
-bool RFilePackageFilter::filter(RPackage *pkg)
+bool RFilePackageFilter::filter(const RPackage &pkg) const
 {
-   if (pkgs.size() == 0)
-      return true;
-   return pkgs.find(pkg->name()) != pkgs.end();
+   if (pkgs.empty()) return true;
+   return pkgs.find(pkg.name()) != pkgs.end();
 }
 
 bool RFilePackageFilter::write(ofstream &out, string pad)
@@ -771,29 +746,17 @@ bool RFilePackageFilter::read(Configuration &conf, string key)
    return true;
 }
 
-bool RFilter::apply(RPackage *package)
+bool RFilter::apply(const RPackage &package)
 {
-   if (!status.filter(package))
-      return false;
-
-   if (!pattern.filter(package))
-      return false;
-
-   if (!section.filter(package))
-      return false;
-
-   if (!priority.filter(package))
-      return false;
-
-   if (!reducedview.filter(package))
-      return false;
-
-   if (!file.filter(package))
-      return false;
+   if (!status.filter(package)) return false;
+   if (!pattern.filter(package)) return false;
+   if (!section.filter(package)) return false;
+   if (!priority.filter(package)) return false;
+   if (!reducedview.filter(package)) return false;
+   if (!file.filter(package)) return false;
 
    return true;
 }
-
 
 void RFilter::reset()
 {
@@ -845,7 +808,6 @@ bool RFilter::read(Configuration &conf, string key)
    return res;
 }
 
-
 bool RFilter::write(ofstream &out)
 {
    bool res = true;
@@ -886,6 +848,3 @@ bool RFilter::write(ofstream &out)
 
    return res;
 }
-
-
-// vim:sts=3:sw=3

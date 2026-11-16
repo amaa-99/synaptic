@@ -350,17 +350,15 @@ void RPackageViewFilter::refreshFilters()
 
 RPackageViewFilter::iterator RPackageViewFilter::begin()
 {
-   //    cout << "RPackageViewFilter::begin() " << _selectedName <<  endl;
-
    string name = _selectedName;
    RFilter *filter = findFilter(name);
 
    if (filter != NULL) {
       _view[name].clear();
-
-      for (unsigned int i = 0; i < _all.size(); i++) {
-         if (_all[i] && filter->apply(_all[i]))
-            _view[name].push_back(_all[i]);
+      for (RPackage *pkg : _all) {
+         if ((pkg != nullptr) && (filter->apply(*pkg))) {
+            _view[name].push_back(pkg);
+         }
       }
       _selectedView = _view[name];
    }
