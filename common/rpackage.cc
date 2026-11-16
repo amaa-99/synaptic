@@ -151,53 +151,41 @@ std::string RPackage::homepage() const
    }
 }
 
-string RPackage::arch()
+string RPackage::arch() const
 {
-   pkgCache::VerIterator ver;
-
-   ver = (*_depcache)[*_package].InstVerIter(*_depcache);
-
+   pkgCache::VerIterator ver = (*_depcache)[*_package].InstVerIter(*_depcache);
    // the arch:all property is part of the version
-   if (ver && ver.Arch())
-      return ver.Arch();
-
+   if (ver && ver.Arch()) return ver.Arch();
    return _package->Arch();
 }
 
-const char *RPackage::installedVersion()
+const char *RPackage::installedVersion() const
 {
-   if ((*_package)->CurrentVer == 0)
-      return NULL;
+   if ((*_package)->CurrentVer == 0) return NULL;
    return _package->CurrentVer().VerStr();
 }
 
-const char *RPackage::availableVersion()
+const char *RPackage::availableVersion() const
 {
    pkgDepCache::StateCache &State = (*_depcache)[*_package];
-   if (State.CandidateVer == 0)
-      return NULL;
+   if (State.CandidateVer == 0) return NULL;
    return State.CandidateVerIter(*_depcache).VerStr();
 }
 
-pkgCache::VerIterator RPackage::availableVersionIter()
+pkgCache::VerIterator RPackage::availableVersionIter() const
 {
    pkgDepCache::StateCache &State = (*_depcache)[*_package];
-   //    if (State.CandidateVer == 0)
-   //       return NULL;
    return State.CandidateVerIter(*_depcache);
 }
 
 std::string RPackage::priority() const
 {
    pkgCache::VerIterator ver = (*_depcache)[*_package].CandidateVerIter(*_depcache);
-   if (!ver.end()) {
-      return ver.PriorityType();
-   } else {
-      return _("Unknown");
-   }
+   if (ver.end()) return _("Unknown");
+   return ver.PriorityType();
 }
 
-string RPackage::installedFiles()
+string RPackage::installedFiles() const
 {
    // Try the normal file name first:
    string f = "/var/lib/dpkg/info/" + string(name()) + ".list";
@@ -205,8 +193,7 @@ string RPackage::installedFiles()
       // Try the multiarch file name next:
       f = "/var/lib/dpkg/info/" + string(name()) + ":" + arch() + ".list";
       if (!FileExists(f)) {
-         return "The list of installed files is only available for installed "
-                "packages!";
+         return "The list of installed files is only available for installed packages!";
       }
    }
 
@@ -235,38 +222,30 @@ string RPackage::installedFiles()
 string RPackage::description() const
 {
    pkgCache::VerIterator ver = (*_depcache)[*_package].CandidateVerIter(*_depcache);
-   if (!ver.end()) {
-      pkgCache::DescIterator Desc = ver.TranslatedDescription();
-      pkgRecords::Parser &parser = _records->Lookup(Desc.FileList());
-      return parseDescription(parser.LongDesc());
-   } else {
-      return "";
-   }
+   if (ver.end()) return "";
+   pkgCache::DescIterator Desc = ver.TranslatedDescription();
+   pkgRecords::Parser &parser = _records->Lookup(Desc.FileList());
+   return parseDescription(parser.LongDesc());
 }
 
-long RPackage::installedSize()
+long RPackage::installedSize() const
 {
    pkgCache::VerIterator ver = _package->CurrentVer();
-
-   if (!ver.end())
-      return ver->InstalledSize;
-   else
-      return -1;
+   if (ver.end()) return -1;
+   return ver->InstalledSize;
 }
 
-long RPackage::availableInstalledSize()
+long RPackage::availableInstalledSize() const
 {
    pkgDepCache::StateCache &State = (*_depcache)[*_package];
-   if (State.CandidateVer == 0)
-      return -1;
+   if (State.CandidateVer == 0) return -1;
    return State.CandidateVerIter(*_depcache)->InstalledSize;
 }
 
-long RPackage::availablePackageSize()
+long RPackage::availablePackageSize() const
 {
    pkgDepCache::StateCache &State = (*_depcache)[*_package];
-   if (State.CandidateVer == 0)
-      return -1;
+   if (State.CandidateVer == 0) return -1;
    return State.CandidateVerIter(*_depcache)->Size;
 }
 
@@ -341,17 +320,16 @@ int RPackage::getFlags() const
    return flags | _boolFlags;
 }
 
-bool RPackage::isMultiArchDuplicate()
+bool RPackage::isMultiArchDuplicate() const
 {
    // Installed packages are never "hidden"
-   if ((*_package)->CurrentVer != 0)
-      return false;
+   if ((*_package)->CurrentVer != 0) return false;
    // find the "best" package for the given group, if that is different
    // from our PkgIterator this is not a interessting pkg
    return (_package->Group().FindPkg() != *_package);
 }
 
-vector<DepInformation> RPackage::enumRDeps()
+vector<DepInformation> RPackage::enumRDeps() const
 {
    vector<DepInformation> deps;
    DepInformation dep;
@@ -525,7 +503,7 @@ string RPackage::showWhyInstBroken()
    return out.str();
 }
 
-vector<DepInformation> RPackage::enumDeps(bool useCanidateVersion)
+vector<DepInformation> RPackage::enumDeps(bool useCanidateVersion) const
 {
    vector<DepInformation> deps;
    DepInformation dep;
@@ -571,48 +549,43 @@ vector<DepInformation> RPackage::enumDeps(bool useCanidateVersion)
    return deps;
 }
 
-bool RPackage::dependsOn(const char *pkgname)
+bool RPackage::dependsOn(const char *pkgname) const
 {
-   vector<DepInformation> deps = enumDeps();
-   for (unsigned int i = 0; i < deps.size(); i++)
-      if (strcmp(pkgname, deps[i].name) == 0)
-         return true;
+   for (const DepInformation &dep : enumDeps()) {
+      if (strcmp(pkgname, dep.name) == 0) return true;
+   }
+
    return false;
 }
 
 #ifdef WITH_APT_AUTH
-bool RPackage::isTrusted()
+bool RPackage::isTrusted() const
 {
-   pkgCache::VerIterator Ver;
    pkgDepCache::StateCache &State = (*_depcache)[*_package];
-   Ver = State.CandidateVerIter(*_depcache);
-   if (Ver == 0) {
-      // cerr << "CanidateVer == 0" << endl;
-      return false;
-   }
+   pkgCache::VerIterator Ver = State.CandidateVerIter(*_depcache);
+
+   if (Ver == 0) return false;
+
    pkgSourceList *Sources = _lister->getCache()->list();
-   std::map<pkgCache::PkgFileIterator, pkgIndexFile *>::iterator it;
    for (pkgCache::VerFileIterator i = Ver.FileList(); i.end() == false; i++) {
       pkgIndexFile *Index;
 
-      // FIXME: instead of doing his dance (he trust cache is just
+      // FIXME: instead of doing his dance (the trust cache is just
       //        a couple of items big, that should be done in apt itself
-      it = _lister->getCache()->trust_cache().find(i.File());
+      std::map<pkgCache::PkgFileIterator, pkgIndexFile *>::iterator it = _lister->getCache()->trust_cache().find(i.File());
       if (it == _lister->getCache()->trust_cache().end()) {
-         if (Sources->FindIndex(i.File(), Index) == false)
-            continue;
+         if (Sources->FindIndex(i.File(), Index) == false) continue;
       } else {
          Index = (*it).second;
       }
-      _lister->getCache()->trust_cache().insert(
-         pair<pkgCache::PkgFileIterator, pkgIndexFile *>(i.File(), Index));
+
+      _lister->getCache()->trust_cache().insert(pair<pkgCache::PkgFileIterator, pkgIndexFile *>(i.File(), Index));
 
       if (_config->FindB("Debug::pkgAcquire::Auth", false)) {
-         std::cerr << "Checking index: " << Index->Describe()
-                   << "(Trusted=" << Index->IsTrusted() << ")\n";
+         std::cerr << "Checking index: " << Index->Describe() << "(Trusted=" << Index->IsTrusted() << ")\n";
       }
-      if (Index->IsTrusted())
-         return true;
+
+      if (Index->IsTrusted()) return true;
    }
 
    return false;
@@ -620,17 +593,18 @@ bool RPackage::isTrusted()
 #else
 // with apt-authentication we always trust that the package come from
 // a trusted source
-bool RPackage::isTrusted()
+bool RPackage::isTrusted() const
 {
    return true;
 }
 #endif
 
-bool RPackage::wouldBreak()
+bool RPackage::wouldBreak() const
 {
    int flags = getFlags();
-   if ((flags & FRemove) || (!(flags & FInstalled) && (flags & FKeep)))
+   if ((flags & FRemove) || (!(flags & FInstalled) && (flags & FKeep))) {
       return false;
+   }
    return flags & FInstBroken;
 }
 
@@ -674,8 +648,7 @@ void RPackage::setInstall()
    _lua->ResetCaches();
 #endif
 
-   if (_notify)
-      _lister->notifyChange(this);
+   if (_notify) _lister->notifyChange(this);
 }
 
 void RPackage::setReInstall(bool flag)
@@ -698,27 +671,20 @@ void RPackage::setRemove(bool purge)
    _depcache->SetReInstall(*_package, false);
    _depcache->MarkDelete(*_package, purge);
 
-   if (_notify)
-      _lister->notifyChange(this);
+   if (_notify) _lister->notifyChange(this);
 }
 
-string RPackage::getScreenshotFile(pkgAcquire *fetcher, bool thumb)
+string RPackage::getScreenshotFile(pkgAcquire *fetcher, bool thumb) const
 {
    string descr("Screenshot for ");
    descr += name();
 
-   string verstr;
-   if (availableVersion() != NULL)
-      verstr = availableVersion();
-
-   if (verstr.find(':') != verstr.npos)
-      verstr = string(verstr, verstr.find(':') + 1);
    char uri[512];
+
    if (thumb)
       snprintf(uri, 512, "https://screenshots.debian.net/thumbnail/%s", name());
    else
-      snprintf(
-         uri, 512, "https://screenshots.debian.net/screenshot/%s", name());
+      snprintf(uri, 512, "https://screenshots.debian.net/screenshot/%s", name());
 
    string filename = RTmpDir() + "/tmp_sh";
    unlink(filename.c_str());
@@ -729,7 +695,7 @@ string RPackage::getScreenshotFile(pkgAcquire *fetcher, bool thumb)
    return filename;
 }
 
-string RPackage::getChangelogFile(pkgAcquire *fetcher)
+string RPackage::getChangelogFile(pkgAcquire *fetcher) const
 {
    string descr("Changelog for ");
    descr += name();
@@ -766,45 +732,41 @@ string RPackage::getChangelogFile(pkgAcquire *fetcher)
    return filename;
 }
 
-string RPackage::getCandidateOriginStr()
+string RPackage::getCandidateOriginStr() const
 {
-   pkgCache::VerIterator Ver =
-      (*_depcache)[*_package].CandidateVerIter(*_depcache);
-   if (Ver.end())
-      return "";
+   pkgCache::VerIterator Ver = (*_depcache)[*_package].CandidateVerIter(*_depcache);
+   if (Ver.end()) return "";
    pkgCache::VerFileIterator VF = Ver.FileList();
-   if (!VF.end() && VF.File() && VF.File().Origin())
+   if (!VF.end() && VF.File() && VF.File().Origin()) {
       return VF.File().Origin();
+   }
    return "";
 }
 
-vector<string> RPackage::getCandidateOriginSuites()
+vector<string> RPackage::getCandidateOriginSuites() const
 {
    vector<string> res;
-   pkgCache::VerIterator Ver =
-      (*_depcache)[*_package].CandidateVerIter(*_depcache);
-   if (Ver.end())
-      return res;
+   pkgCache::VerIterator Ver = (*_depcache)[*_package].CandidateVerIter(*_depcache);
+   if (Ver.end()) return res;
    pkgCache::VerFileIterator VF = Ver.FileList();
    for (; !VF.end(); VF++) {
-      if (VF.File() && VF.File().Archive())
+      if (VF.File() && VF.File().Archive()) {
          res.push_back(string(VF.File().Archive()));
+      }
    }
-
    return res;
 }
 
-vector<string> RPackage::getCandidateOriginSiteUrls()
+vector<string> RPackage::getCandidateOriginSiteUrls() const
 {
    vector<string> res;
-   pkgCache::VerIterator Ver =
-      (*_depcache)[*_package].CandidateVerIter(*_depcache);
-   if (Ver.end())
-      return res;
+   pkgCache::VerIterator Ver = (*_depcache)[*_package].CandidateVerIter(*_depcache);
+   if (Ver.end()) return res;
    pkgCache::VerFileIterator VF = Ver.FileList();
    for (; !VF.end(); VF++) {
-      if (VF.File() && VF.File().Site())
+      if (VF.File() && VF.File().Site()) {
          res.push_back(string(VF.File().Site()));
+      }
    }
    return res;
 }
@@ -883,22 +845,18 @@ void RPackage::setPinned(bool flag)
 }
 
 // format: first version, second archives
-vector<pair<string, string>> RPackage::getAvailableVersions()
+vector<pair<string, string>> RPackage::getAvailableVersions() const
 {
    vector<pair<string, string>> versions;
 
    // Get available Versions.
-   for (pkgCache::VerIterator Ver = _package->VersionList(); Ver.end() == false;
-        Ver++) {
-
+   for (pkgCache::VerIterator Ver = _package->VersionList(); Ver.end() == false; Ver++) {
       // We always take the first available version.
       pkgCache::VerFileIterator VF = Ver.FileList();
       if (!VF.end()) {
          pkgCache::PkgFileIterator File = VF.File();
-
          if (File.Archive() != NULL) {
-            versions.push_back(
-               pair<string, string>(Ver.VerStr(), File.Archive()));
+            versions.push_back(pair<string, string>(Ver.VerStr(), File.Archive()));
          } else {
             versions.push_back(pair<string, string>(Ver.VerStr(), File.Site()));
          }
@@ -943,7 +901,7 @@ void RPackage::unsetVersion()
    _boolFlags &= ~FOverrideVersion;
 }
 
-vector<string> RPackage::provides()
+vector<string> RPackage::provides() const
 {
    vector<string> provides;
 
@@ -951,10 +909,7 @@ vector<string> RPackage::provides()
    if (State.CandidateVer == 0)
       return provides;
 
-   for (pkgCache::PrvIterator Prv =
-           State.CandidateVerIter(*_depcache).ProvidesList();
-        Prv.end() != true;
-        Prv++) {
+   for (pkgCache::PrvIterator Prv = State.CandidateVerIter(*_depcache).ProvidesList(); Prv.end() != true; Prv++) {
       provides.push_back(Prv.Name());
    }
 
@@ -1052,87 +1007,69 @@ string RPackage::parseDescription(const string &descr)
    return parsed;
 }
 
-string RPackage::component()
+string RPackage::component() const
 {
-   string res;
 #ifdef WITH_APT_AUTH
-   // the apt-secure patch breaks File.Component
-   pkgCache::VerIterator ver =
-      (*_depcache)[*_package].CandidateVerIter(*_depcache);
-   const char *s = NULL;
-   if (!ver.end())
-      s = ver.Section();
 
-   if (s == NULL)
-      return "";
+   // the apt-secure patch breaks File.Component
+   pkgCache::VerIterator ver = (*_depcache)[*_package].CandidateVerIter(*_depcache);
+
+   const char *s = (!ver.end()) ? ver.Section() : nullptr;
+   if (s == NULL) return "";
 
    string src_section(s);
-   if (src_section.find('/') != src_section.npos)
+
+   if (src_section.find('/') != src_section.npos) {
       src_section = string(src_section, 0, src_section.find('/'));
-   else
+   } else {
       src_section = "main";
-   res = src_section;
+   }
+
+   return src_section;
+
 #else
-   pkgCache::VerIterator Ver;
+
    pkgDepCache::StateCache &State = (*_depcache)[*_package];
-   if (State.CandidateVer == 0) {
-      // cout << "CanidateVer == 0" << endl;
-      return "";
-   }
-   Ver = State.CandidateVerIter(*_depcache);
+
+   if (State.CandidateVer == 0) return "";
+
+   pkgCache::VerIterator Ver = State.CandidateVerIter(*_depcache);
    pkgCache::VerFileIterator VF = Ver.FileList();
    pkgCache::PkgFileIterator File = VF.File();
 
-   if (File.Component() == NULL) {
-      // cout << "File.Component() == NULL" << endl;
-      return "";
-   }
+   if (File.Component() == NULL) return "";
 
-   res = File.Component();
+   return File.Component();
+
 #endif
-   return res;
 }
 
-string RPackage::label()
+string RPackage::label() const
 {
-   string res;
-   pkgCache::VerIterator Ver;
    pkgDepCache::StateCache &State = (*_depcache)[*_package];
-   if (State.CandidateVer == 0) {
-      // cout << "CanidateVer == 0" << endl;
-      return "";
-   }
-   Ver = State.CandidateVerIter(*_depcache);
+
+   if (State.CandidateVer == 0) return "";
+
+   pkgCache::VerIterator Ver = State.CandidateVerIter(*_depcache);
    pkgCache::VerFileIterator VF = Ver.FileList();
    pkgCache::PkgFileIterator File = VF.File();
 
-   if (File.Label() == NULL) {
-      // cout << "File.Component() == NULL" << endl;
-      return "";
-   }
+   if (File.Label() == NULL) return "";
 
-   res = File.Label();
-
-   return res;
+   return File.Label();;
 }
 
-string RPackage::origin()
+string RPackage::origin() const
 {
-   string res;
-   pkgCache::VerIterator Ver;
    pkgDepCache::StateCache &State = (*_depcache)[*_package];
-   if (State.CandidateVer == 0) {
-      return "";
-   }
-   Ver = State.CandidateVerIter(*_depcache);
+
+   if (State.CandidateVer == 0) return "";
+
+   pkgCache::VerIterator Ver = State.CandidateVerIter(*_depcache);
    pkgCache::VerFileIterator VF = Ver.FileList();
    pkgCache::PkgFileIterator File = VF.File();
 
-   if (File.Origin() == NULL) {
-      return "";
-   }
+   if (File.Origin() == NULL) return "";
 
-   res = File.Origin();
-
-   return res;
+   return File.Origin();
 }
