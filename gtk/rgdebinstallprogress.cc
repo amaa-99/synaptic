@@ -71,139 +71,177 @@ void RGDebInstallProgress::child_exited(VteTerminal *vteterminal,
    me->child_has_exited = true;
 }
 
-ssize_t write_fd(int fd, void *ptr, size_t nbytes, int sendfd)
+static ssize_t write_fd(int fd, void *buffer, size_t buffer_len, int sendfd)
 {
-   struct msghdr msg;
-   struct iovec iov[1];
+   iovec iov =
+   {
+      .iov_base = buffer,
+      .iov_len = buffer_len,
+   };
 
    union
    {
-      struct cmsghdr cm;
+      cmsghdr cm;
       char control[CMSG_SPACE(sizeof(int))];
    } control_un;
-   struct cmsghdr *cmptr;
 
-   msg.msg_control = control_un.control;
-   msg.msg_controllen = sizeof(control_un.control);
+   msghdr msg =
+   {
+      .msg_name = NULL,
+      .msg_namelen = 0,
+      .msg_iov = &iov,
+      .msg_iovlen = 1,
+      .msg_control = control_un.control,
+      .msg_controllen = sizeof(control_un.control),
+   };
 
+   cmsghdr *cmptr;
    cmptr = CMSG_FIRSTHDR(&msg);
    cmptr->cmsg_len = CMSG_LEN(sizeof(int));
    cmptr->cmsg_level = SOL_SOCKET;
    cmptr->cmsg_type = SCM_RIGHTS;
-   *((int *)CMSG_DATA(cmptr)) = sendfd;
-   msg.msg_name = NULL;
-   msg.msg_namelen = 0;
+   *((int *) CMSG_DATA(cmptr)) = sendfd;
 
-   iov[0].iov_base = ptr;
-   iov[0].iov_len = nbytes;
-   msg.msg_iov = iov;
-   msg.msg_iovlen = 1;
-
-   return (sendmsg(fd, &msg, 0));
+   return sendmsg(fd, &msg, 0);
 }
 
-ssize_t read_fd(int fd, void *ptr, size_t nbytes, int *recvfd)
+static ssize_t read_fd(int fd, void *buffer, size_t buffer_len, int *out_recvfd)
 {
-   struct msghdr msg;
-   struct iovec iov[1];
-   ssize_t n;
-
    union
    {
-      struct cmsghdr cm;
+      cmsghdr cm;
       char control[CMSG_SPACE(sizeof(int))];
    } control_un;
-   struct cmsghdr *cmptr;
 
-   msg.msg_control = control_un.control;
-   msg.msg_controllen = sizeof(control_un.control);
+   iovec iov =
+   {
+      .iov_base = buffer,
+      .iov_len = buffer_len,
+   };
 
-   msg.msg_name = NULL;
-   msg.msg_namelen = 0;
+   msghdr msg =
+   {
+      .msg_name = NULL,
+      .msg_namelen = 0,
+      .msg_iov = &iov,
+      .msg_iovlen = 1,
+      .msg_control = control_un.control,
+      .msg_controllen = sizeof(control_un.control),
+   };
 
-   iov[0].iov_base = ptr;
-   iov[0].iov_len = nbytes;
-   msg.msg_iov = iov;
-   msg.msg_iovlen = 1;
+   ssize_t bytes_received = recvmsg(fd, &msg, MSG_WAITALL);
 
-   if ((n = recvmsg(fd, &msg, MSG_WAITALL)) <= 0)
-      return (n);
-   if ((cmptr = CMSG_FIRSTHDR(&msg)) != NULL &&
-       cmptr->cmsg_len == CMSG_LEN(sizeof(int))) {
+   if (bytes_received <= 0) {
+      *out_recvfd = -1;
+      return bytes_received;
+   }
+
+   struct cmsghdr *cmptr = CMSG_FIRSTHDR(&msg);
+
+   if ((cmptr != NULL) && (cmptr->cmsg_len == CMSG_LEN(sizeof(int))))
+   {
       if (cmptr->cmsg_level != SOL_SOCKET) {
          perror("control level != SOL_SOCKET");
          exit(1);
       }
+
       if (cmptr->cmsg_type != SCM_RIGHTS) {
          perror("control type != SCM_RIGHTS");
          exit(1);
       }
-      *recvfd = *((int *)CMSG_DATA(cmptr));
-   } else
-      *recvfd = -1; /* descriptor was not passed */
-   return (n);
+
+      *out_recvfd = *((int *) CMSG_DATA(cmptr));
+   }
+   else
+   {
+      *out_recvfd = -1; /* descriptor was not passed */
+   }
+
+   return bytes_received;
 }
-/* end read_fd */
 
-#   define UNIXSTR_PATH "/var/run/synaptic.socket"
+#define UNIXSTR_PATH "/var/run/synaptic.socket"
 
-int ipc_send_fd(int fd)
+static bool ipc_send_fd(int fd)
 {
-   // open connection to server
-   struct sockaddr_un servaddr;
    int serverfd = socket(AF_LOCAL, SOCK_STREAM, 0);
-   memset(&servaddr, 0, sizeof(servaddr));
+   if (serverfd == -1) {
+      return false;
+   }
+
+   sockaddr_un servaddr {};
    servaddr.sun_family = AF_LOCAL;
    strcpy(servaddr.sun_path, UNIXSTR_PATH);
 
-   // wait max 5s (5000 * 1000/1000000) for the server
-   for (int i = 0; i < 5000; i++) {
-      if (connect(serverfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) ==
-          0)
-         break;
+   // Wait max 5s (5000 * 1000/1000000) for the server
+   for (unsigned int i = 0; i < 5000; i++) {
+      if (connect(serverfd, (sockaddr *) &servaddr, sizeof(servaddr)) == 0)
+      {  // Connected:
+         int res = write_fd(serverfd, (void *) "", 1, fd); // Send fd to server.
+         close(serverfd);
+         return (res != -1);
+      }
       usleep(1000);
    }
-   // send fd to server
-   write_fd(serverfd, (void *)"", 1, fd);
+
    close(serverfd);
-   return 0;
+   return false;
 }
 
-int ipc_recv_fd()
+static int ipc_recv_fd(void)
 {
-   // setup socket
-   struct sockaddr_un servaddr, cliaddr;
-   char c;
-   int connfd = -1, fd;
-
    int listenfd = socket(AF_LOCAL, SOCK_STREAM, 0);
-   fcntl(listenfd, F_SETFL, O_NONBLOCK);
+   if (listenfd == -1) {
+      return -1;
+   }
+
+   if (fcntl(listenfd, F_SETFL, O_NONBLOCK) == -1) {
+      close(listenfd);
+      return -1;
+   }
 
    unlink(UNIXSTR_PATH);
-   memset(&servaddr, 0, sizeof(servaddr));
+
+   sockaddr_un servaddr {};
    servaddr.sun_family = AF_LOCAL;
    strcpy(servaddr.sun_path, UNIXSTR_PATH);
-   bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
-   listen(listenfd, 1);
 
-   // wait for connections
+   if (bind(listenfd, (sockaddr *) &servaddr, sizeof(servaddr)) == -1) {
+      close(listenfd);
+      return -1;
+   }
+
+   if (listen(listenfd, 1) == -1) {
+      unlink(UNIXSTR_PATH);
+      close(listenfd);
+      return -1;
+   }
+
+   sockaddr_un cliaddr;
    socklen_t clilen = sizeof(cliaddr);
 
-   // wait max 5s (5000 * 1000/1000000) for the client
-   for (int i = 0; i < 5000 || connfd > 0; i++) {
-      connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
-      if (connfd > 0)
-         break;
+   // Wait max 5s (5000 * 1000/1000000) for the client connection.
+   for (unsigned int i = 0; i < 5000; i++)
+   {
+      int connfd = accept(listenfd, (sockaddr *) &cliaddr, &clilen);
+      if (connfd != -1)
+      {  // Connected:
+         char buffer;
+         int fd;
+         read_fd(connfd, &buffer, sizeof(buffer), &fd);
+
+         close(connfd);
+         close(listenfd);
+         return fd;
+      }
+
       usleep(1000);
       RGFlushInterface();
    }
-   // read_fd
-   read_fd(connfd, &c, 1, &fd);
 
-   close(connfd);
+   unlink(UNIXSTR_PATH);
    close(listenfd);
-
-   return fd;
+   return -1;
 }
 
 void RGDebInstallProgress::conffile(gchar *conffile, gchar *status)
