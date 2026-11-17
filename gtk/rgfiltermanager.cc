@@ -40,6 +40,7 @@
 #include <gobject/gclosure.h>
 #include <gtk/gtk.h>
 #include <iostream>
+#include <unordered_map>
 #include <set>
 #include <string>
 #include <vector>
@@ -61,6 +62,64 @@ using namespace std;
 //  Origin
 //  Component
 
+// Get the UI text to DepType map.
+const unordered_map<string, RPatternPackageFilter::DepType> &RGFilterManagerWindow::StringToDepTypeMap()
+{
+   // This map gets initialized at runtime (on the first call), so that the strings get properly translated.
+
+   static const unordered_map<string, RPatternPackageFilter::DepType> map =
+   {
+      { _("Package name"),            RPatternPackageFilter::DepType::Name          },
+      { _("Description"),             RPatternPackageFilter::DepType::Description   },
+      { _("Maintainer"),              RPatternPackageFilter::DepType::Maintainer    },
+      { _("Version number"),          RPatternPackageFilter::DepType::Version       },
+      { _("Dependencies"),            RPatternPackageFilter::DepType::Depends       },
+      { _("Provided packages"),       RPatternPackageFilter::DepType::Provides      },
+      { _("Conflicting packages"),    RPatternPackageFilter::DepType::Conflicts     },
+      { _("Replaced packages"),       RPatternPackageFilter::DepType::Replaces      },
+      { _("Recommendations"),         RPatternPackageFilter::DepType::Recommends    },
+      { _("Suggestions"),             RPatternPackageFilter::DepType::Suggests      },
+      { _("Dependent packages"),      RPatternPackageFilter::DepType::RDepends      },
+      { _("Origin"),                  RPatternPackageFilter::DepType::Origin        },
+      { _("Component"),               RPatternPackageFilter::DepType::Component     },
+   };
+
+   return map;
+}
+
+// Get the DepType to UI text map.
+const unordered_map<RPatternPackageFilter::DepType, string_view>& RGFilterManagerWindow::DepTypeToStringMap()
+{
+   // This map gets initialized at runtime (on the first call). The strings are not duplicated.
+
+   static const unordered_map<RPatternPackageFilter::DepType, string_view> _map = []()
+   {
+      unordered_map<RPatternPackageFilter::DepType, string_view> _map;
+      for (const auto &[key, value] : StringToDepTypeMap()) _map.emplace(value, key);
+      return _map;
+   }();
+
+   return _map;
+}
+
+// Returns the UI text corresponding to the given DepType.
+optional<RPatternPackageFilter::DepType> RGFilterManagerWindow::StringToDepType(const string &key)
+{
+   const unordered_map<string, RPatternPackageFilter::DepType> &_map = StringToDepTypeMap();
+   const auto it = _map.find(key);
+   if (it == _map.end()) return nullopt;
+   return it->second;
+}
+
+// Returns the DepType corresponding to the given UI text.
+optional<string_view> RGFilterManagerWindow::DepTypeToString(RPatternPackageFilter::DepType value)
+{
+   const unordered_map<RPatternPackageFilter::DepType, string_view> &_map = DepTypeToStringMap();
+   const auto it = _map.find(value);
+   if (it == _map.end()) return nullopt;
+   return optional<string_view>(it->second);
+}
+
 RGFilterManagerWindow::RGFilterManagerWindow(RGWindow *win, RPackageViewFilter *filterview)
    : RGGtkBuilderWindow(win, "filters"),
      _filterListStore(gtk_list_store_new(N_COLUMNS, G_TYPE_STRING, G_TYPE_POINTER)),
@@ -74,22 +133,21 @@ RGFilterManagerWindow::RGFilterManagerWindow(RGWindow *win, RPackageViewFilter *
 
    setTitle(_("Filters"));
 
-   _busyCursor =
-      gdk_cursor_new_for_display(gdk_display_get_default(), GDK_WATCH);
+   _busyCursor = gdk_cursor_new_for_display(gdk_display_get_default(), GDK_WATCH);
 
-   _comboPatternWhat =
-      GTK_WIDGET(gtk_builder_get_object(_builder, "combobox_pattern_what"));
-   comboStore =
-      GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(_comboPatternWhat)));
-   for (int i = 0; DepOptions[i] != NULL; i++) {
+   _comboPatternWhat = GTK_WIDGET(gtk_builder_get_object(_builder, "combobox_pattern_what"));
+   comboStore = GTK_LIST_STORE(gtk_combo_box_get_model(GTK_COMBO_BOX(_comboPatternWhat)));
+
+   for (const auto &[text, depType] : StringToDepTypeMap())
+   {
       gtk_list_store_append(comboStore, &comboIter);
-      gtk_list_store_set(comboStore, &comboIter, 0, _(DepOptions[i]), -1);
+      gtk_list_store_set(comboStore, &comboIter, 0, text.c_str(), -1);
    }
+
    crt = gtk_cell_renderer_text_new();
    gtk_cell_layout_clear(GTK_CELL_LAYOUT(_comboPatternWhat));
    gtk_cell_layout_pack_start(GTK_CELL_LAYOUT(_comboPatternWhat), crt, TRUE);
-   gtk_cell_layout_add_attribute(
-      GTK_CELL_LAYOUT(_comboPatternWhat), crt, "text", 0);
+   gtk_cell_layout_add_attribute(GTK_CELL_LAYOUT(_comboPatternWhat), crt, "text", 0);
    gtk_combo_box_set_active(GTK_COMBO_BOX(_comboPatternWhat), 0);
    assert(_comboPatternWhat);
 
@@ -386,57 +444,42 @@ void RGFilterManagerWindow::patternChanged(GObject *o, gpointer data)
       G_OBJECT(w), (GClosure *)patternChanged, data);
 }
 
-void RGFilterManagerWindow::patternSelectionChanged(GtkTreeSelection *selection,
-                                                    gpointer data)
+void RGFilterManagerWindow::patternSelectionChanged(GtkTreeSelection *selection, gpointer data)
 {
-   // cout << "RGFilterManagerWindow::patternSelectionChanged()" << endl;
+   RGFilterManagerWindow *me = (RGFilterManagerWindow *) data;
 
-   RGFilterManagerWindow *me = (RGFilterManagerWindow *)data;
    GtkTreeIter iter;
    GtkTreeModel *model;
-   RPatternPackageFilter::DepType type;
-   bool exclude;
-   gchar *dopatt, *what, *text;
 
-   if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-      gtk_widget_set_sensitive(
-         GTK_WIDGET(gtk_builder_get_object(me->_builder, "hbox_pattern")),
-         TRUE);
-      gtk_tree_model_get(model,
-                         &iter,
-                         PATTERN_DO_COLUMN,
-                         &dopatt,
-                         PATTERN_WHAT_COLUMN,
-                         &what,
-                         PATTERN_TEXT_COLUMN,
-                         &text,
+   if (gtk_tree_selection_get_selected(selection, &model, &iter))
+   {
+      gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(me->_builder, "hbox_pattern")), TRUE);
+
+      gchar *dopatt, *what, *text;
+      gtk_tree_model_get(model, &iter,
+                         PATTERN_DO_COLUMN, &dopatt,
+                         PATTERN_WHAT_COLUMN, &what,
+                         PATTERN_TEXT_COLUMN, &text,
                          -1);
 
-      if (strcmp(dopatt, ActOptions[0]) == 0)
-         exclude = false;
-      else
-         exclude = true;
-      gtk_combo_box_set_active(GTK_COMBO_BOX(me->_comboPatternDo),
-                               exclude ? 1 : 0);
+      bool exclude = (strcmp(dopatt, ActOptions[0]) != 0);
 
-      for (int j = 0; DepOptions[j]; j++) {
-         if (strcmp(what, _(DepOptions[j])) == 0) {
-            type = (RPatternPackageFilter::DepType)j;
-            break;
-         }
+      gtk_combo_box_set_active(GTK_COMBO_BOX(me->_comboPatternDo), exclude ? 1 : 0);
+
+      optional<RPatternPackageFilter::DepType> type = StringToDepType(what);
+      if (!type) {
+         g_error("Unexpected type %s in RGFilterManagerWindow::setPatternRow!\n", what); // Exit with error.
       }
-      gtk_combo_box_set_active(GTK_COMBO_BOX(me->_comboPatternWhat), (int)type);
 
-      GtkWidget *patternText =
-         GTK_WIDGET(gtk_builder_get_object(me->_builder, "entry_pattern_text"));
+      gtk_combo_box_set_active(GTK_COMBO_BOX(me->_comboPatternWhat), (int) *type);
+
+      GtkWidget *patternText = GTK_WIDGET(gtk_builder_get_object(me->_builder, "entry_pattern_text"));
       gtk_entry_set_text(GTK_ENTRY(patternText), text);
       g_free(dopatt);
       g_free(what);
       g_free(text);
    } else {
-      gtk_widget_set_sensitive(
-         GTK_WIDGET(gtk_builder_get_object(me->_builder, "hbox_pattern")),
-         FALSE);
+      gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(me->_builder, "hbox_pattern")), FALSE);
    }
 }
 
@@ -620,45 +663,41 @@ void RGFilterManagerWindow::setStatusFilter(RStatusPackageFilter &f)
    }
 }
 
-bool RGFilterManagerWindow::setPatternRow(int row,
-                                          bool exclude,
-                                          RPatternPackageFilter::DepType type,
-                                          string pattern)
+bool RGFilterManagerWindow::setPatternRow(int row, bool exclude, RPatternPackageFilter::DepType depType, string pattern)
 {
-   GtkTreeIter iter;
-   char *array[3];
+   optional<string_view> depString = DepTypeToString(depType);
+   if (!depString) {
+      g_error("Unexpected type %u in RGFilterManagerWindow::setPatternRow!\n", depType); // Exit with error.
+   }
 
+   const char *array[3];
    array[0] = ActOptions[exclude ? 1 : 0];
-   array[1] = DepOptions[(int)type];
-   array[2] = (char *)pattern.c_str();
+   array[1] = depString->data();
+   array[2] = pattern.c_str();
 
-   if (row < 0) {
+   if (row < 0)
+   {
+      GtkTreeIter iter;
       gtk_list_store_append(GTK_LIST_STORE(_patternListStore), &iter);
-      gtk_list_store_set(GTK_LIST_STORE(_patternListStore),
-                         &iter,
-                         0,
-                         _(array[0]),
-                         1,
-                         _(array[1]),
-                         2,
-                         array[2],
+      gtk_list_store_set(GTK_LIST_STORE(_patternListStore), &iter,
+                         0, _(array[0]),
+                         1, _(array[1]),
+                         2, array[2],
                          -1);
-      GtkTreeSelection *select =
-         gtk_tree_view_get_selection(GTK_TREE_VIEW(_patternList));
+      GtkTreeSelection *select = gtk_tree_view_get_selection(GTK_TREE_VIEW(_patternList));
       gtk_tree_selection_select_iter(select, &iter);
-   } else {
+   }
+   else
+   {
       GtkTreePath *path = gtk_tree_path_new();
       gtk_tree_path_prepend_index(path, row);
-      if (gtk_tree_model_get_iter(
-             GTK_TREE_MODEL(_patternListStore), &iter, path)) {
-         gtk_list_store_set(GTK_LIST_STORE(_patternListStore),
-                            &iter,
-                            0,
-                            _(array[0]),
-                            1,
-                            _(array[1]),
-                            2,
-                            array[2],
+      GtkTreeIter iter;
+      if (gtk_tree_model_get_iter(GTK_TREE_MODEL(_patternListStore), &iter, path))
+      {
+         gtk_list_store_set(GTK_LIST_STORE(_patternListStore), &iter,
+                            0, _(array[0]),
+                            1, _(array[1]),
+                            2, array[2],
                             -1);
       }
       gtk_tree_path_free(path);
@@ -746,47 +785,34 @@ void RGFilterManagerWindow::getPatternFilter(RPatternPackageFilter &f)
 
    // Walk through the list, reading each row.
    GtkTreeIter iter;
-   bool valid =
-      gtk_tree_model_get_iter_first(GTK_TREE_MODEL(_patternListStore), &iter);
+   bool valid = gtk_tree_model_get_iter_first(GTK_TREE_MODEL(_patternListStore), &iter);
    while (valid) {
       gchar *dopatt;
       gchar *what;
       gchar *text;
-      gtk_tree_model_get(GTK_TREE_MODEL(_patternListStore),
-                         &iter,
-                         PATTERN_DO_COLUMN,
-                         &dopatt,
-                         PATTERN_WHAT_COLUMN,
-                         &what,
-                         PATTERN_TEXT_COLUMN,
-                         &text,
+      gtk_tree_model_get(GTK_TREE_MODEL(_patternListStore), &iter,
+                         PATTERN_DO_COLUMN, &dopatt,
+                         PATTERN_WHAT_COLUMN, &what,
+                         PATTERN_TEXT_COLUMN, &text,
                          -1);
 
       // first look at the "act" code
       bool exclude = (strcmp(dopatt, ActOptions[0]) != 0);
 
-      // then check the options
-      for (size_t j = 0; DepOptions[j] != NULL; j++) {
-         if (strcmp(what, _(DepOptions[j])) == 0) {
-            // then do the pattern (we convert the text to locale to support
-            // translated descriptions)
-            RPatternPackageFilter::DepType type =
-               (RPatternPackageFilter::DepType)j;
-            f.addPattern(type, utf8_to_locale(text), exclude);
-            break;
-         }
+      if (optional<RPatternPackageFilter::DepType> type = StringToDepType(what); type)
+      {  // Do the pattern (the text gets converted to locale for supporting translated descriptions).
+         f.addPattern(*type, utf8_to_locale(text), exclude);
+         break;
       }
 
-      valid =
-         gtk_tree_model_iter_next(GTK_TREE_MODEL(_patternListStore), &iter);
+      valid = gtk_tree_model_iter_next(GTK_TREE_MODEL(_patternListStore), &iter);
 
       g_free(dopatt);
       g_free(what);
       g_free(text);
    }
 
-   f.setAndMode(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(
-      gtk_builder_get_object(_builder, "radiobutton_properties_and"))));
+   f.setAndMode(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(gtk_builder_get_object(_builder, "radiobutton_properties_and"))));
 }
 
 void RGFilterManagerWindow::editFilter()
