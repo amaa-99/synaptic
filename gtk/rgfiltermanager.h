@@ -35,6 +35,8 @@
 #include <glib-object.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <optional>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -67,25 +69,23 @@ static const int NrOfStatusBits =
 
 static char *ActOptions[] = {_("Includes"), _("Excludes"), NULL};
 
-static char *DepOptions[] = {_("Package name"),
-                             _("Description"),
-                             _("Maintainer"),
-                             _("Version number"),
-                             _("Dependencies"),      // depends, predepends etc
-                             _("Provided packages"), // provides and name
-                             _("Conflicting packages"), // conflicts
-                             _("Replaced packages"),    // replaces/obsoletes
-                             _("Recommendations"),      /// recommends
-                             _("Suggestions"),          // suggests
-                             _("Dependent packages"),   // Reverse Depends
-                             _("Origin"), // Origin (e.g. security.debian.org)
-                             _("Component"), // Component (e.g. main, universe)
-                             NULL};
-
 typedef void RGFilterEditorCloseAction(void *self, bool okcancel);
 
 class RGFilterManagerWindow : public RGGtkBuilderWindow
 {
+   // Get the UI text to DepType map.
+   static const std::unordered_map<std::string, RPatternPackageFilter::DepType> &StringToDepTypeMap();
+
+   // Get the DepType to UI text map.
+   static const std::unordered_map<RPatternPackageFilter::DepType, std::string_view>& DepTypeToStringMap();
+
+   // Returns the UI text corresponding to the given DepType.
+   static std::optional<RPatternPackageFilter::DepType> StringToDepType(const std::string &key);
+
+   // Returns the DepType corresponding to the given UI text.
+   static std::optional<std::string_view> DepTypeToString(RPatternPackageFilter::DepType value);
+
+
    static void addFilterAction(GtkWidget *self, void *data);
    static void removeFilterAction(GtkWidget *self, void *data);
 
@@ -97,9 +97,7 @@ class RGFilterManagerWindow : public RGGtkBuilderWindow
    static void includeTagAction(GtkWidget *self, void *data);
    static void excludeTagAction(GtkWidget *self, void *data);
 
-   static gint deleteEventAction(GtkWidget *widget,
-                                 GdkEvent *event,
-                                 gpointer data);
+   static gint deleteEventAction(GtkWidget *widget, GdkEvent *event, gpointer data);
 
    static void selectAction(GtkTreeSelection *selection, gpointer data);
 
@@ -155,8 +153,7 @@ class RGFilterManagerWindow : public RGGtkBuilderWindow
                       bool exclude,
                       RPatternPackageFilter::DepType type,
                       std::string pattern);
-   static void patternSelectionChanged(GtkTreeSelection *selection,
-                                       gpointer data);
+   static void patternSelectionChanged(GtkTreeSelection *selection, gpointer data);
    static void patternChanged(GObject *o, gpointer data);
    static void patternNew(GObject *o, gpointer data);
    static void patternDelete(GObject *o, gpointer data);
