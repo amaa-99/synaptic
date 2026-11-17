@@ -41,7 +41,7 @@ class RGMainWindow;
 class RGUserDialog;
 class RPackageLister;
 
-class RGDebInstallProgress : public RInstallProgress, public RGGtkBuilderWindow
+class RGDebInstallProgress final : public RInstallProgress, public RGGtkBuilderWindow
 {
    typedef enum {
       EDIT_COPY,
@@ -117,9 +117,9 @@ class RGDebInstallProgress : public RInstallProgress, public RGGtkBuilderWindow
 
  protected:
 
-   virtual void close() override;
+   void close() override;
 
-   virtual void prepare(RPackageLister *lister);
+   void prepare(RPackageLister *lister);
 
    void conffile(gchar *conffile, gchar *status);
 
