@@ -395,120 +395,100 @@ RGSummaryWindow::RGSummaryWindow(RGWindow *wwin, RPackageLister *lister)
    GtkWidget *button = GTK_WIDGET(gtk_builder_get_object(_builder, "togglebutton_details"));
    g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(clickedDetails), this);
 
-   int toInstall, toReInstall, toRemove, toUpgrade, toDowngrade;
-   int held, kept, essential, unAuthenticated;
-   double sizeChange, dlSize;
-   int dlCount;
+   RPackageLister::Summary summary = lister->getSummary();
 
-   lister->getSummary(held,
-                      kept,
-                      essential,
-                      toInstall,
-                      toReInstall,
-                      toUpgrade,
-                      toRemove,
-                      toDowngrade,
-                      unAuthenticated,
-                      sizeChange);
+   double dlSize;
+   int dlCount;
    lister->getDownloadSummary(dlCount, dlSize);
 
    GString *msg = g_string_new("");
 
 #if 0
-   if (held) {
+   if (summary.held != 0) {
       char *str = ngettext("%d package is locked\n",
-                           "%d packages are locked\n", held);
-      g_string_append_printf(msg, str, held);
+                           "%d packages are locked\n",
+                           summary.held);
+      g_string_append_printf(msg, str, summary.held);
    }
 #endif
 
-   if (held) {
+   if (summary.held) {
       char *str = ngettext("%d package will be held back and not upgraded\n",
                            "%d packages will be held back and not upgraded\n",
-                           held);
-      g_string_append_printf(msg, str, held);
+                           summary.held);
+      g_string_append_printf(msg, str, summary.held);
    }
 
-   if (toInstall) {
+   if (summary.toInstall) {
       char *str = ngettext("%d new package will be installed\n",
                            "%d new packages will be installed\n",
-                           toInstall);
-      g_string_append_printf(msg, str, toInstall);
+                           summary.toInstall);
+      g_string_append_printf(msg, str, summary.toInstall);
    }
 
-   if (toReInstall) {
+   if (summary.toReInstall) {
       char *str = ngettext("%d new package will be re-installed\n",
                            "%d new packages will be re-installed\n",
-                           toReInstall);
-      g_string_append_printf(msg, str, toReInstall);
+                           summary.toReInstall);
+      g_string_append_printf(msg, str, summary.toReInstall);
    }
 
-   if (toUpgrade) {
+   if (summary.toUpgrade) {
       char *str = ngettext("%d package will be upgraded\n",
                            "%d packages will be upgraded\n",
-                           toUpgrade);
-      g_string_append_printf(msg, str, toUpgrade);
+                           summary.toUpgrade);
+      g_string_append_printf(msg, str, summary.toUpgrade);
    }
 
-   if (toRemove) {
+   if (summary.toRemove) {
       char *str = ngettext("%d package will be removed\n",
                            "%d packages will be removed\n",
-                           toRemove);
-      g_string_append_printf(msg, str, toRemove);
+                           summary.toRemove);
+      g_string_append_printf(msg, str, summary.toRemove);
    }
 
-   if (toDowngrade) {
+   if (summary.toDowngrade) {
       char *str = ngettext("%d package will be <b>downgraded</b>\n",
                            "%d packages will be <b>downgraded</b>\n",
-                           toDowngrade);
-      g_string_append_printf(msg, str, toDowngrade);
+                           summary.toDowngrade);
+      g_string_append_printf(msg, str, summary.toDowngrade);
    }
 
-   if (essential) {
-      char *str =
-         ngettext("<b>Warning:</b> %d essential package will be removed\n",
-                  "<b>Warning:</b> %d essential packages will be removed\n",
-                  essential);
-      g_string_append_printf(msg, str, essential);
+   if (summary.essential) {
+      char *str = ngettext("<b>Warning:</b> %d essential package will be removed\n",
+                           "<b>Warning:</b> %d essential packages will be removed\n",
+                           summary.essential);
+      g_string_append_printf(msg, str, summary.essential);
       _potentialBreak = true;
    }
+
    // remove the trailing newline of msg
-   if (msg->str[msg->len - 1] == '\n')
+   if (msg->str[msg->len - 1] == '\n') {
       msg = g_string_truncate(msg, msg->len - 1);
+   }
 
    GtkWidget *_summaryL = GTK_WIDGET(gtk_builder_get_object(_builder, "label_summary"));
-   assert(_summaryL);
+   assert(_summaryL != nullptr);
    gtk_label_set_markup(GTK_LABEL(_summaryL), msg->str);
-
    g_string_free(msg, TRUE);
 
    GString *msg_space = g_string_new("");
 
    /* this stuff goes to the msg_space string */
-   if (sizeChange > 0) {
-      g_string_append_printf(msg_space,
-                             _("%s of extra space will be used"),
-                             SizeToStr(sizeChange).c_str());
-   } else if (sizeChange < 0) {
-      g_string_append_printf(msg_space,
-                             _("%s of extra space will be freed"),
-                             SizeToStr(sizeChange).c_str());
-      sizeChange = -sizeChange;
+   if (summary.sizeChange > 0) {
+      g_string_append_printf(msg_space, _("%s of extra space will be used"), SizeToStr(summary.sizeChange).c_str());
+   } else if (summary.sizeChange < 0) {
+      g_string_append_printf(msg_space, _("%s of extra space will be freed"), SizeToStr(summary.sizeChange).c_str());
    }
 
-   g_string_append_printf(
-      msg_space, _("\n%s have to be downloaded"), SizeToStr(dlSize).c_str());
+   g_string_append_printf(msg_space, _("\n%s have to be downloaded"), SizeToStr(dlSize).c_str());
 
    GtkWidget *_summarySpaceL = GTK_WIDGET(gtk_builder_get_object(_builder, "label_summary_space"));
    assert(_summarySpaceL);
    gtk_label_set_markup(GTK_LABEL(_summarySpaceL), msg_space->str);
-
    g_string_free(msg_space, TRUE);
 
-   if (!_config->FindB("Volatile::HideMainwindow", false))
-      skipTaskbar(true);
-   else
-      skipTaskbar(false);
+   skipTaskbar(!_config->FindB("Volatile::HideMainwindow", false));
 }
 
 bool RGSummaryWindow::showAndConfirm()
