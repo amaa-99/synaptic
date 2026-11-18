@@ -879,22 +879,22 @@ void RGDebInstallProgress::finishUpdate()
 
 void RGDebInstallProgress::prepare(RPackageLister *lister)
 {
-   // cout << "prepeare called" << endl;
-
    // build a meaningfull dialog
-   int installed, broken, toInstall, toRemove;
-   double sizeChange;
-   const gchar *p = "Should never be displayed, please report";
-   string s = _config->Find("Volatile::InstallProgressStr",
-                            _("The marked changes are now being applied. "
-                              "This can take some time. Please wait."));
-   lister->getStats(installed, broken, toInstall, toRemove, sizeChange);
-   if (toRemove > 0 && toInstall > 0)
+
+   string s = _config->Find("Volatile::InstallProgressStr", _("The marked changes are now being applied. This can take some time. Please wait."));
+
+   RPackageLister::Stats stats = lister->getStats();
+
+   const gchar *p;
+   if ((stats.toRemove != 0) && (stats.toInstall != 0)) {
       p = _("Installing and removing software");
-   else if (toRemove > 0)
+   } else if (stats.toRemove != 0) {
       p = _("Removing software");
-   else if (toInstall > 0)
+   } else if (stats.toInstall != 0) {
       p = _("Installing software");
+   } else {
+      p = "Should never be displayed, please report";
+   }
 
    gchar *msg = g_strdup_printf("<big><b>%s</b></big>\n\n%s", p, s.c_str());
    GtkWidget *l = GTK_WIDGET(gtk_builder_get_object(_builder, "label_action"));

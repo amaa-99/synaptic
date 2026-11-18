@@ -256,11 +256,16 @@ class RPackageLister
       return _updating ? 0 : _viewPackages.size();
    }
 
-   void getStats(int &installed,
-                 int &broken,
-                 int &toInstall,
-                 int &toRemove,
-                 double &sizeChange);
+   struct Stats
+   {
+      uint64_t installed;
+      uint64_t broken;
+      uint64_t toInstall;
+      uint64_t toRemove;
+      int64_t sizeChange;
+   };
+
+   Stats getStats();
 
    struct Summary
    {
