@@ -838,79 +838,80 @@ void RPackageLister::getDownloadSummary(int &dlCount, double &dlSize)
    delete PM;
 }
 
-
-void RPackageLister::getSummary(int &held,
-                                int &kept,
-                                int &essential,
-                                int &toInstall,
-                                int &toReInstall,
-                                int &toUpgrade,
-                                int &toRemove,
-                                int &toDowngrade,
-                                int &unauthenticated,
-                                double &sizeChange)
+RPackageLister::Summary RPackageLister::getSummary()
 {
    pkgDepCache *deps = _cache->deps();
-   unsigned i;
 
-   held = 0;
-   kept = 0;
-   essential = 0;
-   toInstall = 0;
-   toReInstall = 0;
-   toUpgrade = 0;
-   toDowngrade = 0;
-   toRemove = 0;
-   unauthenticated = 0;
+   Summary summary {};
 
-   for (i = 0; i < _packages.size(); i++) {
-      int flags = _packages[i]->getFlags();
+   for (const RPackage *package : _packages)
+   {
+      int flags = package->getFlags();
 
       // These flags will never be set together.
       int status = flags & (RPackage::FKeep | RPackage::FNewInstall |
                             RPackage::FReInstall | RPackage::FUpgrade |
                             RPackage::FDowngrade | RPackage::FRemove);
 
-#ifdef WITH_APT_AUTH
-      switch (status) {
-         case RPackage::FNewInstall:
-         case RPackage::FInstall:
-         case RPackage::FReInstall:
-         case RPackage::FUpgrade:
-            if (!_packages[i]->isTrusted())
-               unauthenticated++;
-            break;
-      }
-#endif
+      #ifdef WITH_APT_AUTH
+
+         switch (status) {
+            case RPackage::FNewInstall:
+            case RPackage::FInstall:
+            case RPackage::FReInstall:
+            case RPackage::FUpgrade:
+            {
+               if (!package->isTrusted()) {
+                  summary.unAuthenticated++;
+               }
+               break;
+            }
+         }
+
+      #endif
 
       switch (status) {
-         case RPackage::FKeep:
+         case RPackage::FKeep: {
             if (flags & RPackage::FHeld)
-               held++;
+               summary.held++;
             else
-               kept++;
+               summary.kept++;
             break;
-         case RPackage::FNewInstall:
-            toInstall++;
+         }
+
+         case RPackage::FNewInstall: {
+            summary.toInstall++;
             break;
-         case RPackage::FReInstall:
-            toReInstall++;
+         }
+
+         case RPackage::FReInstall: {
+            summary.toReInstall++;
             break;
-         case RPackage::FUpgrade:
-            toUpgrade++;
+         }
+
+         case RPackage::FUpgrade: {
+            summary.toUpgrade++;
             break;
-         case RPackage::FDowngrade:
-            toDowngrade++;
+         }
+
+         case RPackage::FDowngrade: {
+            summary.toDowngrade++;
             break;
-         case RPackage::FRemove:
-            if (flags & RPackage::FImportant)
-               essential++;
-            toRemove++;
+         }
+
+         case RPackage::FRemove: {
+            if (flags & RPackage::FImportant) {
+               summary.essential++;
+            }
+            summary.toRemove++;
             break;
+         }
       }
    }
 
-   sizeChange = deps->UsrSize();
+   summary.sizeChange = deps->UsrSize();
+
+   return summary;
 }
 
 void RPackageLister::saveUndoState(pkgState &state)
