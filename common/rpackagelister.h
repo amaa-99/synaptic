@@ -235,10 +235,12 @@ class RPackageLister
    {
       return _packages.at(index);
    }
+
    RPackage *getViewPackage(int index)
    {
       return _viewPackages.at(index);
    }
+
    RPackage *getPackage(pkgCache::PkgIterator &pkg);
    RPackage *getPackage(std::string name);
    int getPackageIndex(RPackage *pkg);
@@ -248,6 +250,7 @@ class RPackageLister
    {
       return _packages.size();
    }
+
    int viewPackagesSize()
    {
       return _updating ? 0 : _viewPackages.size();
@@ -259,17 +262,21 @@ class RPackageLister
                  int &toRemove,
                  double &sizeChange);
 
-   void getSummary(int &held,
-                   int &kept,
-                   int &essential,
-                   int &toInstall,
-                   int &toReInstall,
-                   int &toUpgrade,
-                   int &toRemove,
-                   int &toDowngrade,
-                   int &unAuthenticated,
-                   double &sizeChange);
+   struct Summary
+   {
+      uint64_t held;
+      uint64_t kept;
+      uint64_t essential;
+      uint64_t toInstall;
+      uint64_t toReInstall;
+      uint64_t toUpgrade;
+      uint64_t toRemove;
+      uint64_t toDowngrade;
+      uint64_t unAuthenticated;
+      int64_t sizeChange;
+   };
 
+   Summary getSummary() const;
 
    void getDetailedSummary(std::vector<RPackage *> &held,
                            std::vector<RPackage *> &kept,
