@@ -1398,54 +1398,52 @@ void RGMainWindow::pkgKeepHelper(RPackage *pkg)
 
 void RGMainWindow::setStatusText(char *text)
 {
-
-   int listed, installed, broken;
-   int toInstall, toRemove;
-   double size;
-
-
-   GtkWidget *_statusL =
-      GTK_WIDGET(gtk_builder_get_object(_builder, "label_status"));
+   GtkWidget *_statusL = GTK_WIDGET(gtk_builder_get_object(_builder, "label_status"));
    assert(_statusL);
 
-   _lister->getStats(installed, broken, toInstall, toRemove, size);
+   RPackageLister::Stats stats = _lister->getStats();
 
    if (text) {
       gtk_label_set_text(GTK_LABEL(_statusL), text);
    } else {
-      gchar *buffer;
       // we need to make this two strings for i18n reasons
-      listed = _lister->viewPackagesSize();
-      if (size < 0) {
-         buffer = g_strdup_printf(
-            _("%i packages listed, %i installed, %i broken. %i to "
-              "install/upgrade, %i to remove; %s will be freed"),
+      int listed = _lister->viewPackagesSize();
+      gchar *buffer;
+
+      if (stats.sizeChange < 0) {
+         buffer = g_strdup_printf
+         (
+            _("%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to remove; %s will be freed"),
             listed,
-            installed,
-            broken,
-            toInstall,
-            toRemove,
-            SizeToStr(fabs(size)).c_str());
-      } else if (size > 0) {
-         buffer = g_strdup_printf(
-            _("%i packages listed, %i installed, %i broken. %i to "
-              "install/upgrade, %i to remove; %s will be used"),
+            stats.installed,
+            stats.broken,
+            stats.toInstall,
+            stats.toRemove,
+            SizeToStr(fabs(stats.sizeChange)).c_str()
+         );
+      } else if (stats.sizeChange > 0) {
+         buffer = g_strdup_printf
+         (
+            _("%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to remove; %s will be used"),
             listed,
-            installed,
-            broken,
-            toInstall,
-            toRemove,
-            SizeToStr(fabs(size)).c_str());
+            stats.installed,
+            stats.broken,
+            stats.toInstall,
+            stats.toRemove,
+            SizeToStr(fabs(stats.sizeChange)).c_str()
+         );
       } else {
-         buffer =
-            g_strdup_printf(_("%i packages listed, %i installed, %i broken. %i "
-                              "to install/upgrade, %i to remove"),
-                            listed,
-                            installed,
-                            broken,
-                            toInstall,
-                            toRemove);
+         buffer = g_strdup_printf
+         (
+            _("%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to remove"),
+             listed,
+             stats.installed,
+             stats.broken,
+             stats.toInstall,
+             stats.toRemove
+         );
       }
+
       gtk_label_set_text(GTK_LABEL(_statusL), buffer);
       g_free(buffer);
    }
@@ -1453,9 +1451,10 @@ void RGMainWindow::setStatusText(char *text)
    setActionEnabled("mark-all-upgrades", _lister->upgradable());
 
    if (getuid() == 0) {
-      setActionEnabled("apply", (toInstall + toRemove) != 0);
+      setActionEnabled("apply", (stats.toInstall + stats.toRemove) != 0);
    }
-   _unsavedChanges = ((toInstall + toRemove) != 0);
+
+   _unsavedChanges = ((stats.toInstall + stats.toRemove) != 0);
 
    gtk_widget_queue_draw(_statusL);
 }
@@ -1502,17 +1501,18 @@ bool RGMainWindow::restoreState()
 {
    // see if we have broken packages (might be better in some
    // RGMainWindow::preGuiStart funktion)
-   int installed, broken, toInstall, toRemove;
-   double sizeChange;
-   _lister->getStats(installed, broken, toInstall, toRemove, sizeChange);
-   if (broken > 0) {
-      gchar *msg;
-      msg = ngettext("You have %d broken package on your system!\n\n"
-                     "Use the \"Broken\" filter to locate it.",
-                     "You have %i broken packages on your system!\n\n"
-                     "Use the \"Broken\" filter to locate them.",
-                     broken);
-      msg = g_strdup_printf(msg, broken);
+
+   RPackageLister::Stats stats = _lister->getStats();
+   if (stats.broken != 0) {
+      gchar *msg = ngettext
+      (
+         "You have %d broken package on your system!\n\n"
+         "Use the \"Broken\" filter to locate it.",
+         "You have %i broken packages on your system!\n\n"
+         "Use the \"Broken\" filter to locate them.",
+         stats.broken
+      );
+      msg = g_strdup_printf(msg, stats.broken);
       _userDialog->warning(msg);
       g_free(msg);
    }
@@ -1532,6 +1532,7 @@ bool RGMainWindow::restoreState()
       gtk_tree_model_get_iter_first(model, &iter);
       gtk_tree_selection_select_iter(selection, &iter);
    }
+
    updatePackageInfo(NULL);
    return true;
 }
@@ -2564,19 +2565,17 @@ void RGMainWindow::activeWindowToForeground()
       g_critical("activeWindowToForeground(): no active window found\n");
 }
 
-void RGMainWindow::cbProceedClicked(GSimpleAction *action,
-                                    GVariant *parameter,
-                                    gpointer data)
+void RGMainWindow::cbProceedClicked(GSimpleAction *action, GVariant *parameter, gpointer data)
 {
    RGMainWindow *me = (RGMainWindow *)data;
 
    // nothing to do
-   int installed, broken;
-   int toInstall, toRemove;
-   double size;
-   me->_lister->getStats(installed, broken, toInstall, toRemove, size);
-   if ((toInstall + toRemove) == 0)
+
+   RPackageLister::Stats stats = me->_lister->getStats();
+
+   if ((stats.toInstall + stats.toRemove) == 0) {
       return;
+   }
 
    // check whether we can really do it
    if (!me->_lister->check()) {
@@ -2603,15 +2602,13 @@ void RGMainWindow::cbProceedClicked(GSimpleAction *action,
    // fetch packages
    RGFetchProgress *fprogress = me->_fetchProgress = new RGFetchProgress(me);
    fprogress->setDescription(_("Downloading Package Files"), "");
-   //			     _("The package files will be cached locally for
-   // installation."));
+   //	_("The package files will be cached locally for installation."));
 
    // Do not let the treeview access the cache during the update.
    me->setTreeLocked(TRUE);
 
    // save selections to temporary file
-   const gchar *file =
-      g_strdup_printf("%s/selections.proceed", RConfDir().c_str());
+   const gchar *file = g_strdup_printf("%s/selections.proceed", RConfDir().c_str());
    ofstream out(file);
    if (!out != 0) {
       _error->Error(_("Can't write %s"), file);
@@ -2674,6 +2671,7 @@ void RGMainWindow::cbProceedClicked(GSimpleAction *action,
          exit(1);
       }
    }
+
    // reread saved selections
    ifstream in(file);
    if (!in != 0) {
@@ -2681,10 +2679,10 @@ void RGMainWindow::cbProceedClicked(GSimpleAction *action,
       me->_userDialog->showErrors();
       return;
    }
+
    me->_lister->readSelections(in);
    unlink(file);
    g_free((void *)file);
-
 
    me->setTreeLocked(FALSE);
    me->refreshTable();

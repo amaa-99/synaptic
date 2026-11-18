@@ -803,25 +803,22 @@ int RPackageLister::findNextPackage()
    return -1;
 }
 
-void RPackageLister::getStats(int &installed,
-                              int &broken,
-                              int &toInstall,
-                              int &toRemove,
-                              double &sizeChange)
+RPackageLister::Stats RPackageLister::getStats()
 {
    pkgDepCache *deps = _cache->deps();
 
+   Stats stats {};
+
    if (deps != NULL) {
-      sizeChange = deps->UsrSize();
+      stats.sizeChange = deps->UsrSize();
+      stats.installed = _installedCount;
+      stats.broken = deps->BrokenCount();
+      stats.toInstall = deps->InstCount();
+      stats.toRemove = deps->DelCount();
+   }
 
-      installed = _installedCount;
-      broken = deps->BrokenCount();
-      toInstall = deps->InstCount();
-      toRemove = deps->DelCount();
-   } else
-      sizeChange = installed = broken = toInstall = toRemove = 0;
+   return stats;
 }
-
 
 void RPackageLister::getDownloadSummary(int &dlCount, double &dlSize)
 {
