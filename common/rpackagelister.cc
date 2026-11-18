@@ -328,16 +328,17 @@ bool RPackageLister::openCache()
    map<string, RPackage *> pkgmap;
    set<string> sectionSet;
 
-   for (unsigned int i = 0; i != _views.size(); i++)
+   for (unsigned int i = 0; i != _views.size(); i++) {
       _views[i]->clear();
+   }
 
-   pkgCache::PkgIterator I;
-   for (I = deps->PkgBegin(); I.end() != true; I++) {
+   for (pkgCache::PkgIterator I = deps->PkgBegin(); I.end() != true; I++) {
 
-      if (I->CurrentVer != 0)
+      if (I->CurrentVer != 0) {
          _installedCount++;
-      else if (I->VersionList == 0)
+      } else if (I->VersionList == 0) {
          continue; // Exclude virtual packages.
+      }
 
       RPackage *pkg = new RPackage(this, deps, _records, I);
       _packagesIndex[I->ID] = count;
@@ -366,8 +367,9 @@ bool RPackageLister::openCache()
          pkg->setNew(true);
       }
 
-      if (_roptions->getPackageLock(pkgName.c_str()))
+      if (_roptions->getPackageLock(pkgName.c_str())) {
          pkg->setPinned(true);
+      }
 
       // Gather list of sections.
       for (auto Ver = I.VersionList(); !Ver.end(); Ver++) {
@@ -377,8 +379,9 @@ bool RPackageLister::openCache()
    }
 
    // refresh the views
-   for (unsigned int i = 0; i != _views.size(); i++)
+   for (unsigned int i = 0; i != _views.size(); i++) {
       _views[i]->refresh();
+   }
 
    applyInitialSelection();
 
@@ -803,25 +806,22 @@ int RPackageLister::findNextPackage()
    return -1;
 }
 
-void RPackageLister::getStats(int &installed,
-                              int &broken,
-                              int &toInstall,
-                              int &toRemove,
-                              double &sizeChange)
+RPackageLister::Stats RPackageLister::getStats() const
 {
    pkgDepCache *deps = _cache->deps();
 
+   Stats stats {};
+
    if (deps != NULL) {
-      sizeChange = deps->UsrSize();
+      stats.sizeChange = deps->UsrSize();
+      stats.installed = _installedCount;
+      stats.broken = deps->BrokenCount();
+      stats.toInstall = deps->InstCount();
+      stats.toRemove = deps->DelCount();
+   }
 
-      installed = _installedCount;
-      broken = deps->BrokenCount();
-      toInstall = deps->InstCount();
-      toRemove = deps->DelCount();
-   } else
-      sizeChange = installed = broken = toInstall = toRemove = 0;
+   return stats;
 }
-
 
 void RPackageLister::getDownloadSummary(int &dlCount, double &dlSize)
 {

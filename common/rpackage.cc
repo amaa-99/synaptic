@@ -633,7 +633,7 @@ void RPackage::setInstall()
 
    // FIXME: can't we get rid of it here?
    // if there is something wrong, try to fix it
-   if (!State.Install() || _depcache->BrokenCount() > 0) {
+   if (!State.Install() || _depcache->BrokenCount() != 0) {
       pkgProblemResolver Fix(_depcache);
       Fix.Clear(*_package);
       Fix.Protect(*_package);
