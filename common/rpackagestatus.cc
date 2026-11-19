@@ -38,7 +38,6 @@
 #include <apt-pkg/strutl.h>
 #include <apt-pkg/tagfile.h>
 #include <cstring>
-#include <ctime>
 #include <sstream>
 #include <stdio.h>
 #include <string>
