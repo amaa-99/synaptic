@@ -50,284 +50,180 @@ using namespace std;
 
 void RGSummaryWindow::buildTree(GtkBuilder *builder, RPackageLister *lister, GtkTreeStore *treeStore)
 {
-   GtkTreeIter iter, iter_child;
+   RPackageLister::DetailedSummary summary = lister->getDetailedSummary();
 
-   vector<RPackage *> held;
-   vector<RPackage *> kept;
-   vector<RPackage *> essential;
-   vector<RPackage *> toInstall;
-   vector<RPackage *> toReInstall;
-   vector<RPackage *> toUpgrade;
-   vector<RPackage *> toRemove;
-   vector<RPackage *> toPurge;
-   vector<RPackage *> toDowngrade;
-#ifdef WITH_APT_AUTH
-   vector<string> notAuthenticated;
-#endif
-   double sizeChange;
+   #ifdef WITH_APT_AUTH
 
-   lister->getDetailedSummary(held,
-                              kept,
-                              essential,
-                              toInstall,
-                              toReInstall,
-                              toUpgrade,
-                              toRemove,
-                              toPurge,
-                              toDowngrade,
-#ifdef WITH_APT_AUTH
-                              notAuthenticated,
-#endif
-                              sizeChange);
+      if (!summary.notAuthenticated.empty())
+      {
+         /* not authenticated */
 
-#ifdef WITH_APT_AUTH
-   if (notAuthenticated.size() > 0) {
-      GtkWidget *label;
-      label =
-         GTK_WIDGET(gtk_builder_get_object(builder, "label_auth_warning"));
-      assert(label);
-      // FIXME: make this a message from a trust class (and remeber to
-      // change the text in rgchangeswindow then too)
-      gchar *msg = g_strdup_printf("<span weight=\"bold\" size=\"larger\">%s"
-                                   "</span>\n\n%s",
-                                   _("Warning"),
-                                   _("You are about to install software that "
-                                     "<b>can't be authenticated</b>! Doing "
-                                     "this could allow a malicious individual "
-                                     "to damage or take control of your "
-                                     "system."));
-      gtk_label_set_markup(GTK_LABEL(label), msg);
-      gtk_widget_show(label);
-      g_free(msg);
+         GtkWidget *label = GTK_WIDGET(gtk_builder_get_object(builder, "label_auth_warning"));
+         assert(label);
 
-      /* not authenticated */
+         // FIXME: make this a message from a trust class (and remember to change the text in rgchangeswindow then too)
+         gchar *msg = g_strdup_printf
+         (
+            "<span weight=\"bold\" size=\"larger\">%s</span>\n\n%s",
+            _("Warning"),
+            _("You are about to install software that <b>can't be authenticated</b>! Doing this could allow a malicious individual to damage or take control of your system.")
+         );
+
+         gtk_label_set_markup(GTK_LABEL(label), msg);
+         gtk_widget_show(label);
+         g_free(msg);
+
+         GtkTreeIter iter;
+         gtk_tree_store_append(treeStore, &iter, NULL);
+         gtk_tree_store_set(treeStore, &iter, PKG_COLUMN, _("NOT AUTHENTICATED"), -1);
+
+         for (const string &p : summary.notAuthenticated) {
+            GtkTreeIter iter_child;
+            gtk_tree_store_append(treeStore, &iter_child, &iter);
+            gtk_tree_store_set(treeStore, &iter_child, PKG_COLUMN, p.c_str(), -1);
+         }
+      }
+
+   #endif
+
+   if (!summary.essential.empty()) {
+      /* (Essential) removed */
+      GtkTreeIter iter;
       gtk_tree_store_append(treeStore, &iter, NULL);
-      gtk_tree_store_set(
-         treeStore, &iter, PKG_COLUMN, _("NOT AUTHENTICATED"), -1);
-
-      for (vector<string>::const_iterator p = notAuthenticated.begin();
-           p != notAuthenticated.end();
-           p++) {
+      gtk_tree_store_set(treeStore, &iter, PKG_COLUMN, _("<b>(ESSENTIAL) to be removed</b>"), -1);
+      for (const RPackage *p : summary.essential) {
+         GtkTreeIter iter_child;
          gtk_tree_store_append(treeStore, &iter_child, &iter);
-         gtk_tree_store_set(
-            treeStore, &iter_child, PKG_COLUMN, (*p).c_str(), -1);
+         gtk_tree_store_set(treeStore, &iter_child, PKG_COLUMN, p->name(), -1);
       }
    }
-#endif
 
-   if (essential.size() > 0) {
-      /* (Essentail) removed */
-      gtk_tree_store_append(treeStore, &iter, NULL);
-      gtk_tree_store_set(treeStore,
-                         &iter,
-                         PKG_COLUMN,
-                         _("<b>(ESSENTIAL) to be removed</b>"),
-                         -1);
-
-      for (vector<RPackage *>::const_iterator p = essential.begin();
-           p != essential.end();
-           p++) {
-         gtk_tree_store_append(treeStore, &iter_child, &iter);
-         gtk_tree_store_set(
-            treeStore, &iter_child, PKG_COLUMN, (*p)->name(), -1);
-      }
-   }
-   if (toDowngrade.size() > 0) {
+   if (!summary.toDowngrade.empty()) {
       /* removed */
+      GtkTreeIter iter;
       gtk_tree_store_append(treeStore, &iter, NULL);
-      gtk_tree_store_set(
-         treeStore, &iter, PKG_COLUMN, _("<b>To be DOWNGRADED</b>"), -1);
-      for (vector<RPackage *>::const_iterator p = toDowngrade.begin();
-           p != toDowngrade.end();
-           p++) {
+      gtk_tree_store_set(treeStore, &iter, PKG_COLUMN, _("<b>To be DOWNGRADED</b>"), -1);
+      for (const RPackage *p : summary.toDowngrade) {
+         GtkTreeIter iter_child;
          gtk_tree_store_append(treeStore, &iter_child, &iter);
-         gtk_tree_store_set(
-            treeStore, &iter_child, PKG_COLUMN, (*p)->name(), -1);
+         gtk_tree_store_set(treeStore, &iter_child, PKG_COLUMN, p->name(), -1);
       }
    }
 
-   if (toRemove.size() > 0) {
+   if (!summary.toRemove.empty()) {
       /* removed */
+      GtkTreeIter iter;
       gtk_tree_store_append(treeStore, &iter, NULL);
-      gtk_tree_store_set(
-         treeStore, &iter, PKG_COLUMN, _("<b>To be removed</b>"), -1);
-      for (vector<RPackage *>::const_iterator p = toRemove.begin();
-           p != toRemove.end();
-           p++) {
+      gtk_tree_store_set(treeStore, &iter, PKG_COLUMN, _("<b>To be removed</b>"), -1);
+      for (const RPackage *p : summary.toRemove) {
+         GtkTreeIter iter_child;
          gtk_tree_store_append(treeStore, &iter_child, &iter);
-         gtk_tree_store_set(
-            treeStore, &iter_child, PKG_COLUMN, (*p)->name(), -1);
+         gtk_tree_store_set(treeStore, &iter_child, PKG_COLUMN, p->name(), -1);
       }
    }
 
-   if (toPurge.size() > 0) {
+   if (!summary.toPurge.empty()) {
       /* removed */
+      GtkTreeIter iter;
       gtk_tree_store_append(treeStore, &iter, NULL);
-      gtk_tree_store_set(
-         treeStore,
-         &iter,
-         PKG_COLUMN,
-         _("<b>To be completely removed (including configuration files)</b>"),
-         -1);
-      for (vector<RPackage *>::const_iterator p = toPurge.begin();
-           p != toPurge.end();
-           p++) {
+      gtk_tree_store_set(treeStore, &iter, PKG_COLUMN, _("<b>To be completely removed (including configuration files)</b>"), -1);
+      for (const RPackage *p : summary.toPurge) {
+         GtkTreeIter iter_child;
          gtk_tree_store_append(treeStore, &iter_child, &iter);
-         gtk_tree_store_set(
-            treeStore, &iter_child, PKG_COLUMN, (*p)->name(), -1);
+         gtk_tree_store_set(treeStore, &iter_child, PKG_COLUMN, p->name(), -1);
       }
    }
 
-   if (toUpgrade.size() > 0) {
+   if (!summary.toUpgrade.empty()) {
+      GtkTreeIter iter;
       gtk_tree_store_append(treeStore, &iter, NULL);
-      gtk_tree_store_set(
-         treeStore, &iter, PKG_COLUMN, _("To be upgraded"), -1);
-      for (vector<RPackage *>::const_iterator p = toUpgrade.begin();
-           p != toUpgrade.end();
-           p++) {
+      gtk_tree_store_set(treeStore, &iter, PKG_COLUMN, _("To be upgraded"), -1);
+      for (const RPackage *p : summary.toUpgrade) {
+         GtkTreeIter iter_child;
          gtk_tree_store_append(treeStore, &iter_child, &iter);
-         gtk_tree_store_set(
-            treeStore, &iter_child, PKG_COLUMN, (*p)->name(), -1);
+         gtk_tree_store_set(treeStore, &iter_child, PKG_COLUMN, p->name(), -1);
       }
    }
 
-   if (toInstall.size() > 0) {
+   if (!summary.toInstall.empty()) {
+      GtkTreeIter iter;
       gtk_tree_store_append(treeStore, &iter, NULL);
-      gtk_tree_store_set(
-         treeStore, &iter, PKG_COLUMN, _("To be installed"), -1);
-      for (vector<RPackage *>::const_iterator p = toInstall.begin();
-           p != toInstall.end();
-           p++) {
+      gtk_tree_store_set(treeStore, &iter, PKG_COLUMN, _("To be installed"), -1);
+      for (const RPackage *p : summary.toInstall) {
+         GtkTreeIter iter_child;
          gtk_tree_store_append(treeStore, &iter_child, &iter);
-         gtk_tree_store_set(
-            treeStore, &iter_child, PKG_COLUMN, (*p)->name(), -1);
+         gtk_tree_store_set(treeStore, &iter_child, PKG_COLUMN, p->name(), -1);
       }
    }
 
-   if (toReInstall.size() > 0) {
+   if (!summary.toReInstall.empty()) {
+      GtkTreeIter iter;
       gtk_tree_store_append(treeStore, &iter, NULL);
-      gtk_tree_store_set(
-         treeStore, &iter, PKG_COLUMN, _("To be re-installed"), -1);
-      for (vector<RPackage *>::const_iterator p = toReInstall.begin();
-           p != toReInstall.end();
-           p++) {
+      gtk_tree_store_set(treeStore, &iter, PKG_COLUMN, _("To be re-installed"), -1);
+      for (const RPackage *p : summary.toReInstall) {
+         GtkTreeIter iter_child;
          gtk_tree_store_append(treeStore, &iter_child, &iter);
-         gtk_tree_store_set(
-            treeStore, &iter_child, PKG_COLUMN, (*p)->name(), -1);
+         gtk_tree_store_set(treeStore, &iter_child, PKG_COLUMN, p->name(), -1);
       }
    }
 
-   if (held.size() > 0) {
+   if (!summary.held.empty()) {
+      GtkTreeIter iter;
       gtk_tree_store_append(treeStore, &iter, NULL);
       gtk_tree_store_set(treeStore, &iter, PKG_COLUMN, _("Unchanged"), -1);
-      for (vector<RPackage *>::const_iterator p = held.begin(); p != held.end();
-           p++) {
+      for (const RPackage *p : summary.held) {
+         GtkTreeIter iter_child;
          gtk_tree_store_append(treeStore, &iter_child, &iter);
-         gtk_tree_store_set(
-            treeStore, &iter_child, PKG_COLUMN, (*p)->name(), -1);
+         gtk_tree_store_set(treeStore, &iter_child, PKG_COLUMN, p->name(), -1);
       }
    }
 }
 
 void RGSummaryWindow::buildLabel(GtkBuilder *builder, RPackageLister *lister)
 {
-   GtkWidget *info;
+   GtkWidget *info = GTK_WIDGET(gtk_builder_get_object(builder, "label_details"));
+
+   RPackageLister::DetailedSummary summary = lister->getDetailedSummary();
    string text;
-   gchar *str;
 
-   info = GTK_WIDGET(gtk_builder_get_object(builder, "label_details"));
-
-   vector<RPackage *> held;
-   vector<RPackage *> kept;
-   vector<RPackage *> essential;
-   vector<RPackage *> toInstall;
-   vector<RPackage *> toReInstall;
-   vector<RPackage *> toUpgrade;
-   vector<RPackage *> toRemove;
-   vector<RPackage *> toPurge;
-   vector<RPackage *> toDowngrade;
-   vector<string> notAuthenticated;
-   double sizeChange;
-
-   lister->getDetailedSummary(held,
-                                   kept,
-                                   essential,
-                                   toInstall,
-                                   toReInstall,
-                                   toUpgrade,
-                                   toRemove,
-                                   toPurge,
-                                   toDowngrade,
-#ifdef WITH_APT_AUTH
-                                   notAuthenticated,
-#endif
-                                   sizeChange);
-
-   for (vector<RPackage *>::const_iterator p = essential.begin();
-        p != essential.end();
-        p++) {
-      str = g_strdup_printf(_("<b>%s</b> (<b>essential</b>) will be removed\n"),
-                            (*p)->name());
+   for (const RPackage *p : summary.essential) {
+      gchar *str = g_strdup_printf(_("<b>%s</b> (<b>essential</b>) will be removed\n"), p->name());
       text += str;
       g_free(str);
    }
 
-   for (vector<RPackage *>::const_iterator p = toDowngrade.begin();
-        p != toDowngrade.end();
-        p++) {
-      str = g_strdup_printf(_("<b>%s</b> will be <b>downgraded</b>\n"),
-                            (*p)->name());
+   for (const RPackage *p : summary.toDowngrade) {
+      gchar *str = g_strdup_printf(_("<b>%s</b> will be <b>downgraded</b>\n"), p->name());
       text += str;
       g_free(str);
    }
 
-   for (vector<RPackage *>::const_iterator p = toPurge.begin();
-        p != toPurge.end();
-        p++) {
-      str = g_strdup_printf(_("<b>%s</b> will be removed with configuration\n"),
-                            (*p)->name());
+   for (const RPackage *p: summary.toPurge) {
+      gchar *str = g_strdup_printf(_("<b>%s</b> will be removed with configuration\n"), p->name());
       text += str;
       g_free(str);
    }
 
-   for (vector<RPackage *>::const_iterator p = toRemove.begin();
-        p != toRemove.end();
-        p++) {
-      str = g_strdup_printf(_("<b>%s</b> will be removed\n"), (*p)->name());
+   for (const RPackage *p: summary.toRemove) {
+      gchar *str = g_strdup_printf(_("<b>%s</b> will be removed\n"), p->name());
       text += str;
       g_free(str);
    }
 
-   for (vector<RPackage *>::const_iterator p = toUpgrade.begin();
-        p != toUpgrade.end();
-        p++) {
-      str = g_strdup_printf(_("<b>%s</b> (version <i>%s</i>) will be upgraded "
-                              "to version <i>%s</i>\n"),
-                            (*p)->name(),
-                            (*p)->installedVersion(),
-                            (*p)->availableVersion());
+   for (const RPackage *p: summary.toUpgrade) {
+      gchar *str = g_strdup_printf(_("<b>%s</b> (version <i>%s</i>) will be upgraded to version <i>%s</i>\n"), p->name(), p->installedVersion(), p->availableVersion());
       text += str;
       g_free(str);
    }
 
-   for (vector<RPackage *>::const_iterator p = toInstall.begin();
-        p != toInstall.end();
-        p++) {
-      str =
-         g_strdup_printf(_("<b>%s</b> (version <i>%s</i>) will be installed\n"),
-                         (*p)->name(),
-                         (*p)->availableVersion());
+   for (const RPackage *p: summary.toInstall) {
+      gchar *str = g_strdup_printf(_("<b>%s</b> (version <i>%s</i>) will be installed\n"), p->name(), p->availableVersion());
       text += str;
       g_free(str);
    }
 
-   for (vector<RPackage *>::const_iterator p = toReInstall.begin();
-        p != toReInstall.end();
-        p++) {
-      str = g_strdup_printf(
-         _("<b>%s</b> (version <i>%s</i>) will be re-installed\n"),
-         (*p)->name(),
-         (*p)->installedVersion());
+   for (const RPackage *p: summary.toReInstall) {
+      gchar *str = g_strdup_printf(_("<b>%s</b> (version <i>%s</i>) will be re-installed\n"), p->name(), p->installedVersion());
       text += str;
       g_free(str);
    }
