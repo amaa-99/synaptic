@@ -67,7 +67,6 @@
 #include <apt-pkg/error.h>
 #include <apt-pkg/fileutl.h>
 #include <apt-pkg/pkgcache.h>
-#include <apt-pkg/strutl.h>
 #include <cassert>
 #include <cmath>
 #include <cstring>
@@ -1395,7 +1394,6 @@ void RGMainWindow::pkgKeepHelper(RPackage *pkg)
    pkg->setKeep();
 }
 
-
 void RGMainWindow::setStatusText(char *text)
 {
    GtkWidget *_statusL = GTK_WIDGET(gtk_builder_get_object(_builder, "label_status"));
@@ -1419,7 +1417,7 @@ void RGMainWindow::setStatusText(char *text)
             stats.broken,
             stats.toInstall,
             stats.toRemove,
-            SizeToStr(fabs(stats.sizeChange)).c_str()
+            RGSizeToStr(fabs(stats.sizeChange)).c_str()
          );
       } else if (stats.sizeChange > 0) {
          buffer = g_strdup_printf
@@ -1430,7 +1428,7 @@ void RGMainWindow::setStatusText(char *text)
             stats.broken,
             stats.toInstall,
             stats.toRemove,
-            SizeToStr(fabs(stats.sizeChange)).c_str()
+            RGSizeToStr(fabs(stats.sizeChange)).c_str()
          );
       } else {
          buffer = g_strdup_printf

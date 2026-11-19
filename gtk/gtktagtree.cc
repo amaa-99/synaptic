@@ -395,7 +395,7 @@ static void gtk_tag_tree_get_value(GtkTreeModel *tree_model,
          if (pkg == NULL)
             return;
          if (pkg->installedVersion()) {
-            cppstr = SizeToStr(pkg->installedSize());
+            cppstr = RGSizeToStr(pkg->installedSize());
             g_value_set_string(value, cppstr.c_str());
          }
          break;
