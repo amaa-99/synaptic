@@ -369,7 +369,7 @@ RGSummaryWindow::RGSummaryWindow(RGWindow *wwin, RPackageLister *lister)
    if (summary.sizeChange > 0) {
       g_string_append_printf(msg_space, _("%s of extra space will be used"), RGSizeToStr(summary.sizeChange).c_str());
    } else if (summary.sizeChange < 0) {
-      g_string_append_printf(msg_space, _("%s of extra space will be freed"), RGSizeToStr(summary.sizeChange).c_str());
+      g_string_append_printf(msg_space, _("%s of extra space will be freed"), RGSizeToStr(-summary.sizeChange).c_str());
    }
 
    g_string_append_printf(msg_space, _("\n%s have to be downloaded"), RGSizeToStr(dlSize).c_str());
