@@ -41,16 +41,16 @@ void RGFlushInterface()
 }
 
 /*
- * SizeToStr: Converts a size long into a human-readable SI string
+ * RGSizeToStr: Converts a size long into a human-readable SI string
  * ----------------------------------------------------
  * A maximum of four digits are shown before conversion to the next highest
  * unit. The maximum length of the string will be five characters unless the
  * size is more than ten yottabytes.
  *
- * mvo: we use out own SizeToStr function as the SI spec says we need a
+ * mvo: we use out own RGSizeToStr function as the SI spec says we need a
  *      space between the number and the unit (this isn't the case in stock apt
  */
-std::string SizeToStr(double Size)
+std::string RGSizeToStr(double Size)
 {
    char S[300];
    double ASize;

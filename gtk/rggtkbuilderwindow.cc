@@ -94,7 +94,7 @@ void RGGtkBuilderWindow::setLabel(const char *widget_name, const long value)
 
    // TRANSLATORS: "N/A" is an abbreviation for "not applicable" (on forms).
    // It happens when e.g. a package has no installed version (or no downloadable version).
-   string strVal = (value <= 0) ? _("N/A") : SizeToStr(value);
+   string strVal = (value <= 0) ? _("N/A") : RGSizeToStr(value);
    gtk_label_set_label(GTK_LABEL(widget), utf8(strVal.c_str()));
 }
 

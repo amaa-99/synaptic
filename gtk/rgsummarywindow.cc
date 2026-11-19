@@ -29,11 +29,11 @@
 #include "i18n.h"
 #include "rggtkbuilderwindow.h"
 #include "rguserdialog.h"
+#include "rgutils.h"
 #include "rpackage.h"
 #include "rpackagelister.h"
 
 #include <apt-pkg/configuration.h>
-#include <apt-pkg/strutl.h>
 #include <cassert>
 #include <cstdio>
 #include <glib-object.h>
@@ -367,12 +367,12 @@ RGSummaryWindow::RGSummaryWindow(RGWindow *wwin, RPackageLister *lister)
 
    /* this stuff goes to the msg_space string */
    if (summary.sizeChange > 0) {
-      g_string_append_printf(msg_space, _("%s of extra space will be used"), SizeToStr(summary.sizeChange).c_str());
+      g_string_append_printf(msg_space, _("%s of extra space will be used"), RGSizeToStr(summary.sizeChange).c_str());
    } else if (summary.sizeChange < 0) {
-      g_string_append_printf(msg_space, _("%s of extra space will be freed"), SizeToStr(summary.sizeChange).c_str());
+      g_string_append_printf(msg_space, _("%s of extra space will be freed"), RGSizeToStr(summary.sizeChange).c_str());
    }
 
-   g_string_append_printf(msg_space, _("\n%s have to be downloaded"), SizeToStr(dlSize).c_str());
+   g_string_append_printf(msg_space, _("\n%s have to be downloaded"), RGSizeToStr(dlSize).c_str());
 
    GtkWidget *_summarySpaceL = GTK_WIDGET(gtk_builder_get_object(_builder, "label_summary_space"));
    assert(_summarySpaceL);
