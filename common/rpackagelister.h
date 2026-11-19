@@ -213,6 +213,7 @@ class RPackageLister
    {
       return _filterView;
    }
+
    RPackageViewSearch *searchView()
    {
       return _searchView;
@@ -226,10 +227,12 @@ class RPackageLister
    {
       return _packages;
    }
+
    const std::vector<RPackage *> &getViewPackages()
    {
       return _viewPackages;
    }
+
    RPackage *getPackage(int index)
    {
       return _packages.at(index);
@@ -282,19 +285,24 @@ class RPackageLister
 
    Summary getSummary() const;
 
-   void getDetailedSummary(std::vector<RPackage *> &held,
-                           std::vector<RPackage *> &kept,
-                           std::vector<RPackage *> &essential,
-                           std::vector<RPackage *> &toInstall,
-                           std::vector<RPackage *> &toReInstall,
-                           std::vector<RPackage *> &toUpgrade,
-                           std::vector<RPackage *> &toRemove,
-                           std::vector<RPackage *> &toPurge,
-                           std::vector<RPackage *> &toDowngrade,
-#ifdef WITH_APT_AUTH
-                           std::vector<std::string> &notAuthenticated,
-#endif
-                           double &sizeChange);
+   struct DetailedSummary
+   {
+      std::vector<RPackage *> held;
+      std::vector<RPackage *> kept;
+      std::vector<RPackage *> essential;
+      std::vector<RPackage *> toInstall;
+      std::vector<RPackage *> toReInstall;
+      std::vector<RPackage *> toUpgrade;
+      std::vector<RPackage *> toRemove;
+      std::vector<RPackage *> toPurge;
+      std::vector<RPackage *> toDowngrade;
+      #ifdef WITH_APT_AUTH
+         std::vector<std::string> notAuthenticated;
+      #endif
+      int64_t sizeChange;
+   };
+
+   DetailedSummary getDetailedSummary() const;
 
    void getDownloadSummary(int &dlCount, double &dlSize);
 

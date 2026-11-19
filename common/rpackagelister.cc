@@ -1094,23 +1094,14 @@ bool RPackageLister::getStateChanges(RPackageLister::pkgState &state,
    return changed;
 }
 
-void RPackageLister::getDetailedSummary(vector<RPackage *> &held,
-                                        vector<RPackage *> &kept,
-                                        vector<RPackage *> &essential,
-                                        vector<RPackage *> &toInstall,
-                                        vector<RPackage *> &toReInstall,
-                                        vector<RPackage *> &toUpgrade,
-                                        vector<RPackage *> &toRemove,
-                                        vector<RPackage *> &toPurge,
-                                        vector<RPackage *> &toDowngrade,
-#ifdef WITH_APT_AUTH
-                                        vector<string> &notAuthenticated,
-#endif
-                                        double &sizeChange)
+RPackageLister::DetailedSummary RPackageLister::getDetailedSummary() const
 {
    pkgDepCache *deps = _cache->deps();
 
-   for (unsigned int i = 0; i < _packages.size(); i++) {
+   DetailedSummary summary {};
+
+   for (unsigned int i = 0; i < _packages.size(); i++)
+   {
       RPackage *pkg = _packages[i];
       int flags = pkg->getFlags();
 
@@ -1119,67 +1110,78 @@ void RPackageLister::getDetailedSummary(vector<RPackage *> &held,
                             RPackage::FReInstall | RPackage::FUpgrade |
                             RPackage::FDowngrade | RPackage::FRemove);
 
-      switch (status) {
-
-         case RPackage::FKeep:
-            if (flags & RPackage::FHeld)
-               held.push_back(pkg);
-            else
-               kept.push_back(pkg);
+      switch (status)
+      {
+         case RPackage::FKeep: {
+            if (flags & RPackage::FHeld) {
+               summary.held.push_back(pkg);
+            } else {
+               summary.kept.push_back(pkg);
+            }
             break;
+         }
 
-         case RPackage::FNewInstall:
-            toInstall.push_back(pkg);
+         case RPackage::FNewInstall: {
+            summary.toInstall.push_back(pkg);
             break;
+         }
 
-         case RPackage::FReInstall:
-            toReInstall.push_back(pkg);
+         case RPackage::FReInstall: {
+            summary.toReInstall.push_back(pkg);
             break;
+         }
 
-         case RPackage::FUpgrade:
-            toUpgrade.push_back(pkg);
+         case RPackage::FUpgrade: {
+            summary.toUpgrade.push_back(pkg);
             break;
+         }
 
-         case RPackage::FDowngrade:
-            toDowngrade.push_back(pkg);
+         case RPackage::FDowngrade: {
+            summary.toDowngrade.push_back(pkg);
             break;
+         }
 
-         case RPackage::FRemove:
-            if (flags & RPackage::FImportant)
-               essential.push_back(pkg);
-            else if (flags & RPackage::FPurge)
-               toPurge.push_back(pkg);
-            else
-               toRemove.push_back(pkg);
+         case RPackage::FRemove: {
+            if (flags & RPackage::FImportant) {
+               summary.essential.push_back(pkg);
+            } else if (flags & RPackage::FPurge) {
+               summary.toPurge.push_back(pkg);
+            } else {
+               summary.toRemove.push_back(pkg);
+            }
             break;
+         }
       }
    }
 
-   sort(kept.begin(), kept.end(), RPackage::byNameAscending);
-   sort(toInstall.begin(), toInstall.end(), RPackage::byNameAscending);
-   sort(toReInstall.begin(), toReInstall.end(), RPackage::byNameAscending);
-   sort(toUpgrade.begin(), toUpgrade.end(), RPackage::byNameAscending);
-   sort(essential.begin(), essential.end(), RPackage::byNameAscending);
-   sort(toRemove.begin(), toRemove.end(), RPackage::byNameAscending);
-   sort(toPurge.begin(), toPurge.end(), RPackage::byNameAscending);
-   sort(held.begin(), held.end(), RPackage::byNameAscending);
-#ifdef WITH_APT_AUTH
-   pkgAcquire Fetcher(NULL);
-   pkgPackageManager *PM = _system->CreatePM(_cache->deps());
-   if (!PM->GetArchives(&Fetcher, _cache->list(), _records)) {
+   sort(summary.kept.begin(), summary.kept.end(), RPackage::byNameAscending);
+   sort(summary.toInstall.begin(), summary.toInstall.end(), RPackage::byNameAscending);
+   sort(summary.toReInstall.begin(), summary.toReInstall.end(), RPackage::byNameAscending);
+   sort(summary.toUpgrade.begin(), summary.toUpgrade.end(), RPackage::byNameAscending);
+   sort(summary.essential.begin(), summary.essential.end(), RPackage::byNameAscending);
+   sort(summary.toRemove.begin(), summary.toRemove.end(), RPackage::byNameAscending);
+   sort(summary.toPurge.begin(), summary.toPurge.end(), RPackage::byNameAscending);
+   sort(summary.held.begin(), summary.held.end(), RPackage::byNameAscending);
+
+   summary.sizeChange = deps->UsrSize();
+
+   #ifdef WITH_APT_AUTH
+
+      pkgAcquire Fetcher(NULL);
+      pkgPackageManager *PM = _system->CreatePM(_cache->deps());
+      if (PM->GetArchives(&Fetcher, _cache->list(), _records)) {
+         for (pkgAcquire::ItemIterator I = Fetcher.ItemsBegin(); I < Fetcher.ItemsEnd(); ++I) {
+            if (!(*I)->IsTrusted()) {
+               summary.notAuthenticated.push_back(string((*I)->ShortDesc()));
+            }
+         }
+      }
+
       delete PM;
-      return;
-   }
-   for (pkgAcquire::ItemIterator I = Fetcher.ItemsBegin();
-        I < Fetcher.ItemsEnd();
-        ++I) {
-      if (!(*I)->IsTrusted()) {
-         notAuthenticated.push_back(string((*I)->ShortDesc()));
-      }
-   }
-   delete PM;
-#endif
-   sizeChange = deps->UsrSize();
+
+   #endif
+
+   return summary;
 }
 
 bool RPackageLister::updateCache(pkgAcquireStatus *status, string &error)
@@ -1447,111 +1449,59 @@ void RPackageLister::cleanCommitLog()
 
 void RPackageLister::makeCommitLog()
 {
-   time(&_logTime);
-   _logEntry =
-      string("Commit Log for ") + string(ctime(&_logTime)) + string("\n");
    _logEntry.reserve(2 * 8192); // make it big by default
 
-   vector<RPackage *> held;
-   vector<RPackage *> kept;
-   vector<RPackage *> essential;
-   vector<RPackage *> toInstall;
-   vector<RPackage *> toReInstall;
-   vector<RPackage *> toUpgrade;
-   vector<RPackage *> toRemove;
-   vector<RPackage *> toPurge;
-   vector<RPackage *> toDowngrade;
-#ifdef WITH_APT_AUTH
-   vector<string> notAuthenticated;
-#endif
+   time(&_logTime);
+   _logEntry = string("Commit Log for ") + string(ctime(&_logTime)) + string("\n");
 
-   double sizeChange;
+   DetailedSummary summary = getDetailedSummary();
 
-   getDetailedSummary(held,
-                      kept,
-                      essential,
-                      toInstall,
-                      toReInstall,
-                      toUpgrade,
-                      toRemove,
-                      toPurge,
-                      toDowngrade,
-#ifdef WITH_APT_AUTH
-                      notAuthenticated,
-#endif
-                      sizeChange);
-
-   if (essential.size() > 0) {
-      //_logEntry += _("\n<b>Removed the following ESSENTIAL packages:</b>\n");
+   if (!summary.essential.empty()) {
       _logEntry += _("\nRemoved the following ESSENTIAL packages:\n");
-      for (vector<RPackage *>::const_iterator p = essential.begin();
-           p != essential.end();
-           p++) {
-         _logEntry += (*p)->name() + string("\n");
+      for (const RPackage *p : summary.essential) {
+         format_to(back_inserter(_logEntry), "{}\n", p->name());
       }
    }
 
-   if (toDowngrade.size() > 0) {
-      //_logEntry += _("\n<b>Downgraded the following packages:</b>\n");
+   if (!summary.toDowngrade.empty()) {
       _logEntry += _("\nDowngraded the following packages:\n");
-      for (vector<RPackage *>::const_iterator p = toDowngrade.begin();
-           p != toDowngrade.end();
-           p++) {
-         _logEntry += (*p)->name() + string("\n");
+      for (const RPackage *p : summary.toDowngrade) {
+         format_to(back_inserter(_logEntry), "{}\n", p->name());
       }
    }
 
-   if (toPurge.size() > 0) {
-      //_logEntry += _("\n<b>Completely removed the following packages:</b>\n");
+   if (!summary.toPurge.empty()) {
       _logEntry += _("\nCompletely removed the following packages:\n");
-      for (vector<RPackage *>::const_iterator p = toPurge.begin();
-           p != toPurge.end();
-           p++) {
-         _logEntry += (*p)->name() + string("\n");
+      for (const RPackage *p : summary.toPurge) {
+         format_to(back_inserter(_logEntry), "{}\n", p->name());
       }
    }
 
-   if (toRemove.size() > 0) {
-      //_logEntry += _("\n<b>Removed the following packages:</b>\n");
+   if (summary.toRemove.size() > 0) {
       _logEntry += _("\nRemoved the following packages:\n");
-      for (vector<RPackage *>::const_iterator p = toRemove.begin();
-           p != toRemove.end();
-           p++) {
-         _logEntry += (*p)->name() + string("\n");
+      for (const RPackage *p : summary.toRemove) {
+         format_to(back_inserter(_logEntry), "{}\n", p->name());
       }
    }
 
-   if (toUpgrade.size() > 0) {
-      //_logEntry += _("\n<b>Upgraded the following packages:</b>\n");
+   if (summary.toUpgrade.size() > 0) {
       _logEntry += _("\nUpgraded the following packages:\n");
-      for (vector<RPackage *>::const_iterator p = toUpgrade.begin();
-           p != toUpgrade.end();
-           p++) {
-         _logEntry += (*p)->name() + string(" (") + (*p)->installedVersion() +
-                      string(")") + string(" to ") + (*p)->availableVersion() +
-                      string("\n");
+      for (const RPackage *p : summary.toUpgrade) {
+         format_to(back_inserter(_logEntry), "{} ({}) to {}\n", p->name(), p->installedVersion(), p->availableVersion());
       }
    }
 
-   if (toInstall.size() > 0) {
-      //_logEntry += _("\n<b>Installed the following packages:</b>\n");
+   if (summary.toInstall.size() > 0) {
       _logEntry += _("\nInstalled the following packages:\n");
-      for (vector<RPackage *>::const_iterator p = toInstall.begin();
-           p != toInstall.end();
-           p++) {
-         _logEntry += (*p)->name() + string(" (") + (*p)->availableVersion() +
-                      string(")") + string("\n");
+      for (const RPackage *p : summary.toInstall) {
+         format_to(back_inserter(_logEntry), "{} ({})\n", p->name(), p->availableVersion());
       }
    }
 
-   if (toReInstall.size() > 0) {
-      //_logEntry += _("\n<b>Reinstalled the following packages:</b>\n");
+   if (summary.toReInstall.size() > 0) {
       _logEntry += _("\nReinstalled the following packages:\n");
-      for (vector<RPackage *>::const_iterator p = toReInstall.begin();
-           p != toReInstall.end();
-           p++) {
-         _logEntry += (*p)->name() + string(" (") + (*p)->availableVersion() +
-                      string(")") + string("\n");
+      for (const RPackage *p : summary.toReInstall) {
+         format_to(back_inserter(_logEntry), "{} ({})\n", p->name(), p->availableVersion());
       }
    }
 }
@@ -1570,7 +1520,6 @@ bool RPackageLister::lockPackageCache(FileFd &lock)
 
    return true;
 }
-
 
 bool RPackageLister::cleanPackageCache(bool forceClean)
 {
