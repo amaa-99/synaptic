@@ -25,13 +25,17 @@
 #include "rgutils.h"
 
 #include <apt-pkg/fileutl.h>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <format>
 #include <gtk/gtk.h>
 #include <memory>
 #include <pwd.h>
 #include <string>
+
+using namespace std;
 
 void RGFlushInterface()
 {
@@ -40,45 +44,38 @@ void RGFlushInterface()
    }
 }
 
-/*
- * RGSizeToStr: Converts a size long into a human-readable SI string
- * ----------------------------------------------------
- * A maximum of four digits are shown before conversion to the next highest
- * unit. The maximum length of the string will be five characters unless the
- * size is more than ten yottabytes.
- *
- * mvo: we use out own RGSizeToStr function as the SI spec says we need a
- *      space between the number and the unit (this isn't the case in stock apt
- */
-std::string RGSizeToStr(double Size)
+// Convert the bytes count to an human readable SI string with at most 7 characters.
+// Decimal units are used (i.e. 1 kB = 1000 bytes), the sign is discarded.
+string RGSizeToStr(uint64_t bytes)
 {
-   char S[300];
-   double ASize;
-   if (Size >= 0) {
-      ASize = Size;
-   } else {
-      ASize = -1 * Size;
+   constexpr string_view units[] = { "kB", "MB", "GB", "TB", "PB", "EB" };
+
+   if (bytes < 10000)
+   {
+      return format("{} B", bytes);
    }
 
-   /* Bytes, kilobytes, megabytes, gigabytes, terabytes, petabytes, exabytes,
-    * zettabytes, yottabytes.
-    */
-   char Ext[] = {' ', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'};
-   int I = 0;
-   while (I <= 8) {
-      if (ASize < 100 && I != 0) {
-         snprintf(S, 300, "%.1f %cB", ASize, Ext[I]);
-         break;
-      }
+   double value = static_cast<double>(bytes) / 1000.0;
+   size_t unit = 0;
 
-      if (ASize < 10000) {
-         snprintf(S, 300, "%.0f %cB", ASize, Ext[I]);
-         break;
-      }
-      ASize /= 1000.0;
-      I++;
+   while ( (value >= 1000.0) && (unit < (size(units) - 1)) )
+   {
+      value /= 1000.0;
+      unit++;
    }
-   return S;
+
+   size_t decimals = (value >= 100.0) ? 0 : (value >= 10.0) ? 1 : 2;
+
+   if (((decimals == 1) && (value >= 99.95)) || ((decimals == 2) && (value >= 9.995)))
+   {
+      decimals--;
+   }
+
+   // This rounding step could be ommitted in case correct rounding is not needed.
+   double scale = (decimals == 0) ? 1.0 : (decimals == 1) ? 10.0 : 100.0;
+   value = round(value * scale) / scale;
+
+   return format("{:.{}f} {}", value, decimals, units[unit]);
 }
 
 bool OpenUriInDefaultApplication(const std::string &uri)

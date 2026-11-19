@@ -212,13 +212,11 @@ bool RGFetchProgress::MediaChange(string Media, string Drive)
 
 void RGFetchProgress::updateStatus(pkgAcquire::ItemDesc &Itm, int status)
 {
-   // cout << "void RGFetchProgress::updateStatus()" << endl;
-
    if (Itm.Owner->ID == 0) {
       Item item;
       item.descr = Itm.ShortDesc;
       item.uri = Itm.Description;
-      item.size = string(RGSizeToStr(Itm.Owner->FileSize));
+      item.size = RGSizeToStr(Itm.Owner->FileSize);
       item.status = status;
       _items.push_back(item);
       Itm.Owner->ID = _items.size();

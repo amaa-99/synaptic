@@ -54,7 +54,10 @@ const char *utf8_to_locale(const char *str);
 const char *utf8(const char *str);
 std::string utf8(const std::string& str);
 
-std::string RGSizeToStr(double Bytes);
+// Convert the bytes count to an human readable SI string with at most 7 characters.
+// Decimal units are used (i.e. 1 kB = 1000 bytes), the sign is discarded.
+std::string RGSizeToStr(uint64_t bytes);
+
 bool OpenUriInDefaultApplication(const std::string &uri);
 
 std::string MarkupEscapeString(std::string str);

@@ -57,7 +57,7 @@ if gtest_dep.found()
   test('test_rsources', test_rsources, env: test_env)
 
   ####################
-  
+
   gtest_rpackage = executable(
     'gtest_rpackage',
     ['gtest_rpackage.cc'] + common_sources,
@@ -67,7 +67,19 @@ if gtest_dep.found()
   )
 
   test('gtest_rpackage', gtest_rpackage, env: test_env)
-  
+
+  ####################
+
+  gtest_rgutils = executable(
+    'gtest_rgutils',
+    ['gtest_rgutils.cc'] + '../gtk/rgutils.cc' + '../gtk/rgutils.h',
+    cpp_args: gtk_cpp_args + ['-g3'],
+    dependencies: [glib_dep, gui_deps, gtest_main_dep],
+    include_directories: [root_inc, common_inc, gui_inc],
+  )
+
+  test('gtest_rgutils', gtest_rgutils, env: test_env)
+
   ####################
 
 endif

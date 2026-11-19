@@ -96,3 +96,9 @@ target_link_libraries(gtest_rpackage PRIVATE GTest::gtest_main)
 gtest_discover_tests(gtest_rpackage)
 
 ####################
+
+add_executable(gtest_rgutils gtest_rgutils.cc ${CONFIG_H} ${CMAKE_SOURCE_DIR}/gtk/rgutils.cc ${CMAKE_SOURCE_DIR}/gtk/rgutils.h)
+target_link_libraries(gtest_rgutils PRIVATE GTest::gtest_main)
+gtest_discover_tests(gtest_rgutils)
+
+####################

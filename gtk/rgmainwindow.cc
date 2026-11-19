@@ -1417,7 +1417,7 @@ void RGMainWindow::setStatusText(char *text)
             stats.broken,
             stats.toInstall,
             stats.toRemove,
-            RGSizeToStr(fabs(stats.sizeChange)).c_str()
+            RGSizeToStr(-stats.sizeChange).c_str()
          );
       } else if (stats.sizeChange > 0) {
          buffer = g_strdup_printf
@@ -1428,7 +1428,7 @@ void RGMainWindow::setStatusText(char *text)
             stats.broken,
             stats.toInstall,
             stats.toRemove,
-            RGSizeToStr(fabs(stats.sizeChange)).c_str()
+            RGSizeToStr(stats.sizeChange).c_str()
          );
       } else {
          buffer = g_strdup_printf
