@@ -218,7 +218,7 @@ void RGFetchProgress::updateStatus(pkgAcquire::ItemDesc &Itm, int status)
       Item item;
       item.descr = Itm.ShortDesc;
       item.uri = Itm.Description;
-      item.size = string(SizeToStr(Itm.Owner->FileSize));
+      item.size = string(RGSizeToStr(Itm.Owner->FileSize));
       item.status = status;
       _items.push_back(item);
       Itm.Owner->ID = _items.size();
@@ -324,14 +324,11 @@ bool RGFetchProgress::Pulse(pkgAcquire *Owner)
    gchar *s;
    GObject *label_eta = gtk_builder_get_object(_builder, "label_eta");
    if (CurrentCPS != 0 && ETA != 0) {
-      s = g_strdup_printf(_("Download rate: %s/s - %s remaining"),
-                          SizeToStr(CurrentCPS).c_str(),
-                          TimeToStr(ETA).c_str());
+      s = g_strdup_printf(_("Download rate: %s/s - %s remaining"), RGSizeToStr(CurrentCPS).c_str(), TimeToStr(ETA).c_str());
       gtk_label_set_text(GTK_LABEL(GTK_WIDGET(label_eta)), s);
       g_free(s);
    } else {
-      gtk_label_set_text(GTK_LABEL(GTK_WIDGET(label_eta)),
-                         _("Download rate: ..."));
+      gtk_label_set_text(GTK_LABEL(GTK_WIDGET(label_eta)), _("Download rate: ..."));
    }
    s = g_strdup_printf(_("Downloading file %li of %li"), i, TotalItems);
    gtk_progress_bar_set_text(GTK_PROGRESS_BAR(_mainProgressBar), s);

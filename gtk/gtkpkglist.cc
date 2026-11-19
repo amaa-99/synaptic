@@ -27,7 +27,6 @@
 #include "rpackagelister.h"
 
 #include <apt-pkg/configuration.h>
-#include <apt-pkg/strutl.h>
 #include <cassert>
 #include <cstddef>
 #include <gtk/gtk.h>
@@ -342,14 +341,14 @@ static void gtk_pkg_list_get_value(GtkTreeModel *tree_model,
 
       case PKG_SIZE_COLUMN: {
          if (pkg->installedVersion() != nullptr) {
-            std::string str = SizeToStr(pkg->installedSize());
+            std::string str = RGSizeToStr(pkg->installedSize());
             g_value_set_string(value, str.c_str());
          }
          break;
       }
 
       case PKG_DOWNLOAD_SIZE_COLUMN: {
-         std::string str = SizeToStr(pkg->availablePackageSize());
+         std::string str = RGSizeToStr(pkg->availablePackageSize());
          g_value_set_string(value, str.c_str());
          break;
       }
@@ -657,5 +656,3 @@ static void gtk_pkg_list_sort(GtkPkgList *pkg_list)
          pkg_list->_lister->sortPackages(RPackageLister::LIST_SORT_DEFAULT);
    }
 }
-
-// vim:ts=3:sw=3:et

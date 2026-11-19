@@ -54,7 +54,7 @@ const char *utf8_to_locale(const char *str);
 const char *utf8(const char *str);
 std::string utf8(const std::string& str);
 
-std::string SizeToStr(double Bytes);
+std::string RGSizeToStr(double Bytes);
 bool OpenUriInDefaultApplication(const std::string &uri);
 
 std::string MarkupEscapeString(std::string str);
