@@ -823,19 +823,22 @@ RPackageLister::Stats RPackageLister::getStats() const
    return stats;
 }
 
-void RPackageLister::getDownloadSummary(int &dlCount, double &dlSize)
+uint64_t RPackageLister::getDownloadSize() const
 {
-   dlCount = 0;
-   dlSize = _cache->deps()->DebSize();
+   uint64_t dlSize;
 
-   pkgAcquire Fetcher;
    pkgPackageManager *PM = _system->CreatePM(_cache->deps());
-   if (!PM->GetArchives(&Fetcher, _cache->list(), _records)) {
-      delete PM;
-      return;
+   pkgAcquire Fetcher;
+
+   if (PM->GetArchives(&Fetcher, _cache->list(), _records)) {
+      dlSize = Fetcher.FetchNeeded();
+   } else {
+      dlSize = _cache->deps()->DebSize();
    }
-   dlSize = Fetcher.FetchNeeded();
+
    delete PM;
+
+   return dlSize;
 }
 
 RPackageLister::Summary RPackageLister::getSummary() const

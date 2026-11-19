@@ -290,9 +290,7 @@ RGSummaryWindow::RGSummaryWindow(RGWindow *wwin, RPackageLister *lister)
 
    RPackageLister::Summary summary = lister->getSummary();
 
-   double dlSize;
-   int dlCount;
-   lister->getDownloadSummary(dlCount, dlSize);
+   uint64_t dlSize = lister->getDownloadSize();
 
    GString *msg = g_string_new("");
 

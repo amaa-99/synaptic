@@ -304,7 +304,7 @@ class RPackageLister
 
    DetailedSummary getDetailedSummary() const;
 
-   void getDownloadSummary(int &dlCount, double &dlSize);
+   uint64_t getDownloadSize() const;
 
    void saveUndoState(pkgState &state);
    void saveUndoState();
