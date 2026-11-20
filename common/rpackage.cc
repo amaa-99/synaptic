@@ -193,13 +193,13 @@ string RPackage::installedFiles() const
       // Try the multiarch file name next:
       f = "/var/lib/dpkg/info/" + string(name()) + ":" + arch() + ".list";
       if (!FileExists(f)) {
-         return "The list of installed files is only available for installed packages!";
+         return _("The list of installed files is only available for installed packages!");
       }
    }
 
    ifstream in(f);
    if (!in)
-      return "The list of installed files could not be retrieved!";
+      return _("The list of installed files could not be retrieved!");
 
    vector<string> sV;
    while (!in.eof()) {
