@@ -446,7 +446,7 @@ string RPackage::showWhyInstBroken()
                         // TRANSLATORS: dependency error message, example:
                         // "Depends: apt 0.5.4  but it is not installable",
                         ioprintf(out,
-                                 "%s: %s %s but it is not installable",
+                                 _("%s: %s %s but it is not installable"),
                                  End.DepType(),
                                  Start.TargetPkg().Name(),
                                  requiredVersion.c_str());
