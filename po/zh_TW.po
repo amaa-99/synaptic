@@ -1734,10 +1734,10 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"列出了 %i 個套件，%i 個已安裝，%i 個安裝不完整。%i 個將會安裝/升級，%i 個將會"
+"列出了 {0} 個套件，{1} 個已安裝，{2} 個安裝不完整。{3} 個將會安裝/升級，{4} 個將會"
 "移除；會釋放 %s 的空間"
 
 #: ../gtk/rgmainwindow.cc:1678

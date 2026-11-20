@@ -1770,10 +1770,10 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"%i csomag listázva, %i telepítve, %i törött. %i telepítendő/frissítendő, %i "
+"{0} csomag listázva, {1} telepítve, {2} törött. {3} telepítendő/frissítendő, {4} "
 "eltávolítandó, %s kerül felszabadításra"
 
 #: ../gtk/rgmainwindow.cc:1678

@@ -1751,10 +1751,10 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"%i ప్యాకేజీలు జాబితా అయ్యాయి.%i స్థాపించబడ్డాయి, %i చెదిరాయి. %i స్థాపించాల్సినవి/ఉన్నతీకరించాల్సినవి, %i "
+"{0} ప్యాకేజీలు జాబితా అయ్యాయి.{1} స్థాపించబడ్డాయి, {2} చెదిరాయి. {3} స్థాపించాల్సినవి/ఉన్నతీకరించాల్సినవి, {4} "
 "తొలగించాల్సినవి; %s విడిచిపెట్టాల్సినవి"
 
 #: ../gtk/rgmainwindow.cc:1678

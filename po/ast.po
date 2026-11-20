@@ -1767,10 +1767,10 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"%i paquetes llistaos, %i instalaos, %i frañaos. %i pa instalar/anovar, %i pa "
+"{0} paquetes llistaos, {1} instalaos, {2} frañaos. {3} pa instalar/anovar, {4} pa "
 "desaniciar; liberaránse %s"
 
 #: ../gtk/rgmainwindow.cc:1678

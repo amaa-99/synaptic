@@ -1706,10 +1706,10 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"%i pakker, %i installert, %i ødelagt. %i skal installeres/oppgraderes, %i "
+"{0} pakker, {1} installert, {2} ødelagt. {3} skal installeres/oppgraderes, {4} "
 "skal fjernes ; %sB vil bli %s"
 
 #: ../gtk/rgmainwindow.cc:1678

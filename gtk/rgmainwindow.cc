@@ -36,6 +36,9 @@
 #include "rgchangelogdialog.h"
 #include "rgchangeswindow.h"
 #include "rgdebinstallprogress.h"
+#if !defined(WITH_DPKG_STATUSFD)
+   #include "rgdummyinstallprogress.h"
+#endif
 #include "rgfetchprogress.h"
 #include "rgfiltermanager.h"
 #include "rgfindwindow.h"
@@ -52,7 +55,6 @@
 #include "rgtaskswin.h"
 #include "rgterminstallprogress.h"
 #include "rginstallprogress.h"
-#include "rgdummyinstallprogress.h"
 #include "rguserdialog.h"
 #include "rgutils.h"
 #include "rgwindow.h"
@@ -68,7 +70,6 @@
 #include <apt-pkg/fileutl.h>
 #include <apt-pkg/pkgcache.h>
 #include <cassert>
-#include <cmath>
 #include <cstring>
 #include <ctime>
 #include <format>
@@ -78,7 +79,6 @@
 #include <iostream>
 #include <libintl.h>
 #include <pwd.h>
-#include <signal.h>
 #include <sstream>
 #include <stdlib.h>
 #include <string>
@@ -1404,46 +1404,28 @@ void RGMainWindow::setStatusText(char *text)
    if (text) {
       gtk_label_set_text(GTK_LABEL(_statusL), text);
    } else {
-      // we need to make this two strings for i18n reasons
       int listed = _lister->viewPackagesSize();
-      gchar *buffer;
+      string message;
 
-      if (stats.sizeChange < 0) {
-         buffer = g_strdup_printf
-         (
-            _("%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to remove; %s will be freed"),
-            listed,
-            stats.installed,
-            stats.broken,
-            stats.toInstall,
-            stats.toRemove,
-            RGSizeToStr(-stats.sizeChange).c_str()
-         );
-      } else if (stats.sizeChange > 0) {
-         buffer = g_strdup_printf
-         (
-            _("%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to remove; %s will be used"),
-            listed,
-            stats.installed,
-            stats.broken,
-            stats.toInstall,
-            stats.toRemove,
-            RGSizeToStr(stats.sizeChange).c_str()
-         );
-      } else {
-         buffer = g_strdup_printf
-         (
-            _("%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to remove"),
-             listed,
-             stats.installed,
-             stats.broken,
-             stats.toInstall,
-             stats.toRemove
-         );
+      if (stats.sizeChange < 0)
+      {
+         string _sizeChange = RGSizeToStr(-stats.sizeChange);
+         format_args args = make_format_args(listed, stats.installed, stats.broken, stats.toInstall, stats.toRemove, _sizeChange);
+         message = vformat(_("{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to remove; %s will be freed"), args);
+      }
+      else if (stats.sizeChange > 0)
+      {
+         string _sizeChange = RGSizeToStr(stats.sizeChange);
+         format_args args = make_format_args(listed, stats.installed, stats.broken, stats.toInstall, stats.toRemove, _sizeChange);
+         message = vformat(_("{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to remove; %s will be used"), args);
+      }
+      else
+      {
+         format_args args = make_format_args(listed, stats.installed, stats.broken, stats.toInstall, stats.toRemove);
+         message = vformat(_("{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to remove"), args);
       }
 
-      gtk_label_set_text(GTK_LABEL(_statusL), buffer);
-      g_free(buffer);
+      gtk_label_set_text(GTK_LABEL(_statusL), message.c_str());
    }
 
    setActionEnabled("mark-all-upgrades", _lister->upgradable());
