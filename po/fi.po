@@ -1758,11 +1758,11 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"%i pakettia listattu, %i asennettua, %i rikkinäistä, %i asennettavaa tai "
-"päivitettävää, %i poistettavaa: %s vapautetaan"
+"{0} pakettia listattu, {1} asennettua, {2} rikkinäistä, {3} asennettavaa tai "
+"päivitettävää, {4} poistettavaa: %s vapautetaan"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format

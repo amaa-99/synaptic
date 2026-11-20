@@ -1781,10 +1781,10 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"Пакетов: %i, %i уст. (%i с ош.), %i для уст.(обн.), %i для удал.; "
+"Пакетов: {0}, {1} уст. ({2} с ош.), {3} для уст.(обн.), {4} для удал.; "
 "освободится %s"
 
 #: ../gtk/rgmainwindow.cc:1678

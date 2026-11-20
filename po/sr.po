@@ -1779,11 +1779,11 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"Укупан број пакета на списку — %i; инсталираних — %i; оштећених — %i; за "
-"инсталирање/надоградњу — %i; за уклањање — %i; биће ослобођено — %s"
+"Укупан број пакета на списку — {0}; инсталираних — {1}; оштећених — {2}; за "
+"инсталирање/надоградњу — {3}; за уклањање — {4}; биће ослобођено — %s"
 
 # bug: plural form, split please
 #: ../gtk/rgmainwindow.cc:1678

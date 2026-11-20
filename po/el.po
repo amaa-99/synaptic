@@ -1772,11 +1772,11 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"%i πακέτα καταγράφηκαν, %i εγκατεστημένα, %i κατεστραμμένα. %i προς "
-"εγκατάσταση/αναβάθμιση, %i προς απομάκρυνση; %s θα ελευθερωθούν."
+"{0} πακέτα καταγράφηκαν, {1} εγκατεστημένα, {2} κατεστραμμένα. {3} προς "
+"εγκατάσταση/αναβάθμιση, {4} προς απομάκρυνση; %s θα ελευθερωθούν."
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format

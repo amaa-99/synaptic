@@ -1771,11 +1771,11 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove; %s will be freed"
 msgstr ""
-"%i пакета изброени, %i инсталирани, %i повредени. %i за инсталиране/"
-"актуализиране, %i за премахване; %s ще бъдат освободени"
+"{0} пакета изброени, {1} инсталирани, {2} повредени. {3} за инсталиране/"
+"актуализиране, {4} за премахване; %s ще бъдат освободени"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
