@@ -2769,13 +2769,21 @@ void RGMainWindow::cbUpdateClicked(GSimpleAction *action,
 
    // update cache and forget about the previous new packages
    // (only if no error occurred)
-   string error;
-   if (!me->_lister->updateCache(progress, error)) {
+   if (!me->_lister->updateCache(progress)) {
+
+      string errors;
+
+      while (!_error->empty()) {
+         string msg;
+         bool is_error = _error->PopMessage(msg);
+         std::cout << "\n\n" << msg << "\n\n";
+         errors += msg + '\n';
+      }
+
       RGGtkBuilderUserDialog dia(me, "update_failed");
-      GtkWidget *tv =
-         GTK_WIDGET(gtk_builder_get_object(dia.getGtkBuilder(), "textview"));
+      GtkWidget *tv = GTK_WIDGET(gtk_builder_get_object(dia.getGtkBuilder(), "textview"));
       GtkTextBuffer *tb = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tv));
-      gtk_text_buffer_set_text(tb, utf8(error.c_str()), -1);
+      gtk_text_buffer_set_text(tb, utf8(errors.c_str()), -1);
       dia.run();
    } else {
       me->forgetNewPackages();
