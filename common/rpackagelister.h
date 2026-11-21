@@ -331,7 +331,7 @@ class RPackageLister
    bool upgrade();
    bool distUpgrade();
    bool cleanPackageCache(bool forceClean = false);
-   bool updateCache(pkgAcquireStatus *status, std::string &error);
+   bool updateCache(pkgAcquireStatus *status);
    bool commitChanges(pkgAcquireStatus *status, RInstallProgress *iprog);
 
    // some information
