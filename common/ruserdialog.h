@@ -28,6 +28,7 @@
 class RUserDialog
 {
  public:
+
    enum ButtonsType {
       ButtonsDefault,
       ButtonsOk,
@@ -54,14 +55,11 @@ class RUserDialog
 
    virtual bool warning(const char *msg, bool nocancel = true)
    {
-      return nocancel ? message(msg, DialogWarning)
-                      : message(msg, DialogWarning, ButtonsOkCancel, false);
+      return (nocancel) ? message(msg, DialogWarning) : message(msg, DialogWarning, ButtonsOkCancel, false);
    }
 
    virtual void error(const char *msg)
    {
       message(msg, DialogError);
    }
-
-   virtual bool showErrors();
 };

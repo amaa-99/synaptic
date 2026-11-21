@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/io/github/mvo5/synaptic/ui">
+    <file preprocess="xml-stripblanks" compressed="true" alias="dialog_error.ui"                   >gtkbuilder/dialog_error.ui</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="detail_panel.ui"                   >gtkbuilder/detail_panel.ui</file>
+    <file preprocess="xml-stripblanks" compressed="true" alias="detail_panel_simple.ui"            >gtkbuilder/detail_panel_simple.ui</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="dialog_authentication.ui"          >gtkbuilder/dialog_authentication.ui</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="dialog_changelog.ui"               >gtkbuilder/dialog_changelog.ui</file>
     <file preprocess="xml-stripblanks" compressed="true" alias="dialog_change_version.ui"          >gtkbuilder/dialog_change_version.ui</file>
