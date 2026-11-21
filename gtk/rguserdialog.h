@@ -32,6 +32,7 @@
 #include <cstddef>
 #include <gtk/gtk.h>
 #include <string>
+#include <vector>
 
 class RGUserDialog : public RUserDialog
 {
@@ -46,7 +47,8 @@ class RGUserDialog : public RUserDialog
    RGUserDialog(GtkWidget *parent) : _parentWindow(parent) {};
    virtual ~RGUserDialog() = default;
 
-   bool showErrors() override;
+   bool showErrors();
+   void showErrors(bool has_errors, const std::string &title, const std::string &subtitle, std::vector<std::tuple<bool, std::string, std::string>> details);
 
    bool message(
       const char *msg,

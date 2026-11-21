@@ -23,32 +23,4 @@
 
 #include "config.h" // IWYU pragma: associated
 
-#include <apt-pkg/error.h>
-#include <string>
-#include "ruserdialog.h"
-
-bool RUserDialog::showErrors()
-{
-   if (_error->empty())
-      return false;
-
-   while (!_error->empty()) {
-      std::string message;
-      bool iserror = _error->PopMessage(message);
-
-      // Ignore some stupid error messages.
-      if (message == "Tried to dequeue a fetching object")
-         continue;
-
-      if (!message.empty()) {
-         if (iserror)
-            error(message.c_str());
-         else
-            warning(message.c_str());
-      }
-   }
-
-   return true;
-}
-
-// vim:ts=3:sw=3:et
+#include "ruserdialog.h" // IWYU pragma: associated
