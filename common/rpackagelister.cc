@@ -1187,35 +1187,38 @@ RPackageLister::DetailedSummary RPackageLister::getDetailedSummary() const
    return summary;
 }
 
-bool RPackageLister::updateCache(pkgAcquireStatus *status, string &error)
+bool RPackageLister::updateCache(pkgAcquireStatus *status)
 {
    assert(_cache->list() != NULL);
+
    // Get the source list
-   // pkgSourceList List;
    _cache->list()->ReadMainList();
 
-   // Lock the list directory
-   FileFd Lock;
-   if (_config->FindB("Debug::NoLocking", false) == false) {
-      Lock.Fd(GetLock(_config->FindDir("Dir::State::Lists") + "lock"));
-      // cout << "lock in : " << _config->FindDir("Dir::State::Lists") << endl;
-      if (_error->PendingError() == true)
-         return _error->Error(_("Unable to lock the list directory"));
+   FileFd Lock; // Lock gets released when this goes out of scope.
+
+   if (!_config->FindB("Debug::NoLocking", false))
+   {  // Lock the list directory
+
+      // GetLock() returns an integer file descriptor, not a Boolean:
+      // 0 or greater: success. The descriptor refers to the lock file;
+      // on a read-only filesystem, it returns 0 instead, so the caller still has a descriptor to close.
+      // -1: failure — such as the file not opening or the lock request failing.
+
+      if (int fd = GetLock(_config->FindDir("Dir::State::Lists") + "lock") == -1)
+      {
+         _error->Error(_("Unable to lock the list directory"));
+         return -1;
+      }
+      else
+      {
+         Lock.Fd(fd);
+      }
    }
 
    _updating = true;
 
    // apt-0.7.10 has the new UpdateList code in algorithms, we use it
-   string s;
-   bool res = ListUpdate(*status, *_cache->list(), 5000);
-   if (res == false) {
-      while (!_error->empty()) {
-         _error->PopMessage(s);
-         error += s;
-      }
-   }
-
-   return res;
+   return ListUpdate(*status, *_cache->list(), 5000);
 }
 
 bool RPackageLister::getDownloadUris(vector<string> &uris)
