@@ -230,7 +230,8 @@ class RGMainWindow : public RGGtkBuilderWindow, public RPackageObserver
    void saveState();
    bool restoreState();
 
-   bool showErrors();
+   void showErrors();
+   void showErrors(bool has_errors, const std::string &title, const std::string &subtitle, std::vector<std::tuple<bool, std::string, std::string>> details);
 
    GMenu *buildWeakDependsMenu(RPackage *pkg, pkgCache::Dep::DepType);
 
