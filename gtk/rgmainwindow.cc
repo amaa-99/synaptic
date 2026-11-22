@@ -273,9 +273,14 @@ string RGMainWindow::selectedSubView()
    return ret;
 }
 
-bool RGMainWindow::showErrors()
+void RGMainWindow::showErrors(bool is_error, const string &title, const string &subtitle, vector<tuple<bool, string, string>> details)
 {
-   return _userDialog->showErrors();
+   _userDialog->showErrors(is_error, title, subtitle, details);
+}
+
+void RGMainWindow::showErrors()
+{
+   _userDialog->showErrors();
 }
 
 void RGMainWindow::notifyChange(RPackage *pkg)
@@ -2769,23 +2774,44 @@ void RGMainWindow::cbUpdateClicked(GSimpleAction *action,
 
    // update cache and forget about the previous new packages
    // (only if no error occurred)
-   if (!me->_lister->updateCache(progress)) {
+   if (!me->_lister->updateCache(progress))
+   {  // An error occurred: Show the details to the user!
+      vector<tuple<bool, string, string>> details;
 
-      string errors;
+      bool has_errors = false; // Tell the error dialog whether to use the warning or the error styling.
 
-      while (!_error->empty()) {
-         string msg;
-         bool is_error = _error->PopMessage(msg);
-         std::cout << "\n\n" << msg << "\n\n";
-         errors += msg + '\n';
+      while (!_error->empty())
+      {
+         string log_message;
+         bool is_error = _error->PopMessage(log_message);
+
+         // Split the message into title (line) and details.
+         // The line splitting is based on the formatting used in the APT AcquireUpdate() implementation.
+         size_t newline = log_message.find("  ");
+         string title = log_message.substr(0, newline);
+         string description = (newline == std::string_view::npos) ? "" : log_message.substr(newline + 2);
+
+         details.push_back(tuple<bool, string, string>(is_error, title, description));
+
+         has_errors |= is_error;
       }
 
-      RGGtkBuilderUserDialog dia(me, "update_failed");
-      GtkWidget *tv = GTK_WIDGET(gtk_builder_get_object(dia.getGtkBuilder(), "textview"));
-      GtkTextBuffer *tb = gtk_text_view_get_buffer(GTK_TEXT_VIEW(tv));
-      gtk_text_buffer_set_text(tb, utf8(errors.c_str()), -1);
-      dia.run();
-   } else {
+      // TODO: AA: Update the .po strings!
+      // <big><b>Could not download all repository indexes</b></big>
+      // The repository may no longer be available or could not be contacted because of network problems. If available an older version of the failed index will be used. Otherwise the repository will be ignored. Check your network connection and ensure the repository address in the preferences is correct.
+
+      string title = _("Could not download all repository indexes");
+      string subtitle =
+      _(
+         "The repository may no longer be available or could not be contacted because of network problems. "
+         "If available, an older version of the failed index will be used. Otherwise the repository will be ignored. "
+         "Check your network connection and ensure the repository address in the preferences is correct."
+      );
+
+      me->showErrors(has_errors, title, subtitle, details);
+   }
+   else
+   {
       me->forgetNewPackages();
       _config->Set("Synaptic::update::last", time(NULL));
    }
