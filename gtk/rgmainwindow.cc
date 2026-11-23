@@ -2796,16 +2796,14 @@ void RGMainWindow::cbUpdateClicked(GSimpleAction *action,
          has_errors |= is_error;
       }
 
-      // TODO: AA: Update the .po strings!
-      // <big><b>Could not download all repository indexes</b></big>
-      // The repository may no longer be available or could not be contacted because of network problems. If available an older version of the failed index will be used. Otherwise the repository will be ignored. Check your network connection and ensure the repository address in the preferences is correct.
-
       string title = _("Could not download all repository indexes");
       string subtitle =
       _(
-         "The repository may no longer be available or could not be contacted because of network problems. "
-         "If available, an older version of the failed index will be used. Otherwise the repository will be ignored. "
-         "Check your network connection and ensure the repository address in the preferences is correct."
+         "The repository may no longer be available or could not be contacted because "
+         "of network problems. If available, an older version of the failed index will "
+         "be used. Otherwise the repository will be ignored. Check your network "
+         "connection and ensure the repository address is correct in 'Repositories' "
+         "under 'Settings'."
       );
 
       me->showErrors(has_errors, title, subtitle, details);
