@@ -1757,29 +1757,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"Nimekirjas on %i paketti, neist %i paigaldatud, %i katkist, %i paigaldada/"
-"uuendada, %i eemaldada; vabaneb %s"
+"Nimekirjas on {0} paketti, neist {1} paigaldatud, {2} katkist, {3} paigaldada/"
+"uuendada, {4} eemaldada; vabaneb {5}"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"Nimekirjas on %i paketti, %i paigaldatud, %i katkist, %i paigaldada/"
-"uuendada, %i eemaldada; kasutusele võetakse %s"
+"Nimekirjas on {0} paketti, {1} paigaldatud, {2} katkist, {3} paigaldada/"
+"uuendada, {4} eemaldada; kasutusele võetakse {5}"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"Nimekirjas on %i paketti, %i paigaldatud, %i katkist, %i paigaldada/"
-"uuendada, %i eemaldada"
+"Nimekirjas on {0} paketti, {1} paigaldatud, {2} katkist, {3} paigaldada/"
+"uuendada, {4} eemaldada"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

@@ -1744,28 +1744,28 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i개 패키지 목록, %i개 설치됨, %i개 깨짐. %i개 설치/업그레이드 예정, %i개 지"
-"울 예정; %s만큼의 용량 확보 예정"
+"{0}개 패키지 목록, {1}개 설치됨, {2}개 깨짐. {3}개 설치/업그레이드 예정, {4}개 지"
+"울 예정; {5}만큼의 용량 확보 예정"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i개 패키지 목록, %i개 설치, %i개 깨짐. %i개 설치/업그레이드 예정, %i개 지울 "
-"예정; %s만큼의 용량 더 차지 예정"
+"{0}개 패키지 목록, {1}개 설치, {2}개 깨짐. {3}개 설치/업그레이드 예정, {4}개 지울 "
+"예정; {5}만큼의 용량 더 차지 예정"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i개 패키지 목록, %i개 설치, %i개 깨짐. %i개 설치/업그레이드 예정, %i개 지울 "
+"{0}개 패키지 목록, {1}개 설치, {2}개 깨짐. {3}개 설치/업그레이드 예정, {4}개 지울 "
 "예정"
 
 #: ../gtk/rgmainwindow.cc:1750

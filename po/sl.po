@@ -1769,29 +1769,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i paketov seznama, %i nameščenih, %i pokvarjenih, %i za namestitev ali "
-"nadgradnjo, %i za odstranitev; sproščenega bo %s prostora."
+"{0} paketov seznama, {1} nameščenih, {2} pokvarjenih, {3} za namestitev ali "
+"nadgradnjo, {4} za odstranitev; sproščenega bo {5} prostora."
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i paketov seznama, %i nameščenih, %i pokvarjenih, %i za namestitev ali "
-"nadgradnjo, %i za odstranitev; uporabljenega bo %s prostora."
+"{0} paketov seznama, {1} nameščenih, {2} pokvarjenih, {3} za namestitev ali "
+"nadgradnjo, {4} za odstranitev; uporabljenega bo {5} prostora."
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i paketov seznama, %i nameščenih, %i pokvarjenih, %i za namestitev ali "
-"nadgradnjo, %i za odstranitev"
+"{0} paketov seznama, {1} nameščenih, {2} pokvarjenih, {3} za namestitev ali "
+"nadgradnjo, {4} za odstranitev"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

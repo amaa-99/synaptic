@@ -1774,28 +1774,28 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i a bakadoù listennet, %i staliet, %i torret. %i da staliañ/hivizaat, %i da "
-"zistaliañ ; %s a vo dieubet"
+"{0} a bakadoù listennet, {1} staliet, {2} torret. {3} da staliañ/hivizaat, {4} da "
+"zistaliañ ; {5} a vo dieubet"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i a bakadoù listennet, %i staliet, %i torret. %i da staliañ/hivizaat, %i da "
-"zistaliañ; %s a vo implijet"
+"{0} a bakadoù listennet, {1} staliet, {2} torret. {3} da staliañ/hivizaat, {4} da "
+"zistaliañ; {5} a vo implijet"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i a bakadoù listennet, %i staliet, %i torret. %i da staliañ/hivizaat, %i da "
+"{0} a bakadoù listennet, {1} staliet, {2} torret. {3} da staliañ/hivizaat, {4} da "
 "zistaliañ"
 
 #: ../gtk/rgmainwindow.cc:1750

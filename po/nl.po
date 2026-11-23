@@ -1768,29 +1768,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i pakketten op de lijst, %i geïnstalleerd, %i defect. %i te installeren/bij "
-"te werken, %i te verwijderen. Er zal %s aan ruimte vrijkomen."
+"{0} pakketten op de lijst, {1} geïnstalleerd, {2} defect. {3} te installeren/bij "
+"te werken, {4} te verwijderen. Er zal {5} aan ruimte vrijkomen."
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i pakketten in de lijst, %i geïnstalleerd, %i defect. %i te installeren / "
-"op te waarderen, %i te verwijderen. Er zal %s aan ruimte gebruikt worden."
+"{0} pakketten in de lijst, {1} geïnstalleerd, {2} defect. {3} te installeren / "
+"op te waarderen, {4} te verwijderen. Er zal {5} aan ruimte gebruikt worden."
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i pakketten op de lijst, %i geïnstalleerd, %i defect. %i te installeren/op "
-"te waarderen, %i te verwijderen"
+"{0} pakketten op de lijst, {1} geïnstalleerd, {2} defect. {3} te installeren/op "
+"te waarderen, {4} te verwijderen"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

@@ -1770,28 +1770,28 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i csomag listázva, %i telepítve, %i törött. %i telepítendő/frissítendő, %i "
-"eltávolítandó, %s kerül felszabadításra"
+"{0} csomag listázva, {1} telepítve, {2} törött. {3} telepítendő/frissítendő, {4} "
+"eltávolítandó, {5} kerül felszabadításra"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i csomag listázva, %i telepítve, %i törött. %i telepítendő/frissítendő %i "
-"el lesz távolítva, %s lesz felhasználva"
+"{0} csomag listázva, {1} telepítve, {2} törött. {3} telepítendő/frissítendő {4} "
+"el lesz távolítva, {5} lesz felhasználva"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i csomag listázva, %i telepítve, %i törött. %i telepítendő/frissítendő %i "
+"{0} csomag listázva, {1} telepítve, {2} törött. {3} telepítendő/frissítendő {4} "
 "el lesz távolítva"
 
 #: ../gtk/rgmainwindow.cc:1750

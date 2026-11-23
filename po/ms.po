@@ -1761,28 +1761,28 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i pakej tersenarai, %i dipasang, %i rosak, %i akan dipasang/ditatar, %i "
-"untuk dibuang; %s akan dibebaskan"
+"{0} pakej tersenarai, {1} dipasang, {2} rosak, {3} akan dipasang/ditatar, {4} "
+"untuk dibuang; {5} akan dibebaskan"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i pakej tersenarai, %i dipasang, %i rosak, %i untuk dipasang/ditatar, %i "
-"untuk dibuang; %s akan digunakan"
+"{0} pakej tersenarai, {1} dipasang, {2} rosak, {3} untuk dipasang/ditatar, {4} "
+"untuk dibuang; {5} akan digunakan"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i pakej tersenarai, %i dipasang, %i rosak, %i untuk dipasang/ditatar, %i "
+"{0} pakej tersenarai, {1} dipasang, {2} rosak, {3} untuk dipasang/ditatar, {4} "
 "untuk dibuang"
 
 #: ../gtk/rgmainwindow.cc:1750

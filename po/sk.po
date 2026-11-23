@@ -1765,30 +1765,30 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"V zozname je %i balíkov, z toho %i je nainštalovaných a %i poškodených. %i "
-"je vybraných na inštaláciu/aktualizáciu a %i na odobratie; po vykonaní zmien "
-"sa uvoľní %s"
+"V zozname je {0} balíkov, z toho {1} je nainštalovaných a {2} poškodených. {3} "
+"je vybraných na inštaláciu/aktualizáciu a {4} na odobratie; po vykonaní zmien "
+"sa uvoľní {5}"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"V zozname je %i balíkov z toho je %i nainštalovaných a %i poškodených. %i sa "
-"bude inštalovať alebo aktualizovať, %i sa odoberie;  obsadí sa %s"
+"V zozname je {0} balíkov z toho je {1} nainštalovaných a {2} poškodených. {3} sa "
+"bude inštalovať alebo aktualizovať, {4} sa odoberie;  obsadí sa {5}"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"V zozname je %i balíkov z toho je %i nainštalovaných a %i poškodených. %i sa "
-"bude inštalovať alebo aktualizovať, %i sa odoberie"
+"V zozname je {0} balíkov z toho je {1} nainštalovaných a {2} poškodených. {3} sa "
+"bude inštalovať alebo aktualizovať, {4} sa odoberie"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

@@ -1757,29 +1757,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i pakaĵoj listigitaj, %i instalitaj, %i rompitaj. %i instalotaj/"
-"promociotaj, %i forigotaj; %s liberigotas"
+"{0} pakaĵoj listigitaj, {1} instalitaj, {2} rompitaj. {3} instalotaj/"
+"promociotaj, {4} forigotaj; {5} liberigotas"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i pakaĵoj listigitaj, %i instalitaj, %i rompitaj. %i instalotaj/"
-"promociotaj, %i forigotaj; %s uzotas"
+"{0} pakaĵoj listigitaj, {1} instalitaj, {2} rompitaj. {3} instalotaj/"
+"promociotaj, {4} forigotaj; {5} uzotas"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i pakaĵoj listigitaj, %i instalitaj, %i rompitaj. %i instalotaj/"
-"promociotaj, %i forigotaj"
+"{0} pakaĵoj listigitaj, {1} instalitaj, {2} rompitaj. {3} instalotaj/"
+"promociotaj, {4} forigotaj"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

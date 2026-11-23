@@ -1781,29 +1781,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"Пакетов: %i, %i уст. (%i с ош.), %i для уст.(обн.), %i для удал.; "
-"освободится %s"
+"Пакетов: {0}, {1} уст. ({2} с ош.), {3} для уст.(обн.), {4} для удал.; "
+"освободится {5}"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"Пакетов: %i, %i уст. (%i с ош.), %i для уст.(обн.), %i для удал.; "
-"потребуется %s"
+"Пакетов: {0}, {1} уст. ({2} с ош.), {3} для уст.(обн.), {4} для удал.; "
+"потребуется {5}"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i пакетов в списке, %i установлено, %i с ошибками, %i для установки/"
-"обновления, %i для удаления"
+"{0} пакетов в списке, {1} установлено, {2} с ошибками, {3} для установки/"
+"обновления, {4} для удаления"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format
