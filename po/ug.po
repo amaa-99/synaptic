@@ -3267,14 +3267,16 @@ msgstr ""
 msgid "Complete changelog of the latest version:"
 msgstr ""
 
-#: ../gtk/gtkbuilder/dialog_update_failed.ui.h:2
 msgid ""
-"<big><b>Could not download all repository indexes</b></big>\n"
-"\n"
+"Could not download all repository indexes"
+msgstr ""
+
+msgid ""
 "The repository may no longer be available or could not be contacted because "
-"of network problems. If available an older version of the failed index will "
+"of network problems. If available, an older version of the failed index will "
 "be used. Otherwise the repository will be ignored. Check your network "
-"connection and ensure the repository address in the preferences is correct."
+"connection and ensure the repository address is correct in 'Repositories' "
+"under 'Settings'."
 msgstr ""
 
 #: ../gtk/gtkbuilder/window_iconlegend.ui.h:1 ../gtk/rgiconlegend.cc:42
