@@ -1754,29 +1754,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1671
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i paket listelendi, %i tanesi kurulu, %i tanesi bozuk. %i tanesi kurulacak/"
-"yükseltilecek, %i tanesi kaldırılacak; %s disk alanı boşalacak"
+"{0} paket listelendi, {1} tanesi kurulu, {2} tanesi bozuk. {3} tanesi kurulacak/"
+"yükseltilecek, {4} tanesi kaldırılacak; {5} disk alanı boşalacak"
 
 #: ../gtk/rgmainwindow.cc:1677
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i paket listelendi, %i tanesi kurulu, %i tanesi bozuk. %i tanesi kurulacak/"
-"yükseltilecek, %i tanesi kaldırılacak; %s disk alanı kullanılacak"
+"{0} paket listelendi, {1} tanesi kurulu, {2} tanesi bozuk. {3} tanesi kurulacak/"
+"yükseltilecek, {4} tanesi kaldırılacak; {5} disk alanı kullanılacak"
 
 #: ../gtk/rgmainwindow.cc:1683
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i paket listelendi, %i tanesi kurulu, %i tanesi bozuk. %i tanesi kurulacak/"
-"yükseltilecek, %i tanesi kaldırılacak"
+"{0} paket listelendi, {1} tanesi kurulu, {2} tanesi bozuk. {3} tanesi kurulacak/"
+"yükseltilecek, {4} tanesi kaldırılacak"
 
 #: ../gtk/rgmainwindow.cc:1749
 #, c-format

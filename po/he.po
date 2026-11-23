@@ -1740,26 +1740,26 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i חבילות ברשימה, %i מותקנות, %i שבורות. %i להתקנה/לשדרוג, %i להסרה; %s יתפנו"
+"{0} חבילות ברשימה, {1} מותקנות, {2} שבורות. {3} להתקנה/לשדרוג, {4} להסרה; {5} יתפנו"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i חבילות ברשימה, %i מותקנות, %i שבורות. %i להתקנה/לשדרוג, %i להסרה; %s "
+"{0} חבילות ברשימה, {1} מותקנות, {2} שבורות. {3} להתקנה/לשדרוג, {4} להסרה; {5} "
 "ינוצלו"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
-msgstr "%i חבילות ברשימה, %i מותקנות, %i שבורות. %i להתקנה/לשדרוג, %i להסרה"
+msgstr "{0} חבילות ברשימה, {1} מותקנות, {2} שבורות. {3} להתקנה/לשדרוג, {4} להסרה"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

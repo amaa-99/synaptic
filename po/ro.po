@@ -1780,29 +1780,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i pachete afișate, %i instalate, %i deteriorate. %i de instalat/actualizat, "
-"%i de dezinstalat; %s vor fi eliberați"
+"{0} pachete afișate, {1} instalate, {2} deteriorate. {3} de instalat/actualizat, "
+"{4} de dezinstalat; {5} vor fi eliberați"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i pachete afișate, %i instalate, %i deteriorate. %i de instalat/actualizat, "
-"%i de dezinstalat; %s vor fi utilizați în plus"
+"{0} pachete afișate, {1} instalate, {2} deteriorate. {3} de instalat/actualizat, "
+"{4} de dezinstalat; {5} vor fi utilizați în plus"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i pachete afișate, %i instalate, %i deteriorate. %i de instalat/actualizat, "
-"%i de dezinstalat"
+"{0} pachete afișate, {1} instalate, {2} deteriorate. {3} de instalat/actualizat, "
+"{4} de dezinstalat"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

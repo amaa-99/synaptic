@@ -1790,29 +1790,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i Pakete aufgelistet, %i installiert, %i defekt, %i werden installiert oder "
-"aktualisiert, %i werden entfernt, %s werden frei"
+"{0} Pakete aufgelistet, {1} installiert, {2} defekt, {3} werden installiert oder "
+"aktualisiert, {4} werden entfernt, {5} werden frei"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i Pakete angezeigt, %i installiert, %i defekt, %i werden installiert oder "
-"aktualisiert, %i werden entfernt, weitere %s werden belegt"
+"{0} Pakete angezeigt, {1} installiert, {2} defekt, {3} werden installiert oder "
+"aktualisiert, {4} werden entfernt, weitere {5} werden belegt"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i Pakete angezeigt, %i installiert, %i defekt, %i werden installiert oder "
-"aktualisiert, %i werden entfernt"
+"{0} Pakete angezeigt, {1} installiert, {2} defekt, {3} werden installiert oder "
+"aktualisiert, {4} werden entfernt"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

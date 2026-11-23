@@ -1766,29 +1766,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i balíků v seznamu, %i nainstalováno, %i problémových. %i označeno k "
-"instalaci/aktualizaci, %i označeno k odstranění; %s bude uvolněno"
+"{0} balíků v seznamu, {1} nainstalováno, {2} problémových. {3} označeno k "
+"instalaci/aktualizaci, {4} označeno k odstranění; {5} bude uvolněno"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i balíků v seznamu, %i nainstalováno, %i problémových. %i označeno k "
-"instalaci/aktualizaci, %i označeno k odstranění; %s bude zabráno"
+"{0} balíků v seznamu, {1} nainstalováno, {2} problémových. {3} označeno k "
+"instalaci/aktualizaci, {4} označeno k odstranění; {5} bude zabráno"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i balíků v seznamu, %i nainstalováno, %i problémových. %i označeno k "
-"instalaci/aktualizaci, %i označeno k odstranění"
+"{0} balíků v seznamu, {1} nainstalováno, {2} problémových. {3} označeno k "
+"instalaci/aktualizaci, {4} označeno k odstranění"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

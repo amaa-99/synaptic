@@ -1749,29 +1749,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i pacotes listados, %i instalados, %i quebrados. %i para instalar/"
-"actualizar, %i para remover; %s serão libertos"
+"{0} pacotes listados, {1} instalados, {2} quebrados. {3} para instalar/"
+"actualizar, {4} para remover; {5} serão libertos"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i pacotes listados, %i instalados, %i quebrados. %i para instalar/"
-"actualizar, %i para remover; %s serão usados"
+"{0} pacotes listados, {1} instalados, {2} quebrados. {3} para instalar/"
+"actualizar, {4} para remover; {5} serão usados"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i pacotes listados, %i instalados, %i quebrados. %i para instalar/"
-"actualizar, %i para remover"
+"{0} pacotes listados, {1} instalados, {2} quebrados. {3} para instalar/"
+"actualizar, {4} para remover"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format
