@@ -1734,29 +1734,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i imiqulu edwelisiweyo, %i efakiweyo, %i eyonakeleyo. %i eza kufakwa/"
-"uphuculo, %i ukususwa; %s iya kukhululwa"
+"{0} imiqulu edwelisiweyo, {1} efakiweyo, {2} eyonakeleyo. {3} eza kufakwa/"
+"uphuculo, {4} ukususwa; {5} iya kukhululwa"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i imiqulu edwelisiweyo, %i efakiweyo, %i eyonakeleyo. %i eza kufakwa/"
-"uphuculo, %i ukususwa; %s iya kusetyenziswa"
+"{0} imiqulu edwelisiweyo, {1} efakiweyo, {2} eyonakeleyo. {3} eza kufakwa/"
+"uphuculo, {4} ukususwa; {5} iya kusetyenziswa"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i imiqulu edwelisiweyo, %i efakiweyo, %i eyonakeleyo. %i eza kufakwa/"
-"uphuculo, %i eza kususwa"
+"{0} imiqulu edwelisiweyo, {1} efakiweyo, {2} eyonakeleyo. {3} eza kufakwa/"
+"uphuculo, {4} eza kususwa"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

@@ -1762,29 +1762,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1673
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"共列出 %i 个软件包，已安装 %i 个，已破损 %i 个。将安装/升级 %i 个软件包，将删"
-"除 %i 个软件包；将释放 %s 磁盘空间。"
+"共列出 {0} 个软件包，已安装 {1} 个，已破损 {2} 个。将安装/升级 {3} 个软件包，将删"
+"除 {4} 个软件包；将释放 {5} 磁盘空间。"
 
 #: ../gtk/rgmainwindow.cc:1679
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"共列出 %i 个软件包，已安装 %i 个，已破损 %i 个。将安装/升级 %i 个软件包，将删"
-"除 %i 个软件包；将占据 %s 磁盘空间。"
+"共列出 {0} 个软件包，已安装 {1} 个，已破损 {2} 个。将安装/升级 {3} 个软件包，将删"
+"除 {4} 个软件包；将占据 {5} 磁盘空间。"
 
 #: ../gtk/rgmainwindow.cc:1685
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"共列出 %i 个软件包，已安装 %i 个，已破损 %i 个。将安装/升级 %i 个软件包，将删"
-"除 %i 个软件包"
+"共列出 {0} 个软件包，已安装 {1} 个，已破损 {2} 个。将安装/升级 {3} 个软件包，将删"
+"除 {4} 个软件包"
 
 #: ../gtk/rgmainwindow.cc:1751
 #, c-format

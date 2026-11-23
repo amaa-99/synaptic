@@ -1751,29 +1751,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1672
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i пакети во листата, %i iинсталирани, %i расипани. %i за инсталација/"
-"надградба, %i за отстранување; ќе бидат ослободени %s"
+"{0} пакети во листата, {1} iинсталирани, {2} расипани. {3} за инсталација/"
+"надградба, {4} за отстранување; ќе бидат ослободени {5}"
 
 #: ../gtk/rgmainwindow.cc:1678
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i пакети во листата, %i iинсталирани, %i расипани. %i за инсталација/"
-"надградба, %i за отстранување; ќе бидат искористени %s"
+"{0} пакети во листата, {1} iинсталирани, {2} расипани. {3} за инсталација/"
+"надградба, {4} за отстранување; ќе бидат искористени {5}"
 
 #: ../gtk/rgmainwindow.cc:1684
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i пакети во листата, %i iинсталирани, %i расипани. %i за инсталација/"
-"надградба, %i за отстранување"
+"{0} пакети во листата, {1} iинсталирани, {2} расипани. {3} за инсталација/"
+"надградба, {4} за отстранување"
 
 #: ../gtk/rgmainwindow.cc:1750
 #, c-format

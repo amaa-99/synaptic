@@ -1752,29 +1752,29 @@ msgstr ""
 #: ../gtk/rgmainwindow.cc:1700
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be freed"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be freed"
 msgstr ""
-"%i paket listade, %i installerade, %i trasiga. %i kommer att installeras/"
-"uppgraderas, %i kommer att tas bort; %s kommer att frigöras"
+"{0} paket listade, {1} installerade, {2} trasiga. {3} kommer att installeras/"
+"uppgraderas, {4} kommer att tas bort; {5} kommer att frigöras"
 
 #: ../gtk/rgmainwindow.cc:1706
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
-"remove; %s will be used"
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
+"remove; {5} will be used"
 msgstr ""
-"%i paket listade, %i installerade, %i trasiga. %i kommer att installeras/"
-"uppgraderas, %i kommer att tas bort; %s kommer att användas"
+"{0} paket listade, {1} installerade, {2} trasiga. {3} kommer att installeras/"
+"uppgraderas, {4} kommer att tas bort; {5} kommer att användas"
 
 #: ../gtk/rgmainwindow.cc:1712
 #, c-format
 msgid ""
-"%i packages listed, %i installed, %i broken. %i to install/upgrade, %i to "
+"{0} packages listed, {1} installed, {2} broken. {3} to install/upgrade, {4} to "
 "remove"
 msgstr ""
-"%i paket listade, %i installerade, %i trasiga. %i kommer att installeras/"
-"uppgraderas, %i kommer att tas bort"
+"{0} paket listade, {1} installerade, {2} trasiga. {3} kommer att installeras/"
+"uppgraderas, {4} kommer att tas bort"
 
 #: ../gtk/rgmainwindow.cc:1778
 #, c-format
