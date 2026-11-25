@@ -128,10 +128,16 @@ jobs:
     - name: configure
       run: |
         mkdir builddir
+        unset CFLAGS CXXFLAGS
+        unset CFLAGS CFLAGS
+        unset CFLAGS LDFLAGS
         meson setup builddir
 
     - name: build
       run: |
+        unset CFLAGS CXXFLAGS
+        unset CFLAGS CFLAGS
+        unset CFLAGS LDFLAGS
         meson compile -C builddir
 
     - name: test
