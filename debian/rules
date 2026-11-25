@@ -13,7 +13,7 @@ MESON_FLAGS= --prefix=/usr \
 	dh $@ $(DHFLAGS) --buildsystem=meson --without autoreconf --without autotools-dev
 
 override_dh_auto_configure:
-	dh_auto_configure $(DHFLAGS) -- $(MESON_FLAGS)
+	CFLAGS="" CXXFLAGS="" LDFLAGS="" dh_auto_configure $(DHFLAGS) -- $(MESON_FLAGS) -Dc_args="" -Dcpp_args="" -Dc_link_args="" -Dcpp_link_args=""
 
 override_dh_auto_install:
 	dh_auto_install $(DHFLAGS)
