@@ -56,11 +56,11 @@ env:
 jobs:
 
   build:
-  
+
     permissions:
       # Required for cache deletion.
       actions: write
-  
+
     runs-on: ubuntu-24.04
 
     steps:
@@ -85,6 +85,11 @@ jobs:
       run: |
         sudo rsync -a --no-owner --no-group /home/runner/apt-cache/archives/ /var/cache/apt/archives/
         sudo rsync -a --no-owner --no-group /home/runner/apt-cache/lists/ /var/lib/apt/lists/
+
+    - name: Show the current APT Architecture-Variants configuration
+      run: |
+        echo "## apt configuration (grep for Architecture-Variants)"
+        apt-config dump | grep -i Architecture-Variants || echo "Not set"
 
     - name: Configure APT
       run: |
@@ -112,14 +117,14 @@ jobs:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
       run: gh cache list --key apt-${{ runner.os }}- --limit 100 --json id -q '.[].id' | xargs -r -n1 gh cache delete || true
-      
+
     - name: Save apt cache
       if: always()
       uses: actions/cache/save@v6
       with:
         path: /home/runner/apt-cache
         key: apt-${{ runner.os }}-${{ steps.apt-cache-key.outputs.key }}
-      
+
     - name: configure
       run: |
         mkdir builddir
