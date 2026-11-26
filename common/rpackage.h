@@ -32,6 +32,7 @@
 
 #include "i18n.h"
 
+#include <apt-pkg/depcache.h>
 #include <apt-pkg/pkgcache.h>
 #include <cstring>
 #include <string>
@@ -40,7 +41,6 @@
 
 class RPackageLister;
 class pkgAcquire;
-class pkgDepCache;
 class pkgRecords;
 
 // taken from apt (pkgcache.cc) to make our life easier
@@ -208,6 +208,21 @@ class RPackage
 
    int getFlags() const;
 
+   bool isInstall() const
+   {
+      return (*_depcache)[*_package].Install();
+   }
+
+   bool isInstalled() const
+   {
+      return !_package->CurrentVer().end();
+   }
+
+   bool isPinned() const
+   {
+      return ((_boolFlags & FPinned) != 0);
+   }
+
    bool wouldBreak() const;
 
    bool isTrusted() const;
@@ -223,6 +238,7 @@ class RPackage
    {
       _boolFlags = flag ? (_boolFlags | FNew) : (_boolFlags & ~FNew);
    }
+
    void setOrphaned(bool flag = true)
    {
       _boolFlags = flag ? (_boolFlags | FOrphaned) : (_boolFlags & ~FOrphaned);
