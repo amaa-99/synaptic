@@ -223,22 +223,22 @@ class RPackageLister
    int findPackage(const char *pattern);
    int findNextPackage();
 
-   const std::vector<RPackage *> &getPackages()
+   const std::vector<RPackage *> &getPackages() const
    {
       return _packages;
    }
 
-   const std::vector<RPackage *> &getViewPackages()
+   const std::vector<RPackage *> &getViewPackages() const
    {
       return _viewPackages;
    }
 
-   RPackage *getPackage(int index)
+   RPackage *getPackage(int index) const
    {
       return _packages.at(index);
    }
 
-   RPackage *getViewPackage(int index)
+   RPackage *getViewPackage(int index) const
    {
       return _viewPackages.at(index);
    }
@@ -369,7 +369,7 @@ class RPackageLister
    bool readSelections(std::istream &in);
    bool writeSelections(std::ostream &out, bool fullState);
 
-   RPackageCache *getCache()
+   RPackageCache *getCache() const
    {
       return _cache;
    }
