@@ -90,10 +90,7 @@ RPackage::RPackage(RPackageLister *lister,
       _defaultCandVer = State.CandVersion;
 }
 
-RPackage::~RPackage()
-{
-   delete _package;
-}
+
 
 std::string RPackage::section() const
 {
@@ -606,16 +603,6 @@ bool RPackage::wouldBreak() const
       return false;
    }
    return flags & FInstBroken;
-}
-
-void RPackage::setNotify(bool flag)
-{
-   _notify = flag;
-}
-
-void RPackage::setAuto(bool flag)
-{
-   _depcache->MarkAuto(*_package, flag);
 }
 
 void RPackage::setKeep()
