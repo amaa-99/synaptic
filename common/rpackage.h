@@ -231,7 +231,6 @@ class RPackage
    void setInstall();
    void setReInstall(bool flag);
    void setRemove(bool purge = false);
-
    void setPinned(bool flag);
 
    void setNew(bool flag = true)
@@ -245,9 +244,15 @@ class RPackage
    }
 
    // set/unset the auto-installed flag
-   void setAuto(bool flag = true);
+   void setAuto(bool flag = true)
+   {
+      _depcache->MarkAuto(*_package, flag);
+   }
 
-   void setNotify(bool flag = true);
+   void setNotify(bool flag = true)
+   {
+      _notify = flag;
+   }
 
    void setRemoveWithDeps(bool purge = false);
 
@@ -262,11 +267,12 @@ class RPackage
       return strcmp(a->name(), b->name()) < 0;
    };
 
-   RPackage(RPackageLister *lister,
-            pkgDepCache *depcache,
-            pkgRecords *records,
-            pkgCache::PkgIterator &pkg);
-   ~RPackage();
+   RPackage(RPackageLister *lister, pkgDepCache *depcache, pkgRecords *records, pkgCache::PkgIterator &pkg);
+
+   ~RPackage()
+   {
+      delete _package;
+   }
 
  private:
 
