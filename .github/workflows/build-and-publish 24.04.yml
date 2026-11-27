@@ -1,4 +1,4 @@
-name: Build and Publish Debian Package
+name: Build and Publish Debian Package (Ubuntu 24.04)
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
       - name: Set the APT cache key
         id: apt-cache-key
         run: echo "key=$(date +%Y-%m)" >> "$GITHUB_OUTPUT"
-          
+
       - name: Cache apt packages
         uses: actions/cache@v6
         with:
@@ -134,8 +134,13 @@ jobs:
             git log -n 20 --pretty=format:"%h: %B" > "$NOTES_FILE"
           fi
           cd ..
+          VERSION="${VERSION}-${ImageOS}"
           gh release view "v${VERSION}" >/dev/null 2>&1 || gh release create "v${VERSION}" --notes-file "$NOTES_FILE"
-          gh release upload "v${VERSION}" *.deb --clobber
+          for file in *.deb; do
+            name="${file##*/}"
+            asset="${name%.deb}-${ImageOS}.deb"
+            gh release upload "v${VERSION}" "${file}#${asset}" --clobber
+          done
 
       - name: Update Packages index
         if: false
