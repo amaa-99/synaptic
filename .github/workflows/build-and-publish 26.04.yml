@@ -1,4 +1,4 @@
-name: Build and Publish Debian Package
+name: Build and Publish Debian Package (Ubuntu 26.04)
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     permissions:
       contents: write
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
 
     env:
       PACKAGE: synaptic
@@ -40,7 +40,7 @@ jobs:
       - name: Set the APT cache key
         id: apt-cache-key
         run: echo "key=$(date +%Y-%m)" >> "$GITHUB_OUTPUT"
-          
+
       - name: Cache apt packages
         uses: actions/cache@v6
         with:
@@ -54,9 +54,10 @@ jobs:
           mkdir -p "$RUNNER_TEMP/apt-cache/archives/partial"
           ls $RUNNER_TEMP/apt-cache/*
           sudo chown -R runner:runner $RUNNER_TEMP/apt-cache
-          sudo apt update
-          sudo apt -o Dir::Cache="$RUNNER_TEMP/apt-cache" -o APT::Keep-Downloaded-Packages=true -o Acquire::Languages=none -o APT::Install-Recommends=false build-dep -y ./source
-          sudo apt -o Dir::Cache="$RUNNER_TEMP/apt-cache" -o APT::Keep-Downloaded-Packages=true -o Acquire::Languages=none -o APT::Install-Recommends=false autoclean -y
+          sudo apt -o APT::Architecture-Variants= update
+          sudo apt -o APT::Architecture-Variants= -o Dir::Cache="$RUNNER_TEMP/apt-cache" -o APT::Keep-Downloaded-Packages=true -o Acquire::Languages=none -o APT::Install-Recommends=false upgrade -y
+          sudo apt -o APT::Architecture-Variants= -o Dir::Cache="$RUNNER_TEMP/apt-cache" -o APT::Keep-Downloaded-Packages=true -o Acquire::Languages=none -o APT::Install-Recommends=false build-dep -y ./source
+          sudo apt -o APT::Architecture-Variants= -o Dir::Cache="$RUNNER_TEMP/apt-cache" -o APT::Keep-Downloaded-Packages=true -o Acquire::Languages=none -o APT::Install-Recommends=false autoclean -y
           sudo chown -R runner:runner $RUNNER_TEMP/apt-cache
 
       - name: Build the packages
@@ -134,7 +135,11 @@ jobs:
             git log -n 20 --pretty=format:"%h: %B" > "$NOTES_FILE"
           fi
           cd ..
+          VERSION="${VERSION}-${ImageOS}"
           gh release view "v${VERSION}" >/dev/null 2>&1 || gh release create "v${VERSION}" --notes-file "$NOTES_FILE"
+          for f in *.deb; do
+            mv -- "$f" "${f%.deb}-${ImageOS}.deb"
+          done
           gh release upload "v${VERSION}" *.deb --clobber
 
       - name: Update Packages index
