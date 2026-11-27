@@ -81,7 +81,6 @@ extern const char *relOptions[];
 
 class RGMainWindow : public RGGtkBuilderWindow, public RPackageObserver
 {
-
    typedef enum {
       UPGRADE_ASK = -1,
       UPGRADE_NORMAL = 0,
@@ -234,7 +233,8 @@ class RGMainWindow : public RGGtkBuilderWindow, public RPackageObserver
    void showErrors(bool has_errors, const std::string &title, const std::string &subtitle, std::vector<std::tuple<bool, std::string, std::string>> details);
 
    GMenu *buildWeakDependsMenu(RPackage *pkg, pkgCache::Dep::DepType);
-
+   std::vector<std::string> listDependencies(RPackage *pkg, pkgCache::Dep::DepType type);
+   std::tuple<std::vector<const char *>, std::vector<const char *>> listDependencies(RPackage *pkg);
 
    // --------------------------------------------------------------------
    // Callbacks

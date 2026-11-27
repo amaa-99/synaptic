@@ -78,6 +78,7 @@
 #include <gtk/gtk.h>
 #include <iostream>
 #include <libintl.h>
+#include <optional>
 #include <pwd.h>
 #include <sstream>
 #include <stdlib.h>
@@ -3028,130 +3029,328 @@ void RGMainWindow::cbMenuPinClicked(GSimpleAction *action,
    me->setInterfaceLocked(FALSE);
 }
 
-void RGMainWindow::cbTreeviewPopupMenu(GtkWidget *treeview,
-                                       GdkEventButton *event,
-                                       RGMainWindow *me,
-                                       vector<RPackage *> selected_pkgs)
+class MenuPopover
 {
-   // Nothing selected, shouldn't happen, but we play safely.
+   GtkWidget *_popover = nullptr;
+   GtkWidget *_scrolled = nullptr;
+   GtkWidget *_box = nullptr;
+
+   RPackage &pkg;
+   RPackageLister &lister;
+
+   struct Dependency
+   {
+      const char *name;
+      bool enabled;     // Set to true if the respective menu entry should be enabled.
+   };
+
+   optional<vector<Dependency>> recommended;
+   optional<vector<Dependency>> suggested;
+
+   static tuple<vector<Dependency>, vector<Dependency>> listDependencies(RPackage &pkg, RPackageLister &lister)
+   {
+      vector<Dependency> recommends;
+      vector<Dependency> suggests;
+
+      vector<DepInformation> virtual_deps;
+
+      for (const DepInformation &dep : pkg.enumDeps())   // enumDeps is expensive()
+      {
+         if ((dep.type == pkgCache::Dep::DepType::Recommends) || (dep.type == pkgCache::Dep::DepType::Suggests))
+         {
+            if (!dep.isVirtual)
+            {
+               if (dep.type == pkgCache::Dep::DepType::Recommends)
+               {
+                  recommends.push_back(Dependency(dep.name, !dep.isSatisfied));
+               }
+               else
+               {
+                  suggests.push_back(Dependency(dep.name, !dep.isSatisfied));
+               }
+            }
+            else
+            {
+               virtual_deps.push_back(dep);
+            }
+         }
+      }
+
+      if (!virtual_deps.empty())
+      {
+         for (const RPackage *package : lister.getPackages()) // getPackages() is cheap
+         {
+            [&]
+            {
+               for (const string &provides : package->provides())
+               {
+                  // For a virtual package the ProvidesList contains “which packages provide this one”.
+
+                  for (const DepInformation &dep : virtual_deps)
+                  {
+                     if (strcmp(dep.name, provides.c_str()) == 0)
+                     {
+                        bool enabled = (!package->isInstall() && !package->isInstalled());
+                        ((dep.type == pkgCache::Dep::DepType::Recommends) ? recommends : suggests).push_back(Dependency(package->name(), enabled));
+                        return;
+                     }
+                  }
+               }
+            }();
+         }
+      }
+
+      ranges::sort(recommends, [](const Dependency &a, const Dependency &b) { return std::strcoll(a.name, b.name) < 0; });
+      ranges::sort(suggests, [](const Dependency &a, const Dependency &b) { return std::strcoll(a.name, b.name) < 0; });
+
+      return { std::move(recommends), std::move(suggests) };
+   }
+
+   static void onItemClicked(GtkButton *button, gpointer)
+   {
+      GtkWidget *popover = gtk_widget_get_ancestor(GTK_WIDGET(button), GTK_TYPE_POPOVER);
+      while (popover != nullptr)
+      {
+         gtk_popover_popdown(GTK_POPOVER(popover));
+         GtkWidget *relative_to = gtk_popover_get_relative_to(GTK_POPOVER(popover));
+         popover = (relative_to != nullptr) ? gtk_widget_get_ancestor(relative_to, GTK_TYPE_POPOVER) : nullptr;
+      }
+   }
+
+   static void onRecommendedSubmenuClicked(GtkButton *button, gpointer user_data)
+   {
+      showDependenciesSubMenu(button, static_cast<MenuPopover *>(user_data), false);
+   }
+
+   static void onSuggestedSubmenuClicked(GtkButton *button, gpointer user_data)
+   {
+      showDependenciesSubMenu(button, static_cast<MenuPopover *>(user_data), false);
+   }
+
+   static void showDependenciesSubMenu(GtkButton *button, MenuPopover *menu, bool is_recommended)
+   {
+      MenuPopover *child = create(menu->_popover, menu->pkg, menu->lister);
+
+      for (const Dependency &dep : ((is_recommended) ? menu->recommended : menu->suggested).value())
+      {
+         child->addActionItem(dep.name, dep.enabled ? "win.install-by-name" : "", g_variant_new_string(dep.name));
+      }
+
+      gtk_popover_set_relative_to(GTK_POPOVER(child->_popover), GTK_WIDGET(button));
+      gtk_popover_popup(GTK_POPOVER(child->_popover));
+   }
+
+ public:
+
+   // Creates a popover attached to relative_to. The object deletes itself
+   // when its GtkPopover is finalized, so do not delete it manually.
+   static MenuPopover *create(GtkWidget *relative_to, RPackage &pkg, RPackageLister &lister)
+   {
+      MenuPopover *menu = new MenuPopover(relative_to, pkg, lister);
+      g_object_set_data_full(G_OBJECT(menu->_popover), "menu-popover", menu, [](gpointer data)
+      {
+         delete static_cast<MenuPopover *>(data);
+      });
+      return menu;
+   }
+
+   void show(const GdkRectangle &rect)
+   {
+      gtk_popover_set_pointing_to(GTK_POPOVER(_popover), &rect);
+      gtk_popover_popup(GTK_POPOVER(_popover));
+   }
+
+   void destroy()
+   {
+      gtk_widget_destroy(_popover);
+   }
+
+   void addActionItem(const char *label, const char *action_name, GVariant *target = nullptr)
+   {
+      GtkWidget *button = makeItem(label);
+      gtk_actionable_set_action_name(GTK_ACTIONABLE(button), action_name);
+      if (target != nullptr)
+      {
+         gtk_actionable_set_action_target_value(GTK_ACTIONABLE(button), target);
+      }
+      g_signal_connect(button, "clicked", G_CALLBACK(onItemClicked), nullptr);
+
+      gtk_widget_add_events(button, GDK_ENTER_NOTIFY_MASK);
+      auto on_enter = [](GtkWidget* widget, GdkEventCrossing *, gpointer) -> gboolean
+      {
+         gtk_widget_grab_focus(widget);
+         return FALSE;
+      };
+      g_signal_connect(button, "enter-notify-event", G_CALLBACK(+on_enter), nullptr);
+
+      gtk_box_pack_start(GTK_BOX(_box), button, FALSE, FALSE, 0);
+   }
+
+   void addSeparator()
+   {
+      GtkWidget *separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
+      gtk_box_pack_start(GTK_BOX(_box), separator, FALSE, FALSE, 0);
+      gtk_widget_show(separator);
+   }
+
+   void addDependenciesSubmenu(RPackage &pkg, RPackageLister &lister, bool is_recommended)
+   {
+      if (!recommended.has_value() || !suggested.has_value())
+      {
+         auto [recommends, suggests] = listDependencies(pkg, lister);
+         recommended = std::move(recommends);
+         suggested = std::move(suggests);
+      }
+
+      GtkWidget *button = makeItem(_((is_recommended) ? "Mark Recommended for Installation" : "Mark Suggested for Installation"));
+      gtk_box_pack_start(GTK_BOX(_box), button, FALSE, FALSE, 0);
+
+      if (is_recommended)
+      {
+         if (!recommended.value().empty())
+         {
+            auto on_clicked = [](GtkButton *button, gpointer user_data) -> void
+            {
+               showDependenciesSubMenu(button, static_cast<MenuPopover *>(user_data), true);
+            };
+            g_signal_connect(button, "clicked", G_CALLBACK(+on_clicked), static_cast<gpointer>(this));
+         }
+         else
+         {
+            gtk_widget_set_sensitive(GTK_WIDGET(button), FALSE);
+         }
+      }
+      else
+      {
+         if (!suggested.value().empty())
+         {
+            auto on_clicked = [](GtkButton *button, gpointer user_data) -> void
+            {
+               showDependenciesSubMenu(button, static_cast<MenuPopover *>(user_data), false);
+            };
+            g_signal_connect(button, "clicked", G_CALLBACK(+on_clicked), static_cast<gpointer>(this));
+         }
+         else
+         {
+            gtk_widget_set_sensitive(GTK_WIDGET(button), FALSE);
+         }
+      }
+
+      gtk_widget_add_events(button, GDK_ENTER_NOTIFY_MASK);
+      auto on_enter = [](GtkWidget* widget, GdkEventCrossing *, gpointer) -> gboolean
+      {
+         gtk_widget_grab_focus(widget);
+         return FALSE;
+      };
+      g_signal_connect(button, "enter-notify-event", G_CALLBACK(+on_enter), nullptr);
+   }
+
+   void addRecommendedSubmenu(RPackage &pkg, RPackageLister &lister)
+   {
+      addDependenciesSubmenu(pkg, this->lister, true);
+   }
+
+   void addSuggestedSubmenu(RPackage &pkg, RPackageLister &lister)
+   {
+      addDependenciesSubmenu(pkg, this->lister, false);
+   }
+
+ private:
+
+   explicit MenuPopover(GtkWidget *relative_to, RPackage &pkg, RPackageLister &lister) : pkg(pkg), lister(lister)
+   {
+      _popover = gtk_popover_new(relative_to);
+      gtk_container_set_border_width(GTK_CONTAINER(_popover), 5);
+
+      _scrolled = gtk_scrolled_window_new(nullptr, nullptr);
+
+      gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(_scrolled), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+      gtk_scrolled_window_set_propagate_natural_height(GTK_SCROLLED_WINDOW(_scrolled), TRUE);
+      gtk_scrolled_window_set_propagate_natural_width(GTK_SCROLLED_WINDOW(_scrolled), TRUE);
+
+      gtk_widget_set_size_request(_scrolled, 200, -1);
+
+      // Allow the popup to grow up to 2/3rds of the main window height.
+      GtkWidget *toplevel = gtk_widget_get_toplevel(relative_to);
+      gint width, height;
+      gtk_window_get_size(GTK_WINDOW(toplevel), &width, &height);
+      gtk_scrolled_window_set_max_content_height(GTK_SCROLLED_WINDOW(_scrolled), MAX(200, (height * 2) / 3));
+      gtk_scrolled_window_set_min_content_height(GTK_SCROLLED_WINDOW(_scrolled), 200);
+
+      _box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+      gtk_container_add(GTK_CONTAINER(_scrolled), _box);
+      gtk_container_add(GTK_CONTAINER(_popover), _scrolled);
+
+      gtk_widget_show(_box);
+      gtk_widget_show(_scrolled);
+   }
+
+   static GtkWidget *makeItem(const char *label)
+   {
+      GtkWidget *button = gtk_button_new();
+      gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
+
+      GtkWidget *text = gtk_label_new(label);
+      gtk_widget_set_halign(text, GTK_ALIGN_START);
+      gtk_container_add(GTK_CONTAINER(button), text);
+
+      gtk_widget_show_all(button);
+
+      return button;
+   }
+};
+
+void RGMainWindow::cbTreeviewPopupMenu(GtkWidget *treeview, GdkEventButton *event, RGMainWindow *me, vector<RPackage *> selected_pkgs)
+{
    if (selected_pkgs.size() == 0)
+   {  // Nothing selected (shouldn't happen, but we play safely).
       return;
+   }
 
    // FIXME: we take the first pkg and find out available actions,
    //        we should calc available actions from all selected pkgs.
    RPackage *pkg = selected_pkgs[0];
 
-   int flags = pkg->getFlags();
-
-   if (flags & RPackage::FPinned)
+   if (pkg->isPinned())
+   {
       return;
+   }
 
-   if (event->button == 1 &&
-       _config->FindB("Synaptic::OneClickOnStatusActions", false) == true) {
+   if ((event->button == 1) && _config->FindB("Synaptic::OneClickOnStatusActions", false))
+   {
       me->activateAction("mark-default", nullptr);
       return;
    }
 
-   GMenu *popupMenuModel = g_menu_new();
-   g_menu_append(popupMenuModel, _("Unmark"), "win.unmark");
-   g_menu_append(popupMenuModel, _("Mark for Installation"), "win.mark-install");
-   g_menu_append(popupMenuModel, _("Mark for Reinstallation"), "win.mark-reinstall");
-   g_menu_append(popupMenuModel, _("Mark for Upgrade"), "win.mark-upgrade");
-   g_menu_append(popupMenuModel, _("Mark for Removal"), "win.mark-delete");
-   g_menu_append(popupMenuModel, _("Mark for Complete Removal"), "win.mark-purge");
+   MenuPopover *menu = MenuPopover::create(treeview, *pkg, *me->_lister);
 
-#if 0 // disabled for now
-   g_menu_append(popupMenuModel, _("Remove Including Orphaned Dependencies"), "win.mark-delete-with-deps");
+   menu->addActionItem(_("Unmark"), "win.unmark");
+   menu->addActionItem(_("Mark for Installation"), "win.mark-install");
+   menu->addActionItem(_("Mark for Reinstallation"), "win.mark-reinstall");
+   menu->addActionItem(_("Mark for Upgrade"), "win.mark-upgrade");
+   menu->addActionItem(_("Mark for Removal"), "win.mark-delete");
+   menu->addActionItem(_("Mark for Complete Removal"), "win.mark-purge");
+   menu->addSeparator();
+   menu->addActionItem(_("Properties"), "win.package-properties");
 
-   GMenu *lockSubmenu = g_menu_new();
-   g_menu_append(lockSubmenu, _("Hold Current Version"), "win.lock-version");
-   g_menu_append_section(popupMenuModel, nullptr, G_MENU_MODEL(lockSubmenu));
-#endif
-
-   GMenu *propsSubmenu = g_menu_new();
-   g_menu_append(propsSubmenu, _("Properties"), "win.package-properties");
-   g_menu_append_section(popupMenuModel, nullptr, G_MENU_MODEL(propsSubmenu));
-
-   if (selected_pkgs.size() == 1) {
-      GMenu *recommendsSection = g_menu_new();
-
-      if (GMenu *recommendedSubmenu =
-             me->buildWeakDependsMenu(pkg, pkgCache::Dep::Recommends))
-         g_menu_append_submenu(recommendsSection,
-                               _("Mark Recommended for Installation"),
-                               G_MENU_MODEL(recommendedSubmenu));
-      else
-         g_menu_append(
-            recommendsSection, _("Mark Recommended for Installation"), nullptr);
-
-      if (GMenu *suggestedSubmenu =
-             me->buildWeakDependsMenu(pkg, pkgCache::Dep::Suggests))
-         g_menu_append_submenu(recommendsSection,
-                               _("Mark Suggested for Installation"),
-                               G_MENU_MODEL(suggestedSubmenu));
-      else
-         g_menu_append(
-            recommendsSection, _("Mark Suggested for Installation"), nullptr);
-
-      g_menu_append_section(
-         popupMenuModel, nullptr, G_MENU_MODEL(recommendsSection));
+   if (selected_pkgs.size() == 1)
+   {
+      menu->addSeparator();
+      menu->addRecommendedSubmenu(*selected_pkgs[0], *me->_lister);
+      menu->addSuggestedSubmenu(*selected_pkgs[0], *me->_lister);
    }
 
-   GdkRectangle rect{0, 0, 0, 0};
-   gtk_tree_view_convert_bin_window_to_widget_coords(
-      GTK_TREE_VIEW(treeview), (int)event->x, (int)event->y, &rect.x, &rect.y);
+   #if 0 // disabled for now
+      g_menu_append(popupMenuModel, _("Remove Including Orphaned Dependencies"), "win.mark-delete-with-deps");
 
-   GtkWidget *popupMenu =
-      gtk_popover_new_from_model(treeview, G_MENU_MODEL(popupMenuModel));
-   gtk_popover_set_pointing_to(GTK_POPOVER(popupMenu), &rect);
-   gtk_popover_popup(GTK_POPOVER(popupMenu));
-}
+      GMenu *lockSubmenu = g_menu_new();
+      g_menu_append(lockSubmenu, _("Hold Current Version"), "win.lock-version");
+      g_menu_append_section(popupMenuModel, nullptr, G_MENU_MODEL(lockSubmenu));
+   #endif
 
-GMenu *RGMainWindow::buildWeakDependsMenu(RPackage *pkg,
-                                          pkgCache::Dep::DepType type)
-{
-   // safty first
-   if (pkg == NULL)
-      return NULL;
-   bool found = false;
-
-   GMenu *menu = g_menu_new();
-   GMenuItem *item;
-   vector<DepInformation> deps = pkg->enumDeps();
-   for (unsigned int i = 0; i < deps.size(); i++) {
-      if (deps[i].type == type) {
-         // not virtual
-         if (!deps[i].isVirtual) {
-            found = true;
-            item = g_menu_item_new(deps[i].name, nullptr);
-            if (!deps[i].isSatisfied)
-               g_menu_item_set_action_and_target(
-                  item, "win.install-by-name", "s", deps[i].name);
-            g_menu_append_item(menu, item);
-         } else {
-            // TESTME: expand virutal packages (expensive!?!)
-            const vector<RPackage *> pkgs = _lister->getPackages();
-            for (unsigned int k = 0; k < pkgs.size(); k++) {
-               vector<string> d = pkgs[k]->provides();
-               for (unsigned int j = 0; j < d.size(); j++)
-                  if (strcoll(deps[i].name, d[j].c_str()) == 0) {
-                     found = true;
-                     item = g_menu_item_new(pkgs[k]->name(), nullptr);
-                     g_menu_append_item(menu, item);
-                     int f = pkgs[k]->getFlags();
-                     if (!((f & RPackage::FInstall) ||
-                           (f & RPackage::FInstalled)))
-                        g_menu_item_set_action_and_target(
-                           item, "win.install-by-name", "s", pkgs[k]->name());
-                  }
-            }
-         }
-      }
-   }
-   if (found)
-      return menu;
-   else
-      return NULL;
+   GdkRectangle rect {};
+   gtk_tree_view_convert_bin_window_to_widget_coords(GTK_TREE_VIEW(treeview), (int) event->x, (int) event->y, &rect.x, &rect.y);
+   menu->show(rect);
 }
 
 void RGMainWindow::selectToInstall(vector<string> packagenames)
