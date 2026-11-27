@@ -3127,31 +3127,13 @@ class MenuPopover
       showDependenciesSubMenu(button, static_cast<MenuPopover *>(user_data), false);
    }
 
-   static void showDependenciesSubMenu(GtkButton *button, MenuPopover *menu, bool recommended)
+   static void showDependenciesSubMenu(GtkButton *button, MenuPopover *menu, bool is_recommended)
    {
-      if (!menu->recommended.has_value() || !menu->suggested.has_value())
-      {
-         auto [recommends, suggests] = listDependencies(menu->pkg, menu->lister);
-         menu->recommended = std::move(recommends);
-         menu->suggested = std::move(suggests);
-      }
-
       MenuPopover *child = create(menu->_popover, menu->pkg, menu->lister);
 
-      const vector<Dependency> &dependencies = ((recommended) ? menu->recommended : menu->suggested).value();
-
-      if (!dependencies.empty())
+      for (const Dependency &dep : ((is_recommended) ? menu->recommended : menu->suggested).value())
       {
-         for (const Dependency &dep : dependencies)
-         {
-            child->addActionItem(dep.name, dep.enabled ? "win.install-by-name" : "", g_variant_new_string(dep.name));
-         }
-      }
-      else
-      {
-         gtk_scrolled_window_set_propagate_natural_height(GTK_SCROLLED_WINDOW(child->_scrolled), false);
-         gtk_scrolled_window_set_min_content_height(GTK_SCROLLED_WINDOW(child->_scrolled), 10);
-         gtk_scrolled_window_set_max_content_height(GTK_SCROLLED_WINDOW(child->_scrolled), 10);
+         child->addActionItem(dep.name, dep.enabled ? "win.install-by-name" : "", g_variant_new_string(dep.name));
       }
 
       gtk_popover_set_relative_to(GTK_POPOVER(child->_popover), GTK_WIDGET(button));
@@ -3212,26 +3194,47 @@ class MenuPopover
       gtk_widget_show(separator);
    }
 
-   void addDependenciesSubmenu(RPackage &pkg, RPackageLister &lister, bool recommended)
+   void addDependenciesSubmenu(RPackage &pkg, RPackageLister &lister, bool is_recommended)
    {
-      GtkWidget *button = makeItem(_((recommended) ? "Mark Recommended for Installation" : "Mark Suggested for Installation"));
+      if (!recommended.has_value() || !suggested.has_value())
+      {
+         auto [recommends, suggests] = listDependencies(pkg, lister);
+         recommended = std::move(recommends);
+         suggested = std::move(suggests);
+      }
+
+      GtkWidget *button = makeItem(_((is_recommended) ? "Mark Recommended for Installation" : "Mark Suggested for Installation"));
       gtk_box_pack_start(GTK_BOX(_box), button, FALSE, FALSE, 0);
 
-      if (recommended)
+      if (is_recommended)
       {
-         auto on_clicked = [](GtkButton *button, gpointer user_data) -> void
+         if (!recommended.value().empty())
          {
-            showDependenciesSubMenu(button, static_cast<MenuPopover *>(user_data), true);
-         };
-         g_signal_connect(button, "clicked", G_CALLBACK(+on_clicked), static_cast<gpointer>(this));
+            auto on_clicked = [](GtkButton *button, gpointer user_data) -> void
+            {
+               showDependenciesSubMenu(button, static_cast<MenuPopover *>(user_data), true);
+            };
+            g_signal_connect(button, "clicked", G_CALLBACK(+on_clicked), static_cast<gpointer>(this));
+         }
+         else
+         {
+            gtk_widget_set_sensitive(GTK_WIDGET(button), FALSE);
+         }
       }
       else
       {
-         auto on_clicked = [](GtkButton *button, gpointer user_data) -> void
+         if (!suggested.value().empty())
          {
-            showDependenciesSubMenu(button, static_cast<MenuPopover *>(user_data), false);
-         };
-         g_signal_connect(button, "clicked", G_CALLBACK(+on_clicked), static_cast<gpointer>(this));
+            auto on_clicked = [](GtkButton *button, gpointer user_data) -> void
+            {
+               showDependenciesSubMenu(button, static_cast<MenuPopover *>(user_data), false);
+            };
+            g_signal_connect(button, "clicked", G_CALLBACK(+on_clicked), static_cast<gpointer>(this));
+         }
+         else
+         {
+            gtk_widget_set_sensitive(GTK_WIDGET(button), FALSE);
+         }
       }
 
       gtk_widget_add_events(button, GDK_ENTER_NOTIFY_MASK);
@@ -3331,10 +3334,10 @@ void RGMainWindow::cbTreeviewPopupMenu(GtkWidget *treeview, GdkEventButton *even
    menu->addActionItem(_("Mark for Complete Removal"), "win.mark-purge");
    menu->addSeparator();
    menu->addActionItem(_("Properties"), "win.package-properties");
-   menu->addSeparator();
 
    if (selected_pkgs.size() == 1)
    {
+      menu->addSeparator();
       menu->addRecommendedSubmenu(*selected_pkgs[0], *me->_lister);
       menu->addSuggestedSubmenu(*selected_pkgs[0], *me->_lister);
    }
