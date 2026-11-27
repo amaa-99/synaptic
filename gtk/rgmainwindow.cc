@@ -3137,7 +3137,6 @@ class MenuPopover
       }
 
       gtk_popover_set_relative_to(GTK_POPOVER(child->_popover), GTK_WIDGET(button));
-      gtk_popover_set_position(GTK_POPOVER(child->_popover), GTK_POS_RIGHT);
       gtk_popover_popup(GTK_POPOVER(child->_popover));
    }
 
@@ -3261,7 +3260,6 @@ class MenuPopover
    explicit MenuPopover(GtkWidget *relative_to, RPackage &pkg, RPackageLister &lister) : pkg(pkg), lister(lister)
    {
       _popover = gtk_popover_new(relative_to);
-      gtk_popover_set_position(GTK_POPOVER(_popover), GTK_POS_RIGHT);
       gtk_container_set_border_width(GTK_CONTAINER(_popover), 5);
 
       _scrolled = gtk_scrolled_window_new(nullptr, nullptr);
